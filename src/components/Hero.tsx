@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Shield, Zap } from "lucide-react";
-import cryptoHero from "@/assets/crypto-hero.jpg";
+import cryptoHero from "@/assets/crypto-trading-bg.jpg";
 
 const Hero = () => {
   return (
