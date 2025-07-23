@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Shield, Zap } from "lucide-react";
 import cryptoHero from "@/assets/crypto-trading-bg.jpg";
+import Header from "@/components/Header";
 
 const Hero = () => {
   return (
+    <>
+      <Header />
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-dark">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
@@ -90,6 +93,7 @@ const Hero = () => {
       {/* Gradient Overlay Bottom */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent z-5" />
     </section>
+    </>
   );
 };
 
