@@ -57,6 +57,30 @@ const Dashboard = () => {
             <p className="text-muted-foreground">จัดการการเรียนรู้และระบบของคุณ</p>
           </div>
 
+          {/* Profile Section */}
+          <div className="mb-8">
+            <Card className="crypto-card">
+              <CardContent className="p-6">
+                <div className="flex items-center space-x-4">
+                  <div className="w-16 h-16 bg-crypto-primary/20 rounded-full flex items-center justify-center">
+                    <Users className="w-8 h-8 text-crypto-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold">{user?.email}</h3>
+                    <p className="text-muted-foreground">สถานะสมาชิก</p>
+                    <Badge variant={userRole === 'admin' ? 'destructive' : userRole === 'instructor' ? 'secondary' : 'outline'} className="mt-2">
+                      {userRole === 'admin' ? 'แอดมิน' : userRole === 'instructor' ? 'ผู้สอน' : 'ผู้ใช้ทั่วไป'}
+                    </Badge>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-muted-foreground">เข้าร่วมเมื่อ</p>
+                    <p className="font-medium">{new Date().toLocaleDateString('th-TH')}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
           <Tabs defaultValue={isAdmin ? "courses" : "overview"} className="w-full">
             <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-2' : 'grid-cols-4'}`}>
               {!isAdmin && (

@@ -222,7 +222,7 @@ const UserManagement = () => {
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-background border border-border">
                     <SelectItem value="user">ผู้ใช้ทั่วไป</SelectItem>
                     <SelectItem value="instructor">ผู้สอน</SelectItem>
                     <SelectItem value="admin">แอดมิน</SelectItem>
@@ -289,7 +289,7 @@ const UserManagement = () => {
                             <SelectTrigger className="w-32">
                               <SelectValue />
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent className="bg-background border border-border z-50">
                               <SelectItem value="user">ผู้ใช้</SelectItem>
                               <SelectItem value="instructor">ผู้สอน</SelectItem>
                               <SelectItem value="admin">แอดมิน</SelectItem>
