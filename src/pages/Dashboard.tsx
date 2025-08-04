@@ -93,9 +93,20 @@ const Dashboard = () => {
                       </div>
                       <div>
                         <p className="text-sm text-slate-400">สถานะสมาชิก</p>
-                        <Badge className="bg-purple-600 hover:bg-purple-700 text-white">
-                          👑 ฟรี
-                        </Badge>
+                        <div className="flex items-center gap-2">
+                          <Badge className="bg-purple-600 hover:bg-purple-700 text-white">
+                            👑 ฟรี
+                          </Badge>
+                          {!isAdmin && (
+                            <Button
+                              onClick={() => navigate('/payment')}
+                              size="sm"
+                              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-xs"
+                            >
+                              💎 อัพเกรด
+                            </Button>
+                          )}
+                        </div>
                       </div>
                       <div>
                         <p className="text-sm text-slate-400">บทบาท</p>
@@ -103,15 +114,6 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                  {!isAdmin && (
-                    <Button
-                      onClick={() => navigate('/payment')}
-                      className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
-                    >
-                      <CreditCard className="w-4 h-4 mr-2" />
-                      💎 อัพเกรด
-                    </Button>
-                  )}
                 </div>
               </CardContent>
             </Card>
@@ -125,12 +127,12 @@ const Dashboard = () => {
               >
                 📊 ภาพรวม
               </TabsTrigger>
-              <TabsTrigger 
-                value="courses" 
-                className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
-              >
-                👑 อัพเกรดสมาชิก
-              </TabsTrigger>
+               <TabsTrigger 
+                 value="courses" 
+                 className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
+               >
+                 📚 จัดการคอร์ส
+               </TabsTrigger>
               <TabsTrigger 
                 value="management" 
                 className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
