@@ -84,16 +84,21 @@ const AdminMembers = () => {
     if (!editingProfile) return;
 
     try {
-      const { error } = await supabase
+      console.log('Updating profile:', editingProfile.id, 'with data:', editForm);
+      
+      const { data, error } = await supabase
         .from('profiles')
         .update(editForm)
-        .eq('id', editingProfile.id);
+        .eq('id', editingProfile.id)
+        .select(); // เพิ่ม select เพื่อดูผลลัพธ์
+
+      console.log('Update result:', { data, error });
 
       if (error) {
         console.error('Error updating profile:', error);
         toast({
           title: "ข้อผิดพลาด",
-          description: "ไม่สามารถอัพเดตข้อมูลได้",
+          description: `ไม่สามารถอัพเดตข้อมูลได้: ${error.message}`,
           variant: "destructive",
         });
         return;
