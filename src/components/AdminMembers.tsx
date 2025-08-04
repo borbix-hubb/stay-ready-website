@@ -8,7 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Users, Edit, Trash2, UserPlus, Crown, Shield, User } from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Users, Edit, Trash2, Crown, Shield, User } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 interface Profile {
@@ -21,8 +22,14 @@ interface Profile {
   created_at: string;
 }
 
+interface AuthUser {
+  id: string;
+  email?: string;
+}
+
 const AdminMembers = () => {
   const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [authUsers, setAuthUsers] = useState<AuthUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingProfile, setEditingProfile] = useState<Profile | null>(null);
   const [editForm, setEditForm] = useState({
@@ -35,7 +42,21 @@ const AdminMembers = () => {
 
   useEffect(() => {
     fetchProfiles();
+    fetchAuthUsers();
   }, []);
+
+  const fetchAuthUsers = async () => {
+    try {
+      const { data, error } = await supabase.auth.admin.listUsers();
+      if (error) {
+        console.error('Error fetching auth users:', error);
+        return;
+      }
+      setAuthUsers(data.users.map(user => ({ id: user.id, email: user.email })));
+    } catch (error) {
+      console.error('Error fetching auth users:', error);
+    }
+  };
 
   const fetchProfiles = async () => {
     try {
@@ -131,6 +152,14 @@ const AdminMembers = () => {
     }
   };
 
+  const getUserEmail = (userId: string) => {
+    const authUser = authUsers.find(user => user.id === userId);
+    return authUser?.email || '-';
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('th-TH');
+  };
   const getRoleIcon = (role: string | null) => {
     switch (role) {
       case 'admin':
@@ -145,11 +174,11 @@ const AdminMembers = () => {
   const getRoleBadgeVariant = (role: string | null) => {
     switch (role) {
       case 'admin':
-        return 'default'; // Red/primary color
+        return 'destructive'; // Red/primary color
       case 'moderator':
-        return 'secondary'; // Blue color
+        return 'default'; // Blue color
       default:
-        return 'outline'; // Gray color
+        return 'secondary'; // Gray color
     }
   };
 
@@ -179,144 +208,156 @@ const AdminMembers = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4">
-            {profiles.map((profile) => (
-              <div
-                key={profile.id}
-                className="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg border border-slate-600"
-              >
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                      {getRoleIcon(profile.role)}
-                    </div>
-                    <div>
-                      <h3 className="text-white font-medium">
-                        {profile.full_name || profile.username || 'ไม่ระบุชื่อ'}
-                      </h3>
-                      <p className="text-sm text-slate-400">
-                        ID: {profile.id.slice(0, 8)}...
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-2 flex-wrap">
-                    <Badge variant={getRoleBadgeVariant(profile.role)}>
-                      {profile.role === 'admin' ? '👑 แอดมิน' : 
-                       profile.role === 'moderator' ? '🛡️ ผู้ดูแล' : '👤 ผู้ใช้'}
-                    </Badge>
-                    <Badge variant={getMembershipBadgeVariant(profile.membership_status)}>
-                      {profile.membership_status === 'premium' ? '⭐ พรีเมี่ยม' : '🆓 ฟรี'}
-                    </Badge>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEdit(profile)}
-                        className="border-slate-600 text-slate-300 hover:bg-slate-600"
-                      >
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="bg-slate-800 border-slate-700">
-                      <DialogHeader>
-                        <DialogTitle className="text-white">แก้ไขข้อมูลสมาชิก</DialogTitle>
-                      </DialogHeader>
-                      <div className="space-y-4">
-                        <div>
-                          <Label htmlFor="username" className="text-slate-300">ชื่อผู้ใช้</Label>
-                          <Input
-                            id="username"
-                            value={editForm.username}
-                            onChange={(e) => setEditForm(prev => ({ ...prev, username: e.target.value }))}
-                            className="bg-slate-700 border-slate-600 text-white"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="full_name" className="text-slate-300">ชื่อ-นามสกุล</Label>
-                          <Input
-                            id="full_name"
-                            value={editForm.full_name}
-                            onChange={(e) => setEditForm(prev => ({ ...prev, full_name: e.target.value }))}
-                            className="bg-slate-700 border-slate-600 text-white"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="role" className="text-slate-300">บทบาท</Label>
-                          <Select value={editForm.role} onValueChange={(value) => setEditForm(prev => ({ ...prev, role: value }))}>
-                            <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent className="bg-slate-700 border-slate-600">
-                              <SelectItem value="user">👤 ผู้ใช้</SelectItem>
-                              <SelectItem value="moderator">🛡️ ผู้ดูแล</SelectItem>
-                              <SelectItem value="admin">👑 แอดมิน</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div>
-                          <Label htmlFor="membership_status" className="text-slate-300">สถานะสมาชิก</Label>
-                          <Select value={editForm.membership_status} onValueChange={(value) => setEditForm(prev => ({ ...prev, membership_status: value }))}>
-                            <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent className="bg-slate-700 border-slate-600">
-                              <SelectItem value="free">🆓 ฟรี</SelectItem>
-                              <SelectItem value="premium">⭐ พรีเมี่ยม</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <Button onClick={handleUpdate} className="w-full bg-blue-600 hover:bg-blue-700">
-                          บันทึกการเปลี่ยนแปลง
-                        </Button>
+          <div className="rounded-md border border-slate-700">
+            <Table>
+              <TableHeader>
+                <TableRow className="border-slate-700 hover:bg-slate-700/50">
+                  <TableHead className="text-slate-300">ชื่อ-นามสกุล</TableHead>
+                  <TableHead className="text-slate-300">อีเมล</TableHead>
+                  <TableHead className="text-slate-300">เบอร์โทร</TableHead>
+                  <TableHead className="text-slate-300">บทบาท</TableHead>
+                  <TableHead className="text-slate-300">สมาชิก</TableHead>
+                  <TableHead className="text-slate-300">วันที่สมัคร</TableHead>
+                  <TableHead className="text-slate-300 text-center">จัดการ</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {profiles.map((profile) => (
+                  <TableRow key={profile.id} className="border-slate-700 hover:bg-slate-700/30">
+                    <TableCell className="text-white">
+                      {profile.full_name || profile.username || 'ไม่ระบุชื่อ'}
+                    </TableCell>
+                    <TableCell className="text-slate-300">
+                      {getUserEmail(profile.id)}
+                    </TableCell>
+                    <TableCell className="text-slate-300">-</TableCell>
+                    <TableCell>
+                      <Badge variant={getRoleBadgeVariant(profile.role)} className="flex items-center gap-1 w-fit">
+                        {getRoleIcon(profile.role)}
+                        {profile.role === 'admin' ? 'ผู้ดูแลระบบ' : 
+                         profile.role === 'moderator' ? 'ผู้ดูแล' : 'ผู้ใช้'}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={getMembershipBadgeVariant(profile.membership_status)}>
+                        {profile.membership_status === 'premium' ? 'พรีเมี่ยม' : 'ฟรี'}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-slate-300">
+                      {formatDate(profile.created_at)}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex gap-2 justify-center">
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleEdit(profile)}
+                              className="border-slate-600 text-slate-300 hover:bg-slate-600"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="bg-slate-800 border-slate-700">
+                            <DialogHeader>
+                              <DialogTitle className="text-white">แก้ไขข้อมูลสมาชิก</DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-4">
+                              <div>
+                                <Label htmlFor="username" className="text-slate-300">ชื่อผู้ใช้</Label>
+                                <Input
+                                  id="username"
+                                  value={editForm.username}
+                                  onChange={(e) => setEditForm(prev => ({ ...prev, username: e.target.value }))}
+                                  className="bg-slate-700 border-slate-600 text-white"
+                                />
+                              </div>
+                              <div>
+                                <Label htmlFor="full_name" className="text-slate-300">ชื่อ-นามสกุล</Label>
+                                <Input
+                                  id="full_name"
+                                  value={editForm.full_name}
+                                  onChange={(e) => setEditForm(prev => ({ ...prev, full_name: e.target.value }))}
+                                  className="bg-slate-700 border-slate-600 text-white"
+                                />
+                              </div>
+                              <div>
+                                <Label htmlFor="role" className="text-slate-300">บทบาท</Label>
+                                <Select value={editForm.role} onValueChange={(value) => setEditForm(prev => ({ ...prev, role: value }))}>
+                                  <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent className="bg-slate-700 border-slate-600 z-50">
+                                    <SelectItem value="user">👤 ผู้ใช้</SelectItem>
+                                    <SelectItem value="moderator">🛡️ ผู้ดูแล</SelectItem>
+                                    <SelectItem value="admin">👑 แอดมิน</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              <div>
+                                <Label htmlFor="membership_status" className="text-slate-300">สถานะสมาชิก</Label>
+                                <Select value={editForm.membership_status} onValueChange={(value) => setEditForm(prev => ({ ...prev, membership_status: value }))}>
+                                  <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent className="bg-slate-700 border-slate-600 z-50">
+                                    <SelectItem value="free">🆓 ฟรี</SelectItem>
+                                    <SelectItem value="premium">⭐ พรีเมี่ยม</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              <Button onClick={handleUpdate} className="w-full bg-blue-600 hover:bg-blue-700">
+                                บันทึกการเปลี่ยนแปลง
+                              </Button>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="border-red-600 text-red-400 hover:bg-red-600/20"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent className="bg-slate-800 border-slate-700">
+                            <AlertDialogHeader>
+                              <AlertDialogTitle className="text-white">ยืนยันการลบ</AlertDialogTitle>
+                              <AlertDialogDescription className="text-slate-400">
+                                คุณแน่ใจหรือไม่ที่จะลบสมาชิกคนนี้? การกระทำนี้ไม่สามารถย้อนกลับได้
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel className="bg-slate-700 border-slate-600 text-slate-300 hover:bg-slate-600">
+                                ยกเลิก
+                              </AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDelete(profile.id)}
+                                className="bg-red-600 hover:bg-red-700"
+                              >
+                                ลบ
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
-                    </DialogContent>
-                  </Dialog>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
 
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="border-red-600 text-red-400 hover:bg-red-600/20"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent className="bg-slate-800 border-slate-700">
-                      <AlertDialogHeader>
-                        <AlertDialogTitle className="text-white">ยืนยันการลบ</AlertDialogTitle>
-                        <AlertDialogDescription className="text-slate-400">
-                          คุณแน่ใจหรือไม่ที่จะลบสมาชิกคนนี้? การกระทำนี้ไม่สามารถย้อนกลับได้
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel className="bg-slate-700 border-slate-600 text-slate-300 hover:bg-slate-600">
-                          ยกเลิก
-                        </AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() => handleDelete(profile.id)}
-                          className="bg-red-600 hover:bg-red-700"
-                        >
-                          ลบ
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </div>
+            {profiles.length === 0 && (
+              <div className="text-center py-8">
+                <Users className="w-16 h-16 text-slate-600 mx-auto mb-4" />
+                <p className="text-slate-400">ไม่มีข้อมูลสมาชิก</p>
               </div>
-            ))}
+            )}
           </div>
-
-          {profiles.length === 0 && (
-            <div className="text-center py-8">
-              <Users className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-              <p className="text-slate-400">ไม่มีข้อมูลสมาชิก</p>
-            </div>
-          )}
         </CardContent>
       </Card>
     </div>
