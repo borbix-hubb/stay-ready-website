@@ -3,7 +3,7 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuL
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User, Crown } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -84,6 +84,18 @@ const Header = () => {
         </NavigationMenu>
         
         <div className="flex items-center space-x-3">
+          {/* ปุ่มอัพเกรดสำหรับทุกคน */}
+          <Button 
+            variant="outline" 
+            asChild
+            className="bg-gradient-to-r from-purple-600 to-blue-600 text-white border-0 hover:from-purple-700 hover:to-blue-700"
+          >
+            <Link to="/payment" className="flex items-center gap-2">
+              <Crown className="w-4 h-4" />
+              💎 อัพเกรด
+            </Link>
+          </Button>
+          
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -92,11 +104,17 @@ const Header = () => {
                   <span>สวัสดี</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="bg-background border-border z-50">
                 <DropdownMenuItem asChild>
                   <Link to="/dashboard" className="flex items-center">
                     <User className="w-4 h-4 mr-2" />
                     แดชบอร์ด
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/payment" className="flex items-center">
+                    <Crown className="w-4 h-4 mr-2" />
+                    อัพเกรดสมาชิก
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />

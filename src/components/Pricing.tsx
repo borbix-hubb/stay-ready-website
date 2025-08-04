@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Check, Zap, Crown, Rocket } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const plans = [
   {
@@ -149,8 +150,11 @@ const Pricing = () => {
                   `}
                   variant={plan.name === 'Starter' ? 'outline' : 'default'}
                   size="lg"
+                  asChild
                 >
-                  {plan.name === 'Starter' ? 'เริ่มใช้ฟรี' : 'เริ่มใช้งาน'}
+                  <Link to={plan.name === 'Starter' ? '/auth' : '/payment'}>
+                    {plan.name === 'Starter' ? 'เริ่มใช้ฟรี' : 'เริ่มใช้งาน'}
+                  </Link>
                 </Button>
               </CardContent>
             </Card>
