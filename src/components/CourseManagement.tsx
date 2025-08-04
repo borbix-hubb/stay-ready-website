@@ -67,7 +67,6 @@ const CourseManagement = () => {
     title: "",
     description: "",
     thumbnail_url: "",
-    instructor: "",
     price_type: "free",
     price_amount: 0,
     tags: "",
@@ -157,6 +156,7 @@ const CourseManagement = () => {
         .from('courses')
         .insert({
           ...courseForm,
+          instructor: "ผู้สอน", // Default instructor
           category_id: courseForm.category_id || null,
           tags: courseForm.tags ? courseForm.tags.split(',').map(tag => tag.trim()) : null,
           price_amount: courseForm.price_type === 'free' ? 0 : courseForm.price_amount
@@ -173,7 +173,6 @@ const CourseManagement = () => {
         title: "",
         description: "",
         thumbnail_url: "",
-        instructor: "",
         price_type: "free",
         price_amount: 0,
         tags: "",
@@ -412,14 +411,6 @@ const CourseManagement = () => {
                           placeholder="เช่น Bitcoin Trading 101"
                         />
                       </div>
-                      <div className="space-y-2">
-                        <Label>ผู้สอน</Label>
-                        <Input
-                          value={courseForm.instructor}
-                          onChange={(e) => setCourseForm({...courseForm, instructor: e.target.value})}
-                          placeholder="ชื่อผู้สอน"
-                        />
-                      </div>
                       <div className="col-span-2 space-y-2">
                         <Label>รายละเอียด</Label>
                         <Textarea
@@ -560,21 +551,20 @@ const CourseManagement = () => {
                         <Button 
                           variant="outline" 
                           size="sm"
-                          onClick={() => {
-                            setEditingCourse(course);
-                            setCourseForm({
-                              title: course.title,
-                              description: course.description || "",
-                              thumbnail_url: course.thumbnail_url || "",
-                              instructor: course.instructor,
-                              price_type: course.price_type,
-                              price_amount: course.price_amount || 0,
-                              tags: course.tags?.join(', ') || "",
-                              category_id: course.category_id || "",
-                              duration_hours: course.duration_hours || 0,
-                              duration_minutes: course.duration_minutes || 0
-                            });
-                          }}
+                           onClick={() => {
+                             setEditingCourse(course);
+                             setCourseForm({
+                               title: course.title,
+                               description: course.description || "",
+                               thumbnail_url: course.thumbnail_url || "",
+                               price_type: course.price_type,
+                               price_amount: course.price_amount || 0,
+                               tags: course.tags?.join(', ') || "",
+                               category_id: course.category_id || "",
+                               duration_hours: course.duration_hours || 0,
+                               duration_minutes: course.duration_minutes || 0
+                             });
+                           }}
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
@@ -610,14 +600,6 @@ const CourseManagement = () => {
                       value={courseForm.title}
                       onChange={(e) => setCourseForm({...courseForm, title: e.target.value})}
                       placeholder="เช่น Bitcoin Trading 101"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>ผู้สอน</Label>
-                    <Input
-                      value={courseForm.instructor}
-                      onChange={(e) => setCourseForm({...courseForm, instructor: e.target.value})}
-                      placeholder="ชื่อผู้สอน"
                     />
                   </div>
                   <div className="col-span-2 space-y-2">
@@ -716,15 +698,16 @@ const CourseManagement = () => {
                   <Button 
                     onClick={async () => {
                       try {
-                        const { error } = await supabase
-                          .from('courses')
-                          .update({
-                            ...courseForm,
-                            category_id: courseForm.category_id || null,
-                            tags: courseForm.tags ? courseForm.tags.split(',').map(tag => tag.trim()) : null,
-                            price_amount: courseForm.price_type === 'free' ? 0 : courseForm.price_amount
-                          })
-                          .eq('id', editingCourse.id);
+                         const { error } = await supabase
+                           .from('courses')
+                           .update({
+                             ...courseForm,
+                             instructor: "ผู้สอน", // Default instructor
+                             category_id: courseForm.category_id || null,
+                             tags: courseForm.tags ? courseForm.tags.split(',').map(tag => tag.trim()) : null,
+                             price_amount: courseForm.price_type === 'free' ? 0 : courseForm.price_amount
+                           })
+                           .eq('id', editingCourse.id);
 
                         if (error) throw error;
 
@@ -838,6 +821,76 @@ const CourseManagement = () => {
               </div>
             </CardContent>
           </Card>
+          
+          {/* Edit Category Dialog */}
+          {editingCategory && (
+            <Dialog open={!!editingCategory} onOpenChange={() => setEditingCategory(null)}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>แก้ไขหมวดหมู่</DialogTitle>
+                  <DialogDescription>
+                    แก้ไขข้อมูลหมวดหมู่
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>ชื่อหมวดหมู่</Label>
+                    <Input
+                      value={categoryForm.name}
+                      onChange={(e) => setCategoryForm({...categoryForm, name: e.target.value})}
+                      placeholder="เช่น การเทรดพื้นฐาน"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>รายละเอียด</Label>
+                    <Textarea
+                      value={categoryForm.description}
+                      onChange={(e) => setCategoryForm({...categoryForm, description: e.target.value})}
+                      placeholder="รายละเอียดหมวดหมู่"
+                    />
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button 
+                    onClick={async () => {
+                      try {
+                        const { error } = await supabase
+                          .from('course_categories')
+                          .update(categoryForm)
+                          .eq('id', editingCategory.id);
+
+                        if (error) throw error;
+
+                        toast({
+                          title: "อัปเดตหมวดหมู่สำเร็จ",
+                          description: "หมวดหมู่ได้รับการอัปเดตแล้ว",
+                        });
+
+                        setEditingCategory(null);
+                        fetchCategories();
+                      } catch (error: any) {
+                        toast({
+                          title: "เกิดข้อผิดพลาด",
+                          description: error.message,
+                          variant: "destructive",
+                        });
+                      }
+                    }}
+                    className="crypto-button flex-1"
+                  >
+                    อัปเดตหมวดหมู่
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setEditingCategory(null)}
+                    className="flex-1"
+                  >
+                    ยกเลิก
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          )}
         </TabsContent>
 
         <TabsContent value="episodes" className="space-y-4">
