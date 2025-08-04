@@ -1038,6 +1038,125 @@ const CourseManagement = () => {
               </div>
             </CardContent>
           </Card>
+          
+          {/* Edit Episode Dialog */}
+          {editingEpisode && (
+            <Dialog open={!!editingEpisode} onOpenChange={() => setEditingEpisode(null)}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>แก้ไขตอนเรียน</DialogTitle>
+                  <DialogDescription>
+                    แก้ไขข้อมูลตอนเรียน
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>คอร์ส</Label>
+                    <Select
+                      value={episodeForm.course_id}
+                      onValueChange={(value) => setEpisodeForm({...episodeForm, course_id: value})}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="เลือกคอร์ส" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {courses.map(course => (
+                          <SelectItem key={course.id} value={course.id}>{course.title}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>ชื่อตอน</Label>
+                    <Input
+                      value={episodeForm.title}
+                      onChange={(e) => setEpisodeForm({...episodeForm, title: e.target.value})}
+                      placeholder="เช่น บทนำ"
+                    />
+                  </div>
+                  <div className="col-span-2 space-y-2">
+                    <Label>รายละเอียด</Label>
+                    <Textarea
+                      value={episodeForm.description}
+                      onChange={(e) => setEpisodeForm({...episodeForm, description: e.target.value})}
+                      placeholder="รายละเอียดตอน"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Video URL</Label>
+                    <Input
+                      value={episodeForm.video_url}
+                      onChange={(e) => setEpisodeForm({...episodeForm, video_url: e.target.value})}
+                      placeholder="https://..."
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>ระยะเวลา (นาที)</Label>
+                    <Input
+                      type="number"
+                      value={episodeForm.duration_minutes}
+                      onChange={(e) => setEpisodeForm({...episodeForm, duration_minutes: Number(e.target.value)})}
+                    />
+                  </div>
+                  <div className="col-span-2 flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="edit_is_free"
+                      checked={episodeForm.is_free}
+                      onChange={(e) => setEpisodeForm({...episodeForm, is_free: e.target.checked})}
+                    />
+                    <Label htmlFor="edit_is_free">ดูฟรีได้</Label>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button 
+                    onClick={async () => {
+                      try {
+                        const { error } = await supabase
+                          .from('course_episodes')
+                          .update({
+                            course_id: episodeForm.course_id,
+                            title: episodeForm.title,
+                            description: episodeForm.description,
+                            video_url: episodeForm.video_url,
+                            duration_minutes: episodeForm.duration_minutes,
+                            episode_order: episodeForm.episode_order,
+                            is_free: episodeForm.is_free
+                          })
+                          .eq('id', editingEpisode.id);
+
+                        if (error) throw error;
+
+                        toast({
+                          title: "อัปเดตตอนเรียนสำเร็จ",
+                          description: "ตอนเรียนได้รับการอัปเดตแล้ว",
+                        });
+
+                        setEditingEpisode(null);
+                        fetchEpisodes();
+                      } catch (error: any) {
+                        toast({
+                          title: "เกิดข้อผิดพลาด",
+                          description: error.message,
+                          variant: "destructive",
+                        });
+                      }
+                    }}
+                    className="crypto-button flex-1"
+                  >
+                    อัปเดตตอนเรียน
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setEditingEpisode(null)}
+                    className="flex-1"
+                  >
+                    ยกเลิก
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          )}
         </TabsContent>
       </Tabs>
     </div>
