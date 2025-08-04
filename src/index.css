@@ -8,8 +8,8 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Crypto Dark Theme Colors */
-    --background: 225 15% 8%;
+    /* Crypto Dark Blue Theme Colors */
+    --background: 220 45% 12%;
     --foreground: 210 40% 98%;
 
     --card: 225 15% 12%;
