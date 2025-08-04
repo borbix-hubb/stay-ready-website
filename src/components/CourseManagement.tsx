@@ -449,28 +449,45 @@ const CourseManagement = () => {
                 {courses.map((course) => (
                   <div key={course.id} className="border rounded-lg p-4 space-y-2">
                     <div className="flex items-start justify-between">
-                      <div className="space-y-1">
-                        <h3 className="font-semibold">{course.title}</h3>
-                        <p className="text-sm text-muted-foreground">ผู้สอน: {course.instructor}</p>
-                        <p className="text-sm">{course.description}</p>
-                        <div className="flex items-center gap-2">
-                          <Badge variant={course.price_type === 'free' ? 'outline' : 'secondary'}>
-                            {course.price_type === 'free' ? 'ฟรี' : `${course.price_amount}฿`}
-                          </Badge>
-                          {course.course_categories && (
-                            <Badge variant="outline">{course.course_categories.name}</Badge>
-                          )}
-                          <span className="text-xs text-muted-foreground">
-                            {course.duration_hours}ชม {course.duration_minutes}นาที
-                          </span>
-                        </div>
-                        {course.tags && (
-                          <div className="flex gap-1 flex-wrap">
-                            {course.tags.map((tag, idx) => (
-                              <Badge key={idx} variant="outline" className="text-xs">{tag}</Badge>
-                            ))}
-                          </div>
+                      <div className="flex gap-4">
+                        {course.thumbnail_url && (
+                          <img 
+                            src={course.thumbnail_url} 
+                            alt={course.title}
+                            className="w-20 h-20 object-cover rounded border"
+                          />
                         )}
+                        <div className="space-y-1 flex-1">
+                          <h3 className="font-semibold">{course.title}</h3>
+                          <p className="text-sm text-muted-foreground">ผู้สอน: {course.instructor}</p>
+                          <p className="text-sm">{course.description}</p>
+                          <div className="flex items-center gap-2">
+                            <Badge variant={course.price_type === 'free' ? 'outline' : 'secondary'}>
+                              {course.price_type === 'free' ? 'ฟรี' : `${course.price_amount}฿`}
+                            </Badge>
+                            {course.course_categories && (
+                              <Badge variant="outline">{course.course_categories.name}</Badge>
+                            )}
+                            <span className="text-xs text-muted-foreground">
+                              {course.duration_hours}ชม {course.duration_minutes}นาที
+                            </span>
+                          </div>
+                          {course.tags && (
+                            <div className="flex gap-1 flex-wrap">
+                              {course.tags.map((tag, idx) => (
+                                <Badge key={idx} variant="outline" className="text-xs">{tag}</Badge>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm">
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button variant="destructive" size="sm">
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -525,8 +542,20 @@ const CourseManagement = () => {
               <div className="space-y-4">
                 {categories.map((category) => (
                   <div key={category.id} className="border rounded-lg p-4">
-                    <h3 className="font-semibold">{category.name}</h3>
-                    <p className="text-sm text-muted-foreground">{category.description}</p>
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-1">
+                        <h3 className="font-semibold">{category.name}</h3>
+                        <p className="text-sm text-muted-foreground">{category.description}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm">
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button variant="destructive" size="sm">
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -645,6 +674,14 @@ const CourseManagement = () => {
                             {episode.duration_minutes} นาที
                           </span>
                         </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm">
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button variant="destructive" size="sm">
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
                       </div>
                     </div>
                   </div>
