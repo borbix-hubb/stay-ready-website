@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -29,9 +29,9 @@ interface AuthUser {
 
 const AdminMembers = () => {
   const [profiles, setProfiles] = useState<Profile[]>([]);
-  const [authUsers, setAuthUsers] = useState<AuthUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingProfile, setEditingProfile] = useState<Profile | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editForm, setEditForm] = useState({
     username: '',
     full_name: '',
@@ -42,21 +42,7 @@ const AdminMembers = () => {
 
   useEffect(() => {
     fetchProfiles();
-    fetchAuthUsers();
   }, []);
-
-  const fetchAuthUsers = async () => {
-    try {
-      const { data, error } = await supabase.auth.admin.listUsers();
-      if (error) {
-        console.error('Error fetching auth users:', error);
-        return;
-      }
-      setAuthUsers(data.users.map(user => ({ id: user.id, email: user.email })));
-    } catch (error) {
-      console.error('Error fetching auth users:', error);
-    }
-  };
 
   const fetchProfiles = async () => {
     try {
@@ -91,6 +77,7 @@ const AdminMembers = () => {
       role: profile.role || 'user',
       membership_status: profile.membership_status || 'free'
     });
+    setIsEditDialogOpen(true);
   };
 
   const handleUpdate = async () => {
@@ -118,9 +105,15 @@ const AdminMembers = () => {
       });
 
       setEditingProfile(null);
+      setIsEditDialogOpen(false);
       fetchProfiles();
     } catch (error) {
       console.error('Error updating profile:', error);
+      toast({
+        title: "ข้อผิดพลาด",
+        description: "เกิดข้อผิดพลาดในการอัพเดตข้อมูล",
+        variant: "destructive",
+      });
     }
   };
 
@@ -152,9 +145,9 @@ const AdminMembers = () => {
     }
   };
 
+  // ลบฟังก์ชัน getUserEmail เพราะไม่สามารถใช้ auth.admin.listUsers() ได้
   const getUserEmail = (userId: string) => {
-    const authUser = authUsers.find(user => user.id === userId);
-    return authUser?.email || '-';
+    return '-'; // แสดง - แทนเพราะไม่สามารถดึงอีเมลจาก auth.users ได้
   };
 
   const formatDate = (dateString: string) => {
@@ -248,7 +241,7 @@ const AdminMembers = () => {
                     </TableCell>
                     <TableCell>
                       <div className="flex gap-2 justify-center">
-                        <Dialog>
+                        <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
                           <DialogTrigger asChild>
                             <Button
                               variant="outline"
@@ -262,6 +255,9 @@ const AdminMembers = () => {
                           <DialogContent className="bg-slate-800 border-slate-700">
                             <DialogHeader>
                               <DialogTitle className="text-white">แก้ไขข้อมูลสมาชิก</DialogTitle>
+                              <DialogDescription className="text-slate-400">
+                                แก้ไขข้อมูลสมาชิกของระบบ
+                              </DialogDescription>
                             </DialogHeader>
                             <div className="space-y-4">
                               <div>
