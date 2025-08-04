@@ -60,9 +60,9 @@ const AdminReport = () => {
 
       // ดึงข้อมูลการชำระเงินที่อนุมัติแล้ว
       const { data: paymentsData, error: paymentsError } = await supabase
-        .from('payments')
+        .from('payment_confirmations')
         .select('*')
-        .eq('payment_status', 'approved')
+        .eq('status', 'approved')
         .gte('created_at', `${dateRange.startDate}T00:00:00.000Z`)
         .lte('created_at', `${dateRange.endDate}T23:59:59.999Z`);
 
