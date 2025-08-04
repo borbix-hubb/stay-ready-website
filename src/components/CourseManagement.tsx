@@ -511,73 +511,81 @@ const CourseManagement = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {courses.map((course) => (
-                  <div key={course.id} className="border rounded-lg p-4 space-y-2">
-                    <div className="flex items-start justify-between">
-                      <div className="flex gap-4">
-                        {course.thumbnail_url && (
-                          <img 
-                            src={course.thumbnail_url} 
-                            alt={course.title}
-                            className="w-40 h-32 object-cover rounded border"
-                          />
-                        )}
-                        <div className="space-y-1 flex-1">
-                          <h3 className="font-semibold">{course.title}</h3>
-                          <p className="text-sm text-muted-foreground">ผู้สอน: {course.instructor}</p>
-                          <p className="text-sm">{course.description}</p>
-                          <div className="flex items-center gap-2">
-                            <Badge variant={course.price_type === 'free' ? 'outline' : 'secondary'}>
-                              {course.price_type === 'free' ? 'ฟรี' : `${course.price_amount}฿`}
-                            </Badge>
-                            {course.course_categories && (
-                              <Badge variant="outline">{course.course_categories.name}</Badge>
-                            )}
-                            <span className="text-xs text-muted-foreground">
-                              {course.duration_hours}ชม {course.duration_minutes}นาที
-                            </span>
-                          </div>
-                          {course.tags && (
-                            <div className="flex gap-1 flex-wrap">
-                              {course.tags.map((tag, idx) => (
-                                <Badge key={idx} variant="outline" className="text-xs">{tag}</Badge>
-                              ))}
-                            </div>
-                          )}
+                  <Card key={course.id} className="overflow-hidden">
+                    <div className="aspect-square relative">
+                      {course.thumbnail_url ? (
+                        <img 
+                          src={course.thumbnail_url} 
+                          alt={course.title}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-muted flex items-center justify-center">
+                          <BookOpen className="w-12 h-12 text-muted-foreground" />
                         </div>
-                      </div>
-                      <div className="flex gap-2">
+                      )}
+                      <div className="absolute top-2 right-2 flex gap-1">
                         <Button 
-                          variant="outline" 
+                          variant="secondary" 
                           size="sm"
-                           onClick={() => {
-                             setEditingCourse(course);
-                             setCourseForm({
-                               title: course.title,
-                               description: course.description || "",
-                               thumbnail_url: course.thumbnail_url || "",
-                               price_type: course.price_type,
-                               price_amount: course.price_amount || 0,
-                               tags: course.tags?.join(', ') || "",
-                               category_id: course.category_id || "",
-                               duration_hours: course.duration_hours || 0,
-                               duration_minutes: course.duration_minutes || 0
-                             });
-                           }}
+                          className="h-8 w-8 p-0 bg-white/90 hover:bg-white"
+                          onClick={() => {
+                            setEditingCourse(course);
+                            setCourseForm({
+                              title: course.title,
+                              description: course.description || "",
+                              thumbnail_url: course.thumbnail_url || "",
+                              price_type: course.price_type,
+                              price_amount: course.price_amount || 0,
+                              tags: course.tags?.join(', ') || "",
+                              category_id: course.category_id || "",
+                              duration_hours: course.duration_hours || 0,
+                              duration_minutes: course.duration_minutes || 0
+                            });
+                          }}
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
                         <Button 
                           variant="destructive" 
                           size="sm"
+                          className="h-8 w-8 p-0"
                           onClick={() => deleteCourse(course.id)}
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
                     </div>
-                  </div>
+                    <CardContent className="p-4">
+                      <div className="space-y-2">
+                        <h3 className="font-semibold text-lg line-clamp-2">{course.title}</h3>
+                        <p className="text-sm text-muted-foreground line-clamp-2">{course.description}</p>
+                        <div className="flex items-center justify-between">
+                          <Badge variant={course.price_type === 'free' ? 'outline' : 'secondary'}>
+                            {course.price_type === 'free' ? 'ฟรี' : `${course.price_amount}฿`}
+                          </Badge>
+                          <span className="text-xs text-muted-foreground">
+                            {course.duration_hours}ชม {course.duration_minutes}นาที
+                          </span>
+                        </div>
+                        {course.course_categories && (
+                          <Badge variant="outline" className="w-fit">{course.course_categories.name}</Badge>
+                        )}
+                        {course.tags && (
+                          <div className="flex gap-1 flex-wrap">
+                            {course.tags.slice(0, 3).map((tag, idx) => (
+                              <Badge key={idx} variant="outline" className="text-xs">{tag}</Badge>
+                            ))}
+                            {course.tags.length > 3 && (
+                              <Badge variant="outline" className="text-xs">+{course.tags.length - 3}</Badge>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
             </CardContent>
