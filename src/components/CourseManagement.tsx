@@ -91,6 +91,8 @@ const CourseManagement = () => {
     is_free: false
   });
 
+  const [uploading, setUploading] = useState(false);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -210,6 +212,43 @@ const CourseManagement = () => {
     }
   };
 
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `course-thumbnails/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('course-thumbnails')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage
+        .from('course-thumbnails')
+        .getPublicUrl(filePath);
+
+      setCourseForm({ ...courseForm, thumbnail_url: data.publicUrl });
+
+      toast({
+        title: "อัปโหลดสำเร็จ",
+        description: "ภาพถูกอัปโหลดแล้ว",
+      });
+    } catch (error: any) {
+      toast({
+        title: "เกิดข้อผิดพลาด",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const createEpisode = async () => {
     try {
       const { error } = await supabase
@@ -314,12 +353,22 @@ const CourseManagement = () => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label>Thumbnail URL</Label>
+                        <Label>อัปโหลดภาพ Thumbnail</Label>
                         <Input
-                          value={courseForm.thumbnail_url}
-                          onChange={(e) => setCourseForm({...courseForm, thumbnail_url: e.target.value})}
-                          placeholder="https://..."
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          className="cursor-pointer"
                         />
+                        {courseForm.thumbnail_url && (
+                          <div className="mt-2">
+                            <img 
+                              src={courseForm.thumbnail_url} 
+                              alt="Preview" 
+                              className="w-20 h-20 object-cover rounded border"
+                            />
+                          </div>
+                        )}
                       </div>
                       <div className="space-y-2">
                         <Label>หมวดหมู่</Label>
