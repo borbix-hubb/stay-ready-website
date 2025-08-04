@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TrendingUp, BookOpen, Award, Clock, BarChart3, Users } from "lucide-react";
 import UserManagement from "@/components/UserManagement";
+import CourseManagement from "@/components/CourseManagement";
 
 const Dashboard = () => {
   return (
@@ -19,7 +20,7 @@ const Dashboard = () => {
           </div>
 
           <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="overview" className="flex items-center gap-2">
                 <BarChart3 className="w-4 h-4" />
                 ภาพรวม
@@ -28,9 +29,13 @@ const Dashboard = () => {
                 <BookOpen className="w-4 h-4" />
                 การเรียน
               </TabsTrigger>
+              <TabsTrigger value="courses" className="flex items-center gap-2">
+                <BookOpen className="w-4 h-4" />
+                จัดการคอร์ส
+              </TabsTrigger>
               <TabsTrigger value="management" className="flex items-center gap-2">
                 <Users className="w-4 h-4" />
-                จัดการ
+                จัดการผู้ใช้
               </TabsTrigger>
             </TabsList>
 
@@ -149,6 +154,10 @@ const Dashboard = () => {
                   </CardContent>
                 </Card>
               </div>
+            </TabsContent>
+
+            <TabsContent value="courses">
+              <CourseManagement />
             </TabsContent>
 
             <TabsContent value="management">
