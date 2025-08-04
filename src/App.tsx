@@ -9,6 +9,7 @@ import Contact from "./pages/Contact";
 import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
 import Courses from "./pages/Courses";
+import Payment from "./pages/Payment";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -74,6 +75,14 @@ const App = () => {
         {/* Legacy routes - redirect to new auth page */}
         <Route path="/login" element={<Navigate to="/auth" replace />} />
         <Route path="/register" element={<Navigate to="/auth" replace />} />
+        <Route 
+          path="/payment" 
+          element={
+            <ProtectedRoute>
+              <Payment />
+            </ProtectedRoute>
+          } 
+        />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>

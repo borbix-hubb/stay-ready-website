@@ -559,7 +559,7 @@ const CourseManagement = () => {
                         </Button>
                       </div>
                       <Badge className="absolute bottom-3 left-3 bg-primary/90 text-primary-foreground shadow-lg">
-                        {course.course_categories?.name || 'ทั่วไป'}
+                        🏷️ {course.course_categories?.name || 'ทั่วไป'}
                       </Badge>
                     </div>
                     <CardContent className="p-5">

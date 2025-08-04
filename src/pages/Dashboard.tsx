@@ -3,7 +3,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp, BookOpen, Award, Clock, BarChart3, Users } from "lucide-react";
+import { TrendingUp, BookOpen, Award, Clock, BarChart3, Users, CreditCard } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import UserManagement from "@/components/UserManagement";
 import CourseManagement from "@/components/CourseManagement";
 import { useAuth } from "@/contexts/AuthContext";
@@ -12,6 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [userRole, setUserRole] = useState<string>('user');
 
   useEffect(() => {
@@ -72,9 +75,21 @@ const Dashboard = () => {
                       {userRole === 'admin' ? 'แอดมิน' : userRole === 'instructor' ? 'ผู้สอน' : 'ผู้ใช้ทั่วไป'}
                     </Badge>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm text-muted-foreground">เข้าร่วมเมื่อ</p>
-                    <p className="font-medium">{new Date().toLocaleDateString('th-TH')}</p>
+                  <div className="flex flex-col items-end gap-2">
+                    {!isAdmin && (
+                      <Button
+                        onClick={() => navigate('/payment')}
+                        className="crypto-button flex items-center gap-2"
+                        size="sm"
+                      >
+                        <CreditCard className="w-4 h-4" />
+                        💎 อัพเกรด
+                      </Button>
+                    )}
+                    <div className="text-right">
+                      <p className="text-sm text-muted-foreground">เข้าร่วมเมื่อ</p>
+                      <p className="font-medium">{new Date().toLocaleDateString('th-TH')}</p>
+                    </div>
                   </div>
                 </div>
               </CardContent>
