@@ -1,16 +1,16 @@
-import Header from "@/components/Header";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp, BookOpen, Award, Clock, BarChart3, Users, CreditCard } from "lucide-react";
+import { TrendingUp, BookOpen, Award, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import UserManagement from "@/components/UserManagement";
 import CourseManagement from "@/components/CourseManagement";
 import PaymentConfirmations from "@/components/PaymentConfirmations";
 import AdminMembers from "@/components/AdminMembers";
 import AdminReport from "@/components/AdminReport";
+import ProfileSection from "@/components/ProfileSection";
+import { AppSidebar } from "@/components/AppSidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -18,8 +18,12 @@ import { supabase } from "@/integrations/supabase/client";
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [userRole, setUserRole] = useState<string>('user');
   const [membershipStatus, setMembershipStatus] = useState<string>('free');
+  
+  // ดึง tab จาก URL parameter
+  const currentTab = searchParams.get('tab') || (userRole === 'admin' ? 'courses' : 'overview');
 
   useEffect(() => {
     if (user) {
@@ -57,101 +61,46 @@ const Dashboard = () => {
   const isAdmin = userRole === 'admin';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      <Header />
-      
-      <main className="pt-20">
-        <div className="container mx-auto px-4 py-8">
-          <div className="mb-8 flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1>
-              <p className="text-slate-400">จัดการการเรียนรู้และระบบของคุณ</p>
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        <AppSidebar userRole={userRole} membershipStatus={membershipStatus} />
+        
+        <main className="flex-1 flex flex-col">
+          {/* Header with sidebar trigger */}
+          <header className="h-16 flex items-center border-b border-slate-700 bg-slate-900/80 backdrop-blur-sm">
+            <div className="flex items-center gap-4 px-6">
+              <SidebarTrigger className="text-slate-300 hover:text-white" />
+              <div>
+                <h1 className="text-xl font-bold text-white">Dashboard</h1>
+                <p className="text-sm text-slate-400">จัดการการเรียนรู้และระบบของคุณ</p>
+              </div>
             </div>
-            <Button
-              variant="outline"
-              className="border-slate-600 text-slate-300 hover:bg-slate-700"
-            >
-              ออกจากระบบ
-            </Button>
-          </div>
+          </header>
 
-          {/* Profile Section */}
-          <div className="mb-8">
-            <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
-              <CardContent className="p-6">
-                <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                    <Users className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-white">👋 ข้อมูลผู้ใช้</h3>
-                    <div className="grid grid-cols-2 gap-4 mt-4">
-                      <div>
-                        <p className="text-sm text-slate-400">ชื่อ-นามสกุล</p>
-                        <p className="text-white font-medium">aa ss</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-slate-400">อีเมล</p>
-                        <p className="text-white font-medium">{user?.email || 'a1@a.c'}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-slate-400">แพลตฟอร์ม</p>
-                        <p className="text-white font-medium">ไมโครซอฟต์</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-slate-400">สถานะสมาชิก</p>
-                        <div className="flex items-center gap-2">
-                          {membershipStatus === 'premium' ? (
-                            <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white">
-                              ⭐ พรีเมี่ยม
-                            </Badge>
-                          ) : (
-                            <>
-                              <Badge className="bg-slate-600 hover:bg-slate-700 text-white">
-                                ฟรี
-                              </Badge>
-                              {!isAdmin && (
-                                <Button
-                                  onClick={() => navigate('/payment')}
-                                  size="sm"
-                                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-xs"
-                                >
-                                  💎 อัพเกรด
-                                </Button>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      </div>
-                      <div>
-                        <p className="text-sm text-slate-400">บทบาท</p>
-                        <p className="text-white font-medium">ผู้ดูแลระบบ</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Tabs defaultValue={isAdmin ? "courses" : "overview"} className="w-full">
-            <TabsList className="bg-slate-800/50 border-slate-700 mb-8">
-              <TabsTrigger 
-                value="overview" 
-                className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
-              >
-                📊 ภาพรวม
-              </TabsTrigger>
-               <TabsTrigger 
-                 value="courses" 
-                 className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
-               >
-                 📚 จัดการคอร์ส
-               </TabsTrigger>
+          <div className="flex-1 p-6">
+            <Tabs value={currentTab} className="w-full">
+              <TabsList className="bg-slate-800/50 border-slate-700 mb-8">
+                <TabsTrigger 
+                  value="overview" 
+                  className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
+                  onClick={() => navigate('/dashboard')}
+                >
+                  📊 ภาพรวม
+                </TabsTrigger>
+                {isAdmin && (
+                  <TabsTrigger 
+                    value="courses" 
+                    className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
+                    onClick={() => navigate('/dashboard?tab=courses')}
+                  >
+                    📚 จัดการคอร์ส
+                  </TabsTrigger>
+                )}
                 {isAdmin && (
                   <TabsTrigger 
                     value="payments" 
                     className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
+                    onClick={() => navigate('/dashboard?tab=payments')}
                   >
                     💳 รายการแจ้งชำระ
                   </TabsTrigger>
@@ -160,6 +109,7 @@ const Dashboard = () => {
                   <TabsTrigger 
                     value="admin-members" 
                     className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
+                    onClick={() => navigate('/dashboard?tab=admin-members')}
                   >
                     👥 จัดการสมาชิก
                   </TabsTrigger>
@@ -168,17 +118,26 @@ const Dashboard = () => {
                   <TabsTrigger 
                     value="admin-report" 
                     className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
+                    onClick={() => navigate('/dashboard?tab=admin-report')}
                   >
                     📊 รายงานสถิติ
                   </TabsTrigger>
                 )}
-               <TabsTrigger 
-                 value="management" 
-                 className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
-               >
-                 👤 จัดการข้อมูล
-               </TabsTrigger>
-            </TabsList>
+                <TabsTrigger 
+                  value="profile" 
+                  className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
+                  onClick={() => navigate('/dashboard?tab=profile')}
+                >
+                  👤 โปรไฟล์
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="management" 
+                  className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
+                  onClick={() => navigate('/dashboard?tab=management')}
+                >
+                  ⚙️ จัดการข้อมูล
+                </TabsTrigger>
+              </TabsList>
 
             <TabsContent value="overview" className="space-y-8">
               {/* Stats Cards */}
@@ -252,37 +211,42 @@ const Dashboard = () => {
               </Card>
             </TabsContent>
 
-            {isAdmin && (
-              <TabsContent value="courses">
-                <CourseManagement />
-              </TabsContent>
-            )}
+              {isAdmin && (
+                <TabsContent value="courses">
+                  <CourseManagement />
+                </TabsContent>
+              )}
 
-            {isAdmin && (
-              <TabsContent value="payments">
-                <PaymentConfirmations />
-              </TabsContent>
-            )}
+              {isAdmin && (
+                <TabsContent value="payments">
+                  <PaymentConfirmations />
+                </TabsContent>
+              )}
 
-            {isAdmin && (
-              <TabsContent value="admin-members">
-                <AdminMembers />
-              </TabsContent>
-            )}
+              {isAdmin && (
+                <TabsContent value="admin-members">
+                  <AdminMembers />
+                </TabsContent>
+              )}
 
-            {isAdmin && (
-              <TabsContent value="admin-report">
-                <AdminReport />
-              </TabsContent>
-            )}
+              {isAdmin && (
+                <TabsContent value="admin-report">
+                  <AdminReport />
+                </TabsContent>
+              )}
 
-            <TabsContent value="management">
-              <UserManagement />
-            </TabsContent>
-          </Tabs>
-        </div>
-      </main>
-    </div>
+              <TabsContent value="profile">
+                <ProfileSection userRole={userRole} membershipStatus={membershipStatus} />
+              </TabsContent>
+
+              <TabsContent value="management">
+                <UserManagement />
+              </TabsContent>
+            </Tabs>
+          </div>
+        </main>
+      </div>
+    </SidebarProvider>
   );
 };
 
