@@ -57,8 +57,6 @@ const PaymentConfirm = () => {
     "ธนาคารแลนด์ แอนด์ เฮาส์ (LHBANK)",
     "ธนาคารยูโอบี (UOB)",
     "ธนาคารฮ่องกงและเซี่ยงไฮ้ (HSBC)",
-    "ธนาคารสแตนดาร์ดชาร์เตอร์ด (SCB)",
-    "K-Bank",
     "TrueMoney Wallet",
     "PromptPay"
   ];
