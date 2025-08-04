@@ -58,7 +58,7 @@ export function AppSidebar({ userRole, membershipStatus }: AppSidebarProps) {
 
   // เมนูหลัก
   const mainItems = [
-    { title: "แดshboard", url: "/dashboard", icon: Home },
+    { title: "แดชบอร์ด", url: "/dashboard", icon: Home },
     { title: "Money Management", url: "/money-management", icon: BarChart3 },
     { title: "ผลงาน", url: "/portfolio", icon: Star },
   ]
@@ -71,13 +71,10 @@ export function AppSidebar({ userRole, membershipStatus }: AppSidebarProps) {
     { title: "VIP Program", url: "/vip", icon: Gift },
   ]
 
-  // ระบบบัณฑิตพยาบาล
-  const systemItems = [
-    { title: "รายรับ-รายจ่าย", url: "/income-expense", icon: BarChart3 },
-    { title: "จัดการสินค้า", url: "/manage-products", icon: Settings },
-    { title: "จัดการรายคำ", url: "/manage-items", icon: Settings },
-    { title: "จัดการสื่อสินค้า", url: "/manage-media", icon: Video },
-    { title: "วิพจก", url: "/reports", icon: BarChart3 },
+  // BONUS
+  const bonusItems = [
+    { title: "Template การวางแผนการเทรด", url: "/trading-template", icon: Target },
+    { title: "VDO Backtest", url: "/vdo-backtest", icon: Video },
   ]
 
   // การจัดการบัญชี
@@ -100,7 +97,7 @@ export function AppSidebar({ userRole, membershipStatus }: AppSidebarProps) {
               <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">AI</span>
               </div>
-              <span className="text-white font-bold">AI Unlocked</span>
+              <span className="text-white font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-pulse">Stay Ready</span>
             </div>
           ) : (
             <div className="flex justify-center">
@@ -151,26 +148,24 @@ export function AppSidebar({ userRole, membershipStatus }: AppSidebarProps) {
           </SidebarGroup>
         )}
 
-        {/* ระบบบัณฑิตพยาบาล - แสดงเฉพาะ admin */}
-        {isAdmin && (
-          <SidebarGroup>
-            <SidebarGroupLabel className="text-slate-400">ระบบบัณฑิตพยาบาล</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {systemItems.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <NavLink to={item.url} className={getNavCls}>
-                        <item.icon className="h-4 w-4" />
-                        {!isCollapsed && <span className="text-slate-300">{item.title}</span>}
-                      </NavLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        )}
+        {/* BONUS */}
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-slate-400">BONUS</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {bonusItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <NavLink to={item.url} className={getNavCls}>
+                      <item.icon className="h-4 w-4" />
+                      {!isCollapsed && <span className="text-slate-300">{item.title}</span>}
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
 
         {/* การจัดการบัญชี */}
         <SidebarGroup>
