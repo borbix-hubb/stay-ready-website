@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import UserManagement from "@/components/UserManagement";
 import CourseManagement from "@/components/CourseManagement";
+import PaymentConfirmations from "@/components/PaymentConfirmations";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -133,6 +134,14 @@ const Dashboard = () => {
                >
                  📚 จัดการคอร์ส
                </TabsTrigger>
+               {isAdmin && (
+                 <TabsTrigger 
+                   value="payments" 
+                   className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
+                 >
+                   💳 รายการแจ้งชำระ
+                 </TabsTrigger>
+               )}
               <TabsTrigger 
                 value="management" 
                 className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
@@ -216,6 +225,12 @@ const Dashboard = () => {
             {isAdmin && (
               <TabsContent value="courses">
                 <CourseManagement />
+              </TabsContent>
+            )}
+
+            {isAdmin && (
+              <TabsContent value="payments">
+                <PaymentConfirmations />
               </TabsContent>
             )}
 
