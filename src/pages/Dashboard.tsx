@@ -50,198 +50,166 @@ const Dashboard = () => {
   const isAdmin = userRole === 'admin';
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <Header />
       
       <main className="pt-20">
         <div className="container mx-auto px-4 py-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2 gradient-text">แดชบอร์ด</h1>
-            <p className="text-muted-foreground">จัดการการเรียนรู้และระบบของคุณ</p>
+          <div className="mb-8 flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1>
+              <p className="text-slate-400">จัดการการเรียนรู้และระบบของคุณ</p>
+            </div>
+            <Button
+              variant="outline"
+              className="border-slate-600 text-slate-300 hover:bg-slate-700"
+            >
+              ออกจากระบบ
+            </Button>
           </div>
 
           {/* Profile Section */}
           <div className="mb-8">
-            <Card className="crypto-card">
+            <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
               <CardContent className="p-6">
                 <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 bg-crypto-primary/20 rounded-full flex items-center justify-center">
-                    <Users className="w-8 h-8 text-crypto-primary" />
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                    <Users className="w-8 h-8 text-white" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold">{user?.email}</h3>
-                    <p className="text-muted-foreground">สถานะสมาชิก</p>
-                    <Badge variant={userRole === 'admin' ? 'destructive' : userRole === 'instructor' ? 'secondary' : 'outline'} className="mt-2">
-                      {userRole === 'admin' ? 'แอดมิน' : userRole === 'instructor' ? 'ผู้สอน' : 'ผู้ใช้ทั่วไป'}
-                    </Badge>
-                  </div>
-                  <div className="flex flex-col items-end gap-2">
-                    {!isAdmin && (
-                      <Button
-                        onClick={() => navigate('/payment')}
-                        className="crypto-button flex items-center gap-2"
-                        size="sm"
-                      >
-                        <CreditCard className="w-4 h-4" />
-                        💎 อัพเกรด
-                      </Button>
-                    )}
-                    <div className="text-right">
-                      <p className="text-sm text-muted-foreground">เข้าร่วมเมื่อ</p>
-                      <p className="font-medium">{new Date().toLocaleDateString('th-TH')}</p>
+                    <h3 className="text-xl font-bold text-white">👋 ข้อมูลผู้ใช้</h3>
+                    <div className="grid grid-cols-2 gap-4 mt-4">
+                      <div>
+                        <p className="text-sm text-slate-400">ชื่อ-นามสกุล</p>
+                        <p className="text-white font-medium">aa ss</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-slate-400">อีเมล</p>
+                        <p className="text-white font-medium">{user?.email || 'a1@a.c'}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-slate-400">แพลตฟอร์ม</p>
+                        <p className="text-white font-medium">ไมโครซอฟต์</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-slate-400">สถานะสมาชิก</p>
+                        <Badge className="bg-purple-600 hover:bg-purple-700 text-white">
+                          👑 ฟรี
+                        </Badge>
+                      </div>
+                      <div>
+                        <p className="text-sm text-slate-400">บทบาท</p>
+                        <p className="text-white font-medium">ผู้ดูแลระบบ</p>
+                      </div>
                     </div>
                   </div>
+                  {!isAdmin && (
+                    <Button
+                      onClick={() => navigate('/payment')}
+                      className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                    >
+                      <CreditCard className="w-4 h-4 mr-2" />
+                      💎 อัพเกรด
+                    </Button>
+                  )}
                 </div>
               </CardContent>
             </Card>
           </div>
 
           <Tabs defaultValue={isAdmin ? "courses" : "overview"} className="w-full">
-            <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-2' : 'grid-cols-3'}`}>
-              {!isAdmin && (
-                <>
-                  <TabsTrigger value="overview" className="flex items-center gap-2">
-                    <BarChart3 className="w-4 h-4" />
-                    ภาพรวม
-                  </TabsTrigger>
-                  <TabsTrigger value="learning" className="flex items-center gap-2">
-                    <BookOpen className="w-4 h-4" />
-                    การเรียน
-                  </TabsTrigger>
-                </>
-              )}
-              {isAdmin && (
-                <TabsTrigger value="courses" className="flex items-center gap-2">
-                  <BookOpen className="w-4 h-4" />
-                  จัดการคอร์ส
-                </TabsTrigger>
-              )}
-              <TabsTrigger value="management" className="flex items-center gap-2">
-                <Users className="w-4 h-4" />
-                ข้อมูลผู้ใช้
+            <TabsList className="bg-slate-800/50 border-slate-700 mb-8">
+              <TabsTrigger 
+                value="overview" 
+                className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
+              >
+                📊 ภาพรวม
+              </TabsTrigger>
+              <TabsTrigger 
+                value="courses" 
+                className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
+              >
+                👑 อัพเกรดสมาชิก
+              </TabsTrigger>
+              <TabsTrigger 
+                value="management" 
+                className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
+              >
+                👤 จัดการข้อมูล
               </TabsTrigger>
             </TabsList>
 
-            {!isAdmin && (
-              <TabsContent value="overview" className="space-y-8">
-                {/* Stats Cards */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  <Card className="crypto-card">
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm text-muted-foreground">คอร์สที่เรียนจบ</p>
-                          <p className="text-2xl font-bold">3</p>
-                        </div>
-                        <Award className="h-8 w-8 text-crypto-accent" />
+            <TabsContent value="overview" className="space-y-8">
+              {/* Stats Cards */}
+              <div className="grid md:grid-cols-3 gap-6">
+                <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-slate-400">คอร์สที่มีทั้งหมด</p>
+                        <p className="text-3xl font-bold text-white">0</p>
+                        <p className="text-xs text-slate-500">คอร์สที่เข้าร่วม</p>
                       </div>
-                    </CardContent>
-                  </Card>
+                      <div className="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center">
+                        <BookOpen className="h-6 w-6 text-blue-400" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
 
-                  <Card className="crypto-card">
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm text-muted-foreground">คอร์สที่กำลังเรียน</p>
-                          <p className="text-2xl font-bold">2</p>
-                        </div>
-                        <BookOpen className="h-8 w-8 text-crypto-primary" />
+                <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-slate-400">คอร์สที่กำลังเรียน</p>
+                        <p className="text-3xl font-bold text-white">0</p>
+                        <p className="text-xs text-slate-500">คอร์สที่กำลังเรียน</p>
                       </div>
-                    </CardContent>
-                  </Card>
+                      <div className="w-12 h-12 bg-purple-600/20 rounded-lg flex items-center justify-center">
+                        <Award className="h-6 w-6 text-purple-400" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
 
-                  <Card className="crypto-card">
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm text-muted-foreground">เวลาเรียนรวม</p>
-                          <p className="text-2xl font-bold">42 ชม.</p>
-                        </div>
-                        <Clock className="h-8 w-8 text-crypto-success" />
+                <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-slate-400">คอร์สที่เสร็จแล้ว</p>
+                        <p className="text-3xl font-bold text-white">0</p>
+                        <p className="text-xs text-slate-500">คอร์สที่เรียนจบแล้ว</p>
                       </div>
-                    </CardContent>
-                  </Card>
+                      <div className="w-12 h-12 bg-green-600/20 rounded-lg flex items-center justify-center">
+                        <TrendingUp className="h-6 w-6 text-green-400" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
 
-                  <Card className="crypto-card">
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm text-muted-foreground">คะแนนเฉลี่ย</p>
-                          <p className="text-2xl font-bold">87%</p>
-                        </div>
-                        <TrendingUp className="h-8 w-8 text-crypto-warning" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              </TabsContent>
-            )}
-
-            {!isAdmin && (
-              <TabsContent value="learning" className="space-y-8">
-                <div className="grid lg:grid-cols-2 gap-8">
-                  {/* Current Courses */}
-                  <Card className="crypto-card">
-                    <CardHeader>
-                      <CardTitle>คอร์สที่กำลังเรียน</CardTitle>
-                      <CardDescription>ความก้าวหน้าคอร์สปัจจุบัน</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <h4 className="font-medium">Technical Analysis ขั้นสูง</h4>
-                          <Badge variant="secondary">65%</Badge>
-                        </div>
-                        <Progress value={65} className="h-2" />
-                        <p className="text-sm text-muted-foreground">บทที่ 8 จาก 12 บท</p>
-                      </div>
-
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <h4 className="font-medium">Risk Management</h4>
-                          <Badge variant="secondary">40%</Badge>
-                        </div>
-                        <Progress value={40} className="h-2" />
-                        <p className="text-sm text-muted-foreground">บทที่ 4 จาก 10 บท</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Achievements */}
-                  <Card className="crypto-card">
-                    <CardHeader>
-                      <CardTitle>ผลงานล่าสุด</CardTitle>
-                      <CardDescription>รางวัลและความสำเร็จ</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex items-center space-x-4 p-3 bg-crypto-primary/10 rounded-lg">
-                        <Award className="h-8 w-8 text-crypto-primary" />
-                        <div>
-                          <h4 className="font-medium">ผู้เชี่ยวชาญ Candlestick</h4>
-                          <p className="text-sm text-muted-foreground">ได้คะแนนเต็มในแบบทดสอบ</p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center space-x-4 p-3 bg-crypto-accent/10 rounded-lg">
-                        <BookOpen className="h-8 w-8 text-crypto-accent" />
-                        <div>
-                          <h4 className="font-medium">นักเรียนขยัน</h4>
-                          <p className="text-sm text-muted-foreground">เรียนติดต่อกัน 7 วัน</p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center space-x-4 p-3 bg-crypto-success/10 rounded-lg">
-                        <TrendingUp className="h-8 w-8 text-crypto-success" />
-                        <div>
-                          <h4 className="font-medium">นักวิเคราะห์มือใหม่</h4>
-                          <p className="text-sm text-muted-foreground">จบคอร์สพื้นฐาน</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              </TabsContent>
-            )}
+              {/* Course Statistics */}
+              <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-white">📈 คอร์สสถิติการดูที่เข้าร่วม</CardTitle>
+                  <CardDescription className="text-slate-400">
+                    คอร์สที่คุณเข้าร่วมล่าสุด
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-center py-12">
+                    <BookOpen className="w-16 h-16 text-slate-600 mx-auto mb-4" />
+                    <p className="text-slate-400">ยังไม่มีคอร์สที่เข้าร่วม</p>
+                    <Button 
+                      className="mt-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                      onClick={() => navigate('/courses')}
+                    >
+                      เรียนดูคอร์ส
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
 
             {isAdmin && (
               <TabsContent value="courses">
