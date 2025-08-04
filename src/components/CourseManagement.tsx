@@ -92,6 +92,9 @@ const CourseManagement = () => {
   });
 
   const [uploading, setUploading] = useState(false);
+  const [editingCourse, setEditingCourse] = useState<Course | null>(null);
+  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [editingEpisode, setEditingEpisode] = useState<Episode | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -526,7 +529,7 @@ const CourseManagement = () => {
                           <img 
                             src={course.thumbnail_url} 
                             alt={course.title}
-                            className="w-32 h-24 object-cover rounded border"
+                            className="w-40 h-32 object-cover rounded border"
                           />
                         )}
                         <div className="space-y-1 flex-1">
@@ -558,6 +561,7 @@ const CourseManagement = () => {
                           variant="outline" 
                           size="sm"
                           onClick={() => {
+                            setEditingCourse(course);
                             setCourseForm({
                               title: course.title,
                               description: course.description || "",
@@ -588,6 +592,172 @@ const CourseManagement = () => {
               </div>
             </CardContent>
           </Card>
+          
+          {/* Edit Course Dialog */}
+          {editingCourse && (
+            <Dialog open={!!editingCourse} onOpenChange={() => setEditingCourse(null)}>
+              <DialogContent className="max-w-2xl">
+                <DialogHeader>
+                  <DialogTitle>แก้ไขคอร์ส</DialogTitle>
+                  <DialogDescription>
+                    แก้ไขข้อมูลคอร์ส
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>ชื่อคอร์ส</Label>
+                    <Input
+                      value={courseForm.title}
+                      onChange={(e) => setCourseForm({...courseForm, title: e.target.value})}
+                      placeholder="เช่น Bitcoin Trading 101"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>ผู้สอน</Label>
+                    <Input
+                      value={courseForm.instructor}
+                      onChange={(e) => setCourseForm({...courseForm, instructor: e.target.value})}
+                      placeholder="ชื่อผู้สอน"
+                    />
+                  </div>
+                  <div className="col-span-2 space-y-2">
+                    <Label>รายละเอียด</Label>
+                    <Textarea
+                      value={courseForm.description}
+                      onChange={(e) => setCourseForm({...courseForm, description: e.target.value})}
+                      placeholder="รายละเอียดคอร์ส"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>อัปโหลดภาพ Thumbnail</Label>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="cursor-pointer"
+                    />
+                    {courseForm.thumbnail_url && (
+                      <div className="mt-2">
+                        <img 
+                          src={courseForm.thumbnail_url} 
+                          alt="Preview" 
+                          className="w-20 h-20 object-cover rounded border"
+                        />
+                      </div>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <Label>หมวดหมู่</Label>
+                    <Select
+                      value={courseForm.category_id}
+                      onValueChange={(value) => setCourseForm({...courseForm, category_id: value})}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="เลือกหมวดหมู่" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categories.map(cat => (
+                          <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>ประเภทราคา</Label>
+                    <Select
+                      value={courseForm.price_type}
+                      onValueChange={(value) => setCourseForm({...courseForm, price_type: value})}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="free">ฟรี</SelectItem>
+                        <SelectItem value="premium">พรีเมี่ยม</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  {courseForm.price_type === 'premium' && (
+                    <div className="space-y-2">
+                      <Label>ราคา (บาท)</Label>
+                      <Input
+                        type="number"
+                        value={courseForm.price_amount}
+                        onChange={(e) => setCourseForm({...courseForm, price_amount: Number(e.target.value)})}
+                      />
+                    </div>
+                  )}
+                  <div className="space-y-2">
+                    <Label>แท็ค (คั่นด้วยจุลภาค)</Label>
+                    <Input
+                      value={courseForm.tags}
+                      onChange={(e) => setCourseForm({...courseForm, tags: e.target.value})}
+                      placeholder="Trading, Technical Analysis, Bitcoin"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>เวลา (ชั่วโมง)</Label>
+                    <Input
+                      type="number"
+                      value={courseForm.duration_hours}
+                      onChange={(e) => setCourseForm({...courseForm, duration_hours: Number(e.target.value)})}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>เวลา (นาที)</Label>
+                    <Input
+                      type="number"
+                      value={courseForm.duration_minutes}
+                      onChange={(e) => setCourseForm({...courseForm, duration_minutes: Number(e.target.value)})}
+                    />
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button 
+                    onClick={async () => {
+                      try {
+                        const { error } = await supabase
+                          .from('courses')
+                          .update({
+                            ...courseForm,
+                            category_id: courseForm.category_id || null,
+                            tags: courseForm.tags ? courseForm.tags.split(',').map(tag => tag.trim()) : null,
+                            price_amount: courseForm.price_type === 'free' ? 0 : courseForm.price_amount
+                          })
+                          .eq('id', editingCourse.id);
+
+                        if (error) throw error;
+
+                        toast({
+                          title: "อัปเดตคอร์สสำเร็จ",
+                          description: "คอร์สได้รับการอัปเดตแล้ว",
+                        });
+
+                        setEditingCourse(null);
+                        fetchCourses();
+                      } catch (error: any) {
+                        toast({
+                          title: "เกิดข้อผิดพลาด",
+                          description: error.message,
+                          variant: "destructive",
+                        });
+                      }
+                    }}
+                    className="crypto-button flex-1"
+                  >
+                    อัปเดตคอร์ส
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setEditingCourse(null)}
+                    className="flex-1"
+                  >
+                    ยกเลิก
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          )}
         </TabsContent>
 
         <TabsContent value="categories" className="space-y-4">
@@ -645,6 +815,7 @@ const CourseManagement = () => {
                           variant="outline" 
                           size="sm"
                           onClick={() => {
+                            setEditingCategory(category);
                             setCategoryForm({
                               name: category.name,
                               description: category.description || ""
@@ -786,6 +957,7 @@ const CourseManagement = () => {
                           variant="outline" 
                           size="sm"
                           onClick={() => {
+                            setEditingEpisode(episode);
                             setEpisodeForm({
                               course_id: episode.course_id,
                               title: episode.title,
