@@ -14,8 +14,8 @@ const Footer = () => {
               <span className="text-2xl font-bold gradient-text">CryptoLearn Pro</span>
             </div>
             <p className="text-muted-foreground">
-              แพลตฟอร์มสอนคริปโตที่ครบครันที่สุดในไทย 
-              พร้อมนำคุณสู่ความสำเร็จในโลกของสกุลเงินดิจิทัล
+              แพลตฟอร์มสอนอ่านกราฟแบบง่าย
+              พร้อมนำคุณสู่ความสำเร็จในชีวิต
             </p>
             <div className="flex gap-3">
               <Button variant="outline" size="sm" className="border-crypto-primary/30">
@@ -116,7 +116,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="border-t border-crypto-primary/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © 2024 CryptoLearn Pro. สงวนลิขสิทธิ์ทุกประการ
+            © 2025 Stay Ready. สงวนลิขสิทธิ์ทุกประการ
           </p>
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
             <span className="text-crypto-success">✓ SSL Secured</span>
