@@ -154,6 +154,7 @@ const CourseManagement = () => {
         .from('courses')
         .insert({
           ...courseForm,
+          category_id: courseForm.category_id || null,
           tags: courseForm.tags ? courseForm.tags.split(',').map(tag => tag.trim()) : null,
           price_amount: courseForm.price_type === 'free' ? 0 : courseForm.price_amount
         });
