@@ -514,7 +514,7 @@ const CourseManagement = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {courses.map((course) => (
                   <Card key={course.id} className="overflow-hidden bg-gradient-to-br from-background to-muted/30 border-border/50 hover:border-primary/20 transition-all duration-300 hover:shadow-lg">
-                    <div className="aspect-[4/3] relative overflow-hidden">
+                    <div className="aspect-[3/2] relative overflow-hidden">
                       {course.thumbnail_url ? (
                         <img 
                           src={course.thumbnail_url} 
@@ -523,7 +523,7 @@ const CourseManagement = () => {
                         />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                          <BookOpen className="w-16 h-16 text-primary/60" />
+                          <BookOpen className="w-12 h-12 text-primary/60" />
                         </div>
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -531,7 +531,7 @@ const CourseManagement = () => {
                         <Button 
                           variant="secondary" 
                           size="sm"
-                          className="h-8 w-8 p-0 bg-white/90 hover:bg-white shadow-lg"
+                          className="h-8 w-8 p-0 bg-blue-500 hover:bg-blue-600 text-white shadow-lg border-0"
                           onClick={() => {
                             setEditingCourse(course);
                             setCourseForm({
@@ -564,11 +564,13 @@ const CourseManagement = () => {
                     </div>
                     <CardContent className="p-5">
                       <div className="space-y-3">
-                        <h3 className="font-bold text-xl leading-tight line-clamp-2">{course.title}</h3>
+                        <h3 className="font-bold text-xl leading-tight line-clamp-2">
+                          📚 {course.title}
+                        </h3>
                         <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">{course.description}</p>
                         <div className="flex items-center justify-between pt-2">
                           <span className="text-sm text-muted-foreground font-medium">
-                            {course.duration_hours}ชม {course.duration_minutes}นาที
+                            ⏱️ {course.duration_hours}ชม {course.duration_minutes}นาที
                           </span>
                         </div>
                         {course.course_categories && (
