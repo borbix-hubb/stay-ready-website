@@ -141,6 +141,48 @@ export type Database = {
           },
         ]
       }
+      payment_confirmations: {
+        Row: {
+          amount: number
+          bank_name: string
+          created_at: string | null
+          id: string
+          payer_name: string
+          plan_name: string
+          slip_url: string | null
+          status: string | null
+          transfer_date: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          bank_name: string
+          created_at?: string | null
+          id?: string
+          payer_name: string
+          plan_name: string
+          slip_url?: string | null
+          status?: string | null
+          transfer_date: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          bank_name?: string
+          created_at?: string | null
+          id?: string
+          payer_name?: string
+          plan_name?: string
+          slip_url?: string | null
+          status?: string | null
+          transfer_date?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

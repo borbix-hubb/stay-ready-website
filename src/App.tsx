@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
 import Courses from "./pages/Courses";
 import Payment from "./pages/Payment";
+import PaymentConfirm from "./pages/PaymentConfirm";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -80,6 +81,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <Payment />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/payment-confirm" 
+          element={
+            <ProtectedRoute>
+              <PaymentConfirm />
             </ProtectedRoute>
           } 
         />

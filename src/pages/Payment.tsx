@@ -107,26 +107,10 @@ const Payment = () => {
       return;
     }
 
-    setLoading(true);
-    try {
-      // จำลองการประมวลผลการชำระเงิน
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      toast({
-        title: "🎉 การสมัครสมาชิกสำเร็จ!",
-        description: `ยินดีต้อนรับสู่แพ็ค ${planName} เริ่มเรียนได้เลย!`,
-      });
-      
-      navigate("/dashboard");
-    } catch (error) {
-      toast({
-        title: "เกิดข้อผิดพลาด",
-        description: "ไม่สามารถดำเนินการได้ กรุณาลองใหม่อีกครั้ง",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
+    // Navigate to payment confirmation page
+    navigate("/payment-confirm", { 
+      state: { planName, amount: price } 
+    });
   };
 
   return (
