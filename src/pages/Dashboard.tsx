@@ -82,7 +82,7 @@ const Dashboard = () => {
           </div>
 
           <Tabs defaultValue={isAdmin ? "courses" : "overview"} className="w-full">
-            <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-2' : 'grid-cols-4'}`}>
+            <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-2' : 'grid-cols-3'}`}>
               {!isAdmin && (
                 <>
                   <TabsTrigger value="overview" className="flex items-center gap-2">
@@ -95,10 +95,12 @@ const Dashboard = () => {
                   </TabsTrigger>
                 </>
               )}
-              <TabsTrigger value="courses" className="flex items-center gap-2">
-                <BookOpen className="w-4 h-4" />
-                จัดการคอร์ส
-              </TabsTrigger>
+              {isAdmin && (
+                <TabsTrigger value="courses" className="flex items-center gap-2">
+                  <BookOpen className="w-4 h-4" />
+                  จัดการคอร์ส
+                </TabsTrigger>
+              )}
               <TabsTrigger value="management" className="flex items-center gap-2">
                 <Users className="w-4 h-4" />
                 ข้อมูลผู้ใช้
@@ -226,9 +228,11 @@ const Dashboard = () => {
               </TabsContent>
             )}
 
-            <TabsContent value="courses">
-              <CourseManagement />
-            </TabsContent>
+            {isAdmin && (
+              <TabsContent value="courses">
+                <CourseManagement />
+              </TabsContent>
+            )}
 
             <TabsContent value="management">
               <UserManagement />
