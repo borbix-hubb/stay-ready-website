@@ -283,6 +283,78 @@ const CourseManagement = () => {
     }
   };
 
+  const deleteCourse = async (courseId: string) => {
+    try {
+      const { error } = await supabase
+        .from('courses')
+        .delete()
+        .eq('id', courseId);
+
+      if (error) throw error;
+
+      toast({
+        title: "ลบคอร์สสำเร็จ",
+        description: "คอร์สถูกลบแล้ว",
+      });
+
+      fetchCourses();
+    } catch (error: any) {
+      toast({
+        title: "เกิดข้อผิดพลาด",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const deleteCategory = async (categoryId: string) => {
+    try {
+      const { error } = await supabase
+        .from('course_categories')
+        .delete()
+        .eq('id', categoryId);
+
+      if (error) throw error;
+
+      toast({
+        title: "ลบหมวดหมู่สำเร็จ",
+        description: "หมวดหมู่ถูกลบแล้ว",
+      });
+
+      fetchCategories();
+    } catch (error: any) {
+      toast({
+        title: "เกิดข้อผิดพลาด",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const deleteEpisode = async (episodeId: string) => {
+    try {
+      const { error } = await supabase
+        .from('course_episodes')
+        .delete()
+        .eq('id', episodeId);
+
+      if (error) throw error;
+
+      toast({
+        title: "ลบตอนเรียนสำเร็จ",
+        description: "ตอนเรียนถูกลบแล้ว",
+      });
+
+      fetchEpisodes();
+    } catch (error: any) {
+      toast({
+        title: "เกิดข้อผิดพลาด",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -454,7 +526,7 @@ const CourseManagement = () => {
                           <img 
                             src={course.thumbnail_url} 
                             alt={course.title}
-                            className="w-20 h-20 object-cover rounded border"
+                            className="w-32 h-24 object-cover rounded border"
                           />
                         )}
                         <div className="space-y-1 flex-1">
@@ -482,10 +554,31 @@ const CourseManagement = () => {
                         </div>
                       </div>
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => {
+                            setCourseForm({
+                              title: course.title,
+                              description: course.description || "",
+                              thumbnail_url: course.thumbnail_url || "",
+                              instructor: course.instructor,
+                              price_type: course.price_type,
+                              price_amount: course.price_amount || 0,
+                              tags: course.tags?.join(', ') || "",
+                              category_id: course.category_id || "",
+                              duration_hours: course.duration_hours || 0,
+                              duration_minutes: course.duration_minutes || 0
+                            });
+                          }}
+                        >
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button variant="destructive" size="sm">
+                        <Button 
+                          variant="destructive" 
+                          size="sm"
+                          onClick={() => deleteCourse(course.id)}
+                        >
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
@@ -548,10 +641,23 @@ const CourseManagement = () => {
                         <p className="text-sm text-muted-foreground">{category.description}</p>
                       </div>
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => {
+                            setCategoryForm({
+                              name: category.name,
+                              description: category.description || ""
+                            });
+                          }}
+                        >
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button variant="destructive" size="sm">
+                        <Button 
+                          variant="destructive" 
+                          size="sm"
+                          onClick={() => deleteCategory(category.id)}
+                        >
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
@@ -676,10 +782,28 @@ const CourseManagement = () => {
                         </div>
                       </div>
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => {
+                            setEpisodeForm({
+                              course_id: episode.course_id,
+                              title: episode.title,
+                              description: episode.description || "",
+                              video_url: episode.video_url || "",
+                              duration_minutes: episode.duration_minutes || 0,
+                              episode_order: episode.episode_order,
+                              is_free: episode.is_free
+                            });
+                          }}
+                        >
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button variant="destructive" size="sm">
+                        <Button 
+                          variant="destructive" 
+                          size="sm"
+                          onClick={() => deleteEpisode(episode.id)}
+                        >
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
