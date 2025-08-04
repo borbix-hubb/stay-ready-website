@@ -1,10 +1,26 @@
 import { Button } from "@/components/ui/button";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
+import { LogOut, User } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
+  
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
   
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
@@ -51,27 +67,55 @@ const Header = () => {
               </NavigationMenuLink>
             </NavigationMenuItem>
             
-            <NavigationMenuItem>
-              <NavigationMenuLink
-                className={cn(
-                  navigationMenuTriggerStyle(),
-                  location.pathname === "/dashboard" ? "bg-accent" : ""
-                )}
-                asChild
-              >
-                <Link to="/dashboard">แดชบอร์ด</Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
+            {user && (
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  className={cn(
+                    navigationMenuTriggerStyle(),
+                    location.pathname === "/dashboard" ? "bg-accent" : ""
+                  )}
+                  asChild
+                >
+                  <Link to="/dashboard">แดชบอร์ด</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            )}
           </NavigationMenuList>
         </NavigationMenu>
         
         <div className="flex items-center space-x-3">
-          <Button variant="ghost" asChild>
-            <Link to="/login">เข้าสู่ระบบ</Link>
-          </Button>
-          <Button asChild>
-            <Link to="/register">สมัครสมาชิก</Link>
-          </Button>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="flex items-center space-x-2">
+                  <User className="w-4 h-4" />
+                  <span>สวัสดี</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link to="/dashboard" className="flex items-center">
+                    <User className="w-4 h-4 mr-2" />
+                    แดชบอร์ด
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut} className="text-red-600">
+                  <LogOut className="w-4 h-4 mr-2" />
+                  ออกจากระบบ
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <>
+              <Button variant="ghost" asChild>
+                <Link to="/auth">เข้าสู่ระบบ</Link>
+              </Button>
+              <Button asChild>
+                <Link to="/auth">สมัครสมาชิก</Link>
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </header>
