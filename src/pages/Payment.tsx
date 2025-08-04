@@ -133,7 +133,6 @@ const Payment = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       {/* Header */}
       <div className="relative overflow-hidden bg-gradient-to-r from-purple-900/50 to-blue-900/50 backdrop-blur-sm">
-        <div className="absolute inset-0 bg-[url('/lovable-uploads/c3b49b05-fbe1-44a0-9781-dc44422344b2.png')] opacity-5"></div>
         <div className="relative max-w-6xl mx-auto px-4 py-12">
           <div className="flex items-center gap-4 mb-8">
             <Button 
