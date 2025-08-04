@@ -10,6 +10,7 @@ import UserManagement from "@/components/UserManagement";
 import CourseManagement from "@/components/CourseManagement";
 import PaymentConfirmations from "@/components/PaymentConfirmations";
 import AdminMembers from "@/components/AdminMembers";
+import AdminReport from "@/components/AdminReport";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -163,6 +164,14 @@ const Dashboard = () => {
                     👥 จัดการสมาชิก
                   </TabsTrigger>
                 )}
+                {isAdmin && (
+                  <TabsTrigger 
+                    value="admin-report" 
+                    className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
+                  >
+                    📊 รายงานสถิติ
+                  </TabsTrigger>
+                )}
                <TabsTrigger 
                  value="management" 
                  className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
@@ -258,6 +267,12 @@ const Dashboard = () => {
             {isAdmin && (
               <TabsContent value="admin-members">
                 <AdminMembers />
+              </TabsContent>
+            )}
+
+            {isAdmin && (
+              <TabsContent value="admin-report">
+                <AdminReport />
               </TabsContent>
             )}
 
