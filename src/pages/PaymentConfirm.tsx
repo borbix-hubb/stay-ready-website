@@ -35,8 +35,33 @@ const PaymentConfirm = () => {
     bankName: "",
   });
   const [slipFile, setSlipFile] = useState<File | null>(null);
+  const [slipPreview, setSlipPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  const bankOptions = [
+    "ไทยพาณิชย์ (SCB)",
+    "กสิกรไทย (KBANK)", 
+    "กรุงเทพ (BBL)",
+    "กรุงศรี (BAY)",
+    "กรุงไทย (KTB)",
+    "ทหารไทยธนชาต (TTB)",
+    "ธนาคารออมสิน (GSB)",
+    "ธ.ก.ส. (BAAC)",
+    "ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร",
+    "ธนาคารอาคารสงเคราะห์ (GHB)",
+    "ธนาคารอิสลามแห่งประเทศไทย (IBANK)",
+    "ธนาคารเอซีไอ (ABANK)",
+    "ธนาคารไอซีบีซี (ไทย) (ICBC)",
+    "ธนาคารซีไอเอ็มบี ไทย (CIMB)",
+    "ธนาคารแลนด์ แอนด์ เฮาส์ (LHBANK)",
+    "ธนาคารยูโอบี (UOB)",
+    "ธนาคารฮ่องกงและเซี่ยงไฮ้ (HSBC)",
+    "ธนาคารสแตนดาร์ดชาร์เตอร์ด (SCB)",
+    "K-Bank",
+    "TrueMoney Wallet",
+    "PromptPay"
+  ];
 
   const bankAccounts = [
     {
@@ -75,7 +100,25 @@ const PaymentConfirm = () => {
         });
         return;
       }
+
+      // Check file type
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "ประเภทไฟล์ไม่ถูกต้อง",
+          description: "กรุณาเลือกไฟล์รูปภาพเท่านั้น",
+          variant: "destructive",
+        });
+        return;
+      }
+
       setSlipFile(file);
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setSlipPreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -240,36 +283,77 @@ const PaymentConfirm = () => {
               <div className="space-y-2">
                 <Label className="text-slate-300">ธนาคารที่โอน</Label>
                 <Select onValueChange={(value) => handleInputChange('bankName', value)}>
-                  <SelectTrigger className="bg-slate-700/50 border-slate-600 text-white">
+                  <SelectTrigger className="bg-slate-700/50 border-slate-600 text-white z-50">
                     <SelectValue placeholder="เลือกธนาคาร" />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-800 border-slate-600">
-                    <SelectItem value="scb">ไทยพาณิชย์ (SCB)</SelectItem>
-                    <SelectItem value="kbank">กสิกรไทย (KBANK)</SelectItem>
-                    <SelectItem value="bbl">กรุงเทพ (BBL)</SelectItem>
-                    <SelectItem value="krungsri">กรุงศรี (BAY)</SelectItem>
-                    <SelectItem value="ktb">กรุงไทย (KTB)</SelectItem>
-                    <SelectItem value="tmb">ทหารไทยธนชาต (TTB)</SelectItem>
+                  <SelectContent className="bg-slate-800 border-slate-600 z-50 max-h-60 overflow-y-auto">
+                    {bankOptions.map((bank) => (
+                      <SelectItem key={bank} value={bank} className="text-white hover:bg-slate-700">
+                        {bank}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-4">
                 <Label className="text-slate-300">อัพโหลดสลิปการโอน</Label>
+                
+                {/* File Upload Area */}
                 <div className="relative">
-                  <Input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="bg-slate-700/50 border-slate-600 text-white file:bg-purple-600 file:text-white file:border-0 file:rounded file:px-4 file:py-2 file:mr-4"
-                  />
+                  <div className="border-2 border-dashed border-slate-600 rounded-lg p-6 bg-slate-700/20 hover:bg-slate-700/30 transition-colors">
+                    <div className="text-center">
+                      <Upload className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+                      <div className="space-y-2">
+                        <p className="text-slate-300 font-medium">คลิกเพื่อเลือกไฟล์สลิป</p>
+                        <p className="text-sm text-slate-500">รองรับไฟล์: JPG, PNG, WEBP (ขนาดไม่เกิน 5MB)</p>
+                      </div>
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      />
+                    </div>
+                  </div>
+                  
                   {slipFile && (
-                    <div className="mt-2 text-sm text-green-400">
-                      ✅ {slipFile.name}
+                    <div className="mt-3 p-3 bg-green-900/20 border border-green-600/30 rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle className="w-5 h-5 text-green-400" />
+                        <span className="text-green-400 font-medium">✅ {slipFile.name}</span>
+                      </div>
+                      <p className="text-sm text-green-300 mt-1">
+                        ขนาด: {(slipFile.size / 1024 / 1024).toFixed(2)} MB
+                      </p>
                     </div>
                   )}
                 </div>
-                <p className="text-xs text-slate-500">รองรับไฟล์ภาพ ขนาดไม่เกิน 5MB</p>
+
+                {/* Image Preview */}
+                {slipPreview && (
+                  <div className="space-y-2">
+                    <Label className="text-slate-300">ตัวอย่างสลิป</Label>
+                    <div className="relative bg-slate-700/50 rounded-lg p-4">
+                      <img 
+                        src={slipPreview} 
+                        alt="ตัวอย่างสลิป" 
+                        className="w-full max-w-md mx-auto rounded-lg shadow-lg border border-slate-600"
+                      />
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setSlipFile(null);
+                          setSlipPreview(null);
+                        }}
+                        className="absolute top-2 right-2 border-slate-600 text-slate-300 hover:bg-slate-700"
+                      >
+                        ✕
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <Button 
