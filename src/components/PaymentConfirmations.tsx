@@ -61,6 +61,21 @@ const PaymentConfirmations = () => {
 
       if (error) throw error;
 
+      // หากอนุมัติ ให้อัพเดตสถานะสมาชิกเป็น premium
+      if (newStatus === 'approved') {
+        const confirmation = confirmations.find(conf => conf.id === id);
+        if (confirmation?.user_id) {
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .update({ membership_status: 'premium' })
+            .eq('id', confirmation.user_id);
+          
+          if (profileError) {
+            console.error('Error updating membership status:', profileError);
+          }
+        }
+      }
+
       // Update local state
       setConfirmations(prev => 
         prev.map(conf => 
@@ -70,7 +85,7 @@ const PaymentConfirmations = () => {
 
       toast({
         title: "อัพเดทสถานะสำเร็จ",
-        description: `${newStatus === 'approved' ? 'อนุมัติ' : 'ไม่อนุมัติ'}การชำระเงินแล้ว`,
+        description: `${newStatus === 'approved' ? 'อนุมัติ' : 'ไม่อนุมัติ'}การชำระเงินแล้ว${newStatus === 'approved' ? ' และอัพเกรดสมาชิกเป็นพรีเมี่ยมแล้ว' : ''}`,
       });
     } catch (error) {
       console.error('Error updating payment status:', error);

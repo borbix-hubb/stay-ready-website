@@ -17,6 +17,7 @@ const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [userRole, setUserRole] = useState<string>('user');
+  const [membershipStatus, setMembershipStatus] = useState<string>('free');
 
   useEffect(() => {
     if (user) {
@@ -28,10 +29,10 @@ const Dashboard = () => {
     if (!user) return;
     
     try {
-      // ตรวจสอบ role จาก profiles table
+      // ตรวจสอบ role และ membership_status จาก profiles table
       const { data, error } = await supabase
         .from('profiles')
-        .select('role')
+        .select('role, membership_status')
         .eq('id', user.id)
         .single();
       
@@ -42,6 +43,9 @@ const Dashboard = () => {
       
       if (data?.role) {
         setUserRole(data.role);
+      }
+      if (data?.membership_status) {
+        setMembershipStatus(data.membership_status);
       }
     } catch (error) {
       console.error('Error fetching user role:', error);
@@ -95,17 +99,25 @@ const Dashboard = () => {
                       <div>
                         <p className="text-sm text-slate-400">สถานะสมาชิก</p>
                         <div className="flex items-center gap-2">
-                          <Badge className="bg-purple-600 hover:bg-purple-700 text-white">
-                            👑 ฟรี
-                          </Badge>
-                          {!isAdmin && (
-                            <Button
-                              onClick={() => navigate('/payment')}
-                              size="sm"
-                              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-xs"
-                            >
-                              💎 อัพเกรด
-                            </Button>
+                          {membershipStatus === 'premium' ? (
+                            <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white">
+                              ⭐ พรีเมี่ยม
+                            </Badge>
+                          ) : (
+                            <>
+                              <Badge className="bg-slate-600 hover:bg-slate-700 text-white">
+                                ฟรี
+                              </Badge>
+                              {!isAdmin && (
+                                <Button
+                                  onClick={() => navigate('/payment')}
+                                  size="sm"
+                                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-xs"
+                                >
+                                  💎 อัพเกรด
+                                </Button>
+                              )}
+                            </>
                           )}
                         </div>
                       </div>
