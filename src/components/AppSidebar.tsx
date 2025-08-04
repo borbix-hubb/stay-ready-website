@@ -59,16 +59,15 @@ export function AppSidebar({ userRole, membershipStatus }: AppSidebarProps) {
   // เมนูหลัก
   const mainItems = [
     { title: "แดshboard", url: "/dashboard", icon: Home },
-    { title: "เครื่องมือ AI ทั้งหมด", url: "/ai-tools", icon: Star },
-    { title: "TikTok แฟบริก", url: "/tiktok", icon: Video },
+    { title: "Money Management", url: "/money-management", icon: BarChart3 },
+    { title: "ผลงาน", url: "/portfolio", icon: Star },
   ]
 
-  // โมเมนต์ (คอร์สเรียน)
-  const courseItems = [
+  // พรีเมี่ยม (คอร์สเรียน)
+  const premiumItems = [
     { title: "คอร์สออนไลน์", url: "/courses", icon: BookOpen },
-    { title: "คอร์สพิเศษ กอร์ก", url: "/special-courses", icon: Target },
-    { title: "นอก โปรแกรมต่าง", url: "/external-programs", icon: Gamepad2 },
-    { title: "Custom GPT", url: "/custom-gpt", icon: Briefcase },
+    { title: "Pattern Chart", url: "/pattern-chart", icon: Target },
+    { title: "Money Management", url: "/money-management", icon: BarChart3 },
     { title: "VIP Program", url: "/vip", icon: Gift },
   ]
 
@@ -85,8 +84,7 @@ export function AppSidebar({ userRole, membershipStatus }: AppSidebarProps) {
   const accountItems = [
     { title: "การชำระเงิน", url: "/payment", icon: CreditCard },
     { title: "โปรไฟล์", url: "/dashboard?tab=profile", icon: User },
-    { title: "ค้นค่า", url: "/settings", icon: Settings },
-    { title: "ข่าวสารและประกาศ", url: "/news", icon: Settings },
+    { title: "Mindset", url: "/mindset", icon: User },
   ]
 
   return (
@@ -132,13 +130,13 @@ export function AppSidebar({ userRole, membershipStatus }: AppSidebarProps) {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* โมเมนต์ (คอร์สเรียน) - แสดงเฉพาะสมาชิก */}
+        {/* พรีเมี่ยม - แสดงเฉพาะสมาชิกพรีเมี่ยม */}
         {(isPremium || isAdmin) && (
           <SidebarGroup>
-            <SidebarGroupLabel className="text-slate-400">โมเมนต์</SidebarGroupLabel>
+            <SidebarGroupLabel className="text-slate-400">พรีเมี่ยม</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {courseItems.map((item) => (
+                {premiumItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
                       <NavLink to={item.url} className={getNavCls}>
