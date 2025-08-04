@@ -31,6 +31,18 @@ const Header = () => {
               <NavigationMenuLink
                 className={cn(
                   navigationMenuTriggerStyle(),
+                  location.pathname === "/courses" ? "bg-accent" : ""
+                )}
+                asChild
+              >
+                <Link to="/courses">คอร์สเรียน</Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                className={cn(
+                  navigationMenuTriggerStyle(),
                   location.pathname === "/contact" ? "bg-accent" : ""
                 )}
                 asChild
