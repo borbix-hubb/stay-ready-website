@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import UserManagement from "@/components/UserManagement";
 import CourseManagement from "@/components/CourseManagement";
 import PaymentConfirmations from "@/components/PaymentConfirmations";
+import AdminMembers from "@/components/AdminMembers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -146,20 +147,28 @@ const Dashboard = () => {
                >
                  📚 จัดการคอร์ส
                </TabsTrigger>
-               {isAdmin && (
-                 <TabsTrigger 
-                   value="payments" 
-                   className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
-                 >
-                   💳 รายการแจ้งชำระ
-                 </TabsTrigger>
-               )}
-              <TabsTrigger 
-                value="management" 
-                className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
-              >
-                👤 จัดการข้อมูล
-              </TabsTrigger>
+                {isAdmin && (
+                  <TabsTrigger 
+                    value="payments" 
+                    className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
+                  >
+                    💳 รายการแจ้งชำระ
+                  </TabsTrigger>
+                )}
+                {isAdmin && (
+                  <TabsTrigger 
+                    value="admin-members" 
+                    className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
+                  >
+                    👥 จัดการสมาชิก
+                  </TabsTrigger>
+                )}
+               <TabsTrigger 
+                 value="management" 
+                 className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
+               >
+                 👤 จัดการข้อมูล
+               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-8">
@@ -243,6 +252,12 @@ const Dashboard = () => {
             {isAdmin && (
               <TabsContent value="payments">
                 <PaymentConfirmations />
+              </TabsContent>
+            )}
+
+            {isAdmin && (
+              <TabsContent value="admin-members">
+                <AdminMembers />
               </TabsContent>
             )}
 
