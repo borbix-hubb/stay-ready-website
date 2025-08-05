@@ -89,21 +89,33 @@ const PaymentConfirm = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Check file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
+      // Check file size (max 10MB for iPhone compatibility)
+      if (file.size > 10 * 1024 * 1024) {
         toast({
           title: "ไฟล์ใหญ่เกินไป",
-          description: "กรุณาเลือกไฟล์ขนาดไม่เกิน 5MB",
+          description: "กรุณาเลือกไฟล์ขนาดไม่เกิน 10MB",
           variant: "destructive",
         });
         return;
       }
 
-      // Check file type
-      if (!file.type.startsWith('image/')) {
+      // Check file type - support iPhone formats
+      const supportedTypes = [
+        'image/jpeg',
+        'image/jpg', 
+        'image/png',
+        'image/webp',
+        'image/heic',
+        'image/heif'
+      ];
+      
+      const isSupported = supportedTypes.includes(file.type.toLowerCase()) || 
+                         file.name.toLowerCase().match(/\.(jpg|jpeg|png|webp|heic|heif)$/);
+      
+      if (!isSupported) {
         toast({
-          title: "ประเภทไฟล์ไม่ถูกต้อง",
-          description: "กรุณาเลือกไฟล์รูปภาพเท่านั้น",
+          title: "ประเภทไฟล์ไม่รองรับ",
+          description: "รองรับไฟล์: JPG, PNG, WEBP, HEIC, HEIF (รูปจากไอโฟน)",
           variant: "destructive",
         });
         return;
@@ -304,11 +316,11 @@ const PaymentConfirm = () => {
                       <Upload className="w-12 h-12 text-slate-400 mx-auto mb-4" />
                       <div className="space-y-2">
                         <p className="text-slate-300 font-medium">คลิกเพื่อเลือกไฟล์สลิป</p>
-                        <p className="text-sm text-slate-500">รองรับไฟล์: JPG, PNG, WEBP (ขนาดไม่เกิน 5MB)</p>
+                        <p className="text-sm text-slate-500">รองรับไฟล์: JPG, PNG, WEBP, HEIC, HEIF (ไอโฟน) - ขนาดไม่เกิน 10MB</p>
                       </div>
                       <Input
                         type="file"
-                        accept="image/*"
+                        accept="image/*,.heic,.heif"
                         onChange={handleFileChange}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                       />
