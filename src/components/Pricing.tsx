@@ -79,16 +79,25 @@ const plans = [
 
 const Pricing = () => {
   return (
-    <section className="py-20 bg-gradient-to-b from-background to-card/20">
+    <section className="py-20 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <div className="container mx-auto px-4">
+        {/* Special Offer Banner */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-full border border-purple-500/30 backdrop-blur-sm mb-6">
+            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+            <span className="text-red-400 font-bold text-sm">🔥 SPECIAL OFFER - โปรโมชั่นพิเศษ ลด 75%</span>
+            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+          </div>
+        </div>
+
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
             แพ็กเกจที่{" "}
-            <span className="gradient-text">เหมาะกับคุณ</span>
+            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">เหมาะกับคุณ</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-slate-300 max-w-2xl mx-auto">
             เลือกแพ็กเกจที่ตรงกับความต้องการของคุณ
-            เริ่มต้นฟรีหรือปลดล็อกฟีเจอร์เต็มรูปแบบสำหรับการเทรดแบบมืออาชีพ
+            เริ่มต้นเทรดแบบมืออาชีพและสร้างกำไรอย่างต่อเนื่อง
           </p>
         </div>
 
@@ -97,69 +106,76 @@ const Pricing = () => {
             <Card 
               key={plan.name}
               className={`
-                relative crypto-card hover:scale-105 transition-all duration-300 animate-slide-up
-                ${plan.popular ? 'ring-2 ring-crypto-primary scale-105' : ''}
+                relative bg-slate-800/50 border-slate-700 backdrop-blur-sm hover:scale-105 transition-all duration-300 animate-slide-up hover:bg-slate-800/70
+                ${plan.popular ? 'ring-2 ring-purple-500 scale-105 shadow-2xl shadow-purple-500/25' : ''}
               `}
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {plan.popular && (
-                <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-crypto-primary text-white">
-                  แนะนำ
-                </Badge>
+                <>
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500"></div>
+                  <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0">
+                    ⭐ แนะนำ #1
+                  </Badge>
+                </>
               )}
 
-              <CardHeader className="text-center">
-                <div className={`inline-flex p-3 rounded-full ${plan.bgColor} ${plan.color} mx-auto mb-4`}>
-                  <plan.icon className="w-8 h-8" />
+              <CardHeader className="text-center pt-8">
+                <div className={`w-16 h-16 mx-auto rounded-full ${plan.bgColor} flex items-center justify-center mb-4`}>
+                  <plan.icon className={`w-8 h-8 ${plan.color}`} />
                 </div>
-                <CardTitle className="text-2xl mb-2">{plan.name}</CardTitle>
-                <p className="text-lg font-semibold text-muted-foreground mb-4">{plan.subtitle}</p>
+                <CardTitle className="text-2xl mb-2 text-white">{plan.name}</CardTitle>
+                <p className="text-lg font-semibold text-slate-300 mb-4">{plan.subtitle}</p>
                 
                 {plan.originalPrice && (
                   <div className="mb-2">
-                    <span className="text-lg text-muted-foreground line-through">฿{plan.originalPrice}</span>
-                    <span className="ml-2 text-sm bg-red-500 text-white px-2 py-1 rounded">
-                      ลด {plan.name === 'Rookie Mode' ? '50%' : '50%'}
+                    <span className="text-lg text-slate-400 line-through">฿{plan.originalPrice}</span>
+                    <span className="ml-2 text-sm bg-red-600 text-white px-3 py-1 rounded-full">
+                      ลด 75%
                     </span>
                   </div>
                 )}
                 
                 <div className="text-4xl font-bold mb-2">
-                  <span className={plan.color}>{plan.price}</span>
-                  <span className="text-lg font-normal text-muted-foreground">฿</span>
+                  <span className={`${plan.color} text-white`}>฿{plan.price}</span>
                 </div>
-                <p className="text-sm text-muted-foreground">{plan.duration}</p>
-                <p className="text-muted-foreground mt-2">{plan.description}</p>
+                <p className="text-sm text-slate-400">{plan.duration}</p>
+                <p className="text-slate-300 mt-3 font-medium">💰 ประหยัด ฿{(parseInt(plan.originalPrice.replace(',', '')) - parseInt(plan.price.replace(',', ''))).toLocaleString()}</p>
+                <p className="text-slate-400 mt-2">{plan.description}</p>
               </CardHeader>
 
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-6 px-6 pb-8">
                 <div className="space-y-3">
                   {plan.features.map((feature) => (
                     <div key={feature} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-crypto-success mt-0.5 flex-shrink-0" />
-                      <span className="text-sm">{feature}</span>
+                      <Check className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                      <span className="text-sm text-slate-300">{feature}</span>
                     </div>
                   ))}
                 </div>
 
                 {plan.limitations && (
-                  <div className="space-y-2 pt-4 border-t border-crypto-primary/20">
-                    <p className="text-xs text-muted-foreground font-medium">ข้อจำกัด:</p>
+                  <div className="space-y-2 pt-4 border-t border-slate-600">
+                    <p className="text-xs text-slate-400 font-medium">ข้อจำกัด:</p>
                     {plan.limitations.map((limitation) => (
                       <div key={limitation} className="flex items-start gap-2">
-                        <div className="w-3 h-3 rounded-full bg-muted mt-2 flex-shrink-0" />
-                        <span className="text-xs text-muted-foreground">{limitation}</span>
+                        <div className="w-3 h-3 rounded-full bg-slate-600 mt-2 flex-shrink-0" />
+                        <span className="text-xs text-slate-400">{limitation}</span>
                       </div>
                     ))}
                   </div>
                 )}
 
                 <Button 
-                  className="w-full mt-6 crypto-button"
+                  className={`w-full mt-6 text-lg py-6 ${
+                    plan.popular 
+                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-purple-500/25' 
+                      : 'bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600'
+                  }`}
                   size="lg"
                   onClick={() => window.location.href = '/payment-confirm'}
                 >
-                  เลือกแพ็คเกจ
+                  {plan.popular ? '🚀' : '⚡'} เลือกแพ็คเกจ
                 </Button>
               </CardContent>
             </Card>
@@ -167,16 +183,16 @@ const Pricing = () => {
         </div>
 
         {/* Money Back Guarantee */}
-        <div className="text-center mt-12 crypto-card p-6 max-w-2xl mx-auto">
+        <div className="text-center mt-12 bg-slate-800/50 border border-slate-700 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-auto">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-8 h-8 rounded-full bg-crypto-success/20 flex items-center justify-center">
-              <Check className="w-5 h-5 text-crypto-success" />
+            <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
+              <Check className="w-5 h-5 text-green-400" />
             </div>
-            <h3 className="text-xl font-semibold">รับประกันเงินคืน 30 วัน</h3>
+            <h3 className="text-xl font-semibold text-white">🛡️ รับประกันเงินคืน 30 วัน</h3>
           </div>
-          <p className="text-muted-foreground">
-            หากไม่พอใจด้วยเหตุผลใดๆ เราจะคืนเงินให้ 100% ภายใน 30 วัน
-            ไม่มีเงื่อนไขซับซ้อน ไม่ต้องตอบคำถาม
+          <p className="text-slate-300">
+            หากไม่พอใจด้วยเหตุผลใดๆ เราจะคืนเงินให้ <span className="text-green-400 font-bold">100%</span> ภายใน 30 วัน
+            <br />ไม่มีเงื่อนไขซับซ้อน ไม่ต้องตอบคำถาม
           </p>
         </div>
       </div>
