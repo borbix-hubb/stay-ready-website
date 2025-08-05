@@ -33,7 +33,7 @@ const Hero = () => {
             <span className="block mb-2">
               เรียนรู้{" "}
               <span className="bg-gradient-to-r from-crypto-primary via-crypto-accent to-crypto-secondary bg-clip-text text-transparent animate-glow-pulse">
-                คริปโต
+                การเทรด
               </span>
             </span>
             <span className="block bg-gradient-to-r from-crypto-accent to-crypto-primary bg-clip-text text-transparent animate-fade-in">
@@ -43,8 +43,8 @@ const Hero = () => {
 
           {/* Subheading with Animation */}
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed animate-slide-up">
-            ปลดล็อกความลับของการเทรดคริปโต การลงทุน และเทคโนโลยี Blockchain 
-            พร้อมคอร์สเรียนที่ครบครันที่สุด
+            ปลดล็อกความลับของการเทรดทั้งคริปโตและฟอเร็กซ์ 
+            พร้อมคอร์สเรียนที่ง่ายที่สุดสำหรับมือใหม่และคนที่อยากเทรดให้ดีขึ้นโดยไม่ต้องคิดเยอะ
           </p>
 
           {/* Features with Animation */}
