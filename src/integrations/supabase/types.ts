@@ -38,6 +38,48 @@ export type Database = {
         }
         Relationships: []
       }
+      course_documents: {
+        Row: {
+          course_id: string
+          created_at: string
+          description: string | null
+          document_order: number | null
+          file_size: number | null
+          file_type: string | null
+          file_url: string | null
+          id: string
+          is_downloadable: boolean | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          description?: string | null
+          document_order?: number | null
+          file_size?: number | null
+          file_type?: string | null
+          file_url?: string | null
+          id?: string
+          is_downloadable?: boolean | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          description?: string | null
+          document_order?: number | null
+          file_size?: number | null
+          file_type?: string | null
+          file_url?: string | null
+          id?: string
+          is_downloadable?: boolean | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       course_episodes: {
         Row: {
           course_id: string
