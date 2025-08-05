@@ -83,10 +83,15 @@ const Pricing = () => {
       <div className="container mx-auto px-4">
         {/* Special Offer Banner */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-full border border-purple-500/30 backdrop-blur-sm mb-6">
-            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-            <span className="text-red-400 font-bold text-sm">🔥 SPECIAL OFFER - โปรโมชั่นพิเศษ ลด 75%</span>
-            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+          <div className="relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-red-600 via-pink-600 to-purple-600 rounded-full border-2 border-yellow-400 shadow-2xl shadow-red-500/50 backdrop-blur-sm mb-6 animate-pulse">
+            <div className="absolute inset-0 bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 rounded-full blur-xl opacity-60 animate-pulse"></div>
+            <div className="relative flex items-center gap-3">
+              <div className="w-3 h-3 bg-yellow-400 rounded-full animate-bounce"></div>
+              <span className="text-white font-bold text-lg tracking-wide animate-pulse">
+                ⚡ SPECIAL OFFER - โปรโมชั่นพิเศษ ลดสูงสุด 75% ⚡
+              </span>
+              <div className="w-3 h-3 bg-yellow-400 rounded-full animate-bounce" style={{animationDelay: '0.5s'}}></div>
+            </div>
           </div>
         </div>
 
