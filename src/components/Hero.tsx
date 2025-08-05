@@ -30,16 +30,17 @@ const Hero = () => {
 
           {/* Main Heading with Animations */}
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight">
-            <span className="block mb-2">
-              เรียนรู้{" "}
-              <span className="bg-gradient-to-r from-crypto-primary via-crypto-accent to-crypto-secondary bg-clip-text text-transparent animate-glow-pulse">
-                การเทรด
-              </span>
-            </span>
-            <span className="block bg-gradient-to-r from-crypto-accent to-crypto-primary bg-clip-text text-transparent animate-fade-in">
-              แบบมืออาชีพ
-            </span>
-          </h1>
+  <span className="block mb-2">
+    <span className="text-white">เรียนรู้</span>{" "}
+    <span className="bg-gradient-to-r from-crypto-primary via-crypto-accent to-crypto-secondary bg-clip-text text-transparent animate-glow-pulse">
+      การเทรด
+    </span>
+  </span>
+  <span className="block bg-gradient-to-r from-crypto-accent to-crypto-primary bg-clip-text text-transparent animate-fade-in">
+    แบบมืออาชีพ
+  </span>
+</h1>
+
 
           {/* Subheading with Animation */}
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed animate-slide-up">
