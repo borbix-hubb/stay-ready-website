@@ -7,10 +7,11 @@ const Hero = () => {
   return (
     <>
       <Header />
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-background to-crypto-dark">
-      {/* Clean Subtle Background */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-background to-crypto-darker">
+      {/* Subtle Background */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,hsl(var(--crypto-primary)/0.05)_0%,transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,hsl(var(--crypto-primary)/0.08)_0%,transparent_70%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,hsl(var(--crypto-accent)/0.03)_0%,transparent_50%)]" />
       </div>
 
       <div className="container mx-auto px-4 z-10 text-center">
@@ -53,12 +54,8 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-gradient-to-r from-crypto-primary to-crypto-secondary hover:from-crypto-secondary hover:to-crypto-primary text-white font-medium px-8 py-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group" size="lg">
-              เริ่มเรียนฟรี
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
+          {/* CTA Button */}
+          <div className="flex justify-center">
             <Button variant="outline" size="lg" className="border border-crypto-primary/30 text-crypto-primary hover:bg-crypto-primary/5 hover:border-crypto-primary/50 transition-all duration-300 px-8 py-4 rounded-lg">
               ดูคอร์สทั้งหมด
             </Button>
