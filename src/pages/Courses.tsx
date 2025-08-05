@@ -310,7 +310,7 @@ const Courses = () => {
                             <Button variant="ghost" className="w-full justify-between p-2 h-auto">
                               <div className="flex items-center gap-2">
                                 <List className="w-4 h-4" />
-                                <span className="text-sm">สารบัญ ({episodes[course.id].length} ตอน)</span>
+                                <span className="text-sm">บทเรียน ({episodes[course.id].length} ตอน)</span>
                               </div>
                               <ChevronDown className="w-4 h-4" />
                             </Button>
@@ -353,16 +353,7 @@ const Courses = () => {
                           className="crypto-button group" 
                           size="sm"
                           onClick={() => {
-                            const firstEpisodeUrl = getFirstEpisodeUrl(course.id);
-                            if (firstEpisodeUrl) {
-                              window.open(firstEpisodeUrl, '_blank');
-                            } else {
-                              toast({
-                                title: "ไม่พบตอนเรียน",
-                                description: "คอร์สนี้ยังไม่มีตอนเรียน",
-                                variant: "destructive",
-                              });
-                            }
+                            window.location.href = `/course/${course.id}`;
                           }}
                         >
                           <PlayCircle className="w-4 h-4 mr-2" />

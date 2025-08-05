@@ -9,6 +9,7 @@ import Contact from "./pages/Contact";
 import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
 import Courses from "./pages/Courses";
+import CourseDetail from "./pages/CourseDetail";
 import Payment from "./pages/Payment";
 import PaymentConfirm from "./pages/PaymentConfirm";
 
@@ -56,6 +57,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/courses" element={<Courses />} />
+        <Route path="/course/:courseId" element={<CourseDetail />} />
         <Route path="/contact" element={<Contact />} />
         <Route 
           path="/auth" 
