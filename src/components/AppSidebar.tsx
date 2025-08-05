@@ -76,6 +76,15 @@ export function AppSidebar({ userRole, membershipStatus, activeTab, onTabChange 
     { title: "VIP Program", tab: "vip", icon: Gift },
   ]
 
+  // สำหรับ Admin
+  const adminItems = [
+    { title: "จัดการคอร์ส", tab: "course-management", icon: BookOpen },
+    { title: "จัดการผู้ใช้", tab: "user-management", icon: Users },
+    { title: "รายการแจ้งชำระ", tab: "payment-confirmations", icon: CreditCard },
+    { title: "จัดการสมาชิก", tab: "admin-members", icon: Users },
+    { title: "รายงานสถิติ", tab: "admin-report", icon: BarChart3 },
+  ]
+
   // BONUS
   const bonusItems = [
     { title: "Template การวางแผนการเทรด", tab: "trading-template", icon: Target },
@@ -140,6 +149,28 @@ export function AppSidebar({ userRole, membershipStatus, activeTab, onTabChange 
             <SidebarGroupContent>
               <SidebarMenu>
                 {premiumItems.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton 
+                      onClick={() => handleNavClick(item.tab)}
+                      className={getNavCls(item.tab)}
+                    >
+                      <item.icon className="h-4 w-4" />
+                      {!isCollapsed && <span className="text-slate-300">{item.title}</span>}
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
+
+        {/* Admin - แสดงเฉพาะผู้ดูแลระบบ */}
+        {isAdmin && (
+          <SidebarGroup>
+            <SidebarGroupLabel className="text-slate-400">จัดการระบบ</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {adminItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton 
                       onClick={() => handleNavClick(item.tab)}

@@ -172,13 +172,19 @@ const Dashboard = () => {
             </TabsContent>
 
               {isAdmin && (
-                <TabsContent value="courses">
+                <TabsContent value="course-management">
                   <CourseManagement />
                 </TabsContent>
               )}
 
               {isAdmin && (
-                <TabsContent value="payments">
+                <TabsContent value="user-management">
+                  <UserManagement />
+                </TabsContent>
+              )}
+
+              {isAdmin && (
+                <TabsContent value="payment-confirmations">
                   <PaymentConfirmations />
                 </TabsContent>
               )}
