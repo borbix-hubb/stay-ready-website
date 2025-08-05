@@ -112,6 +112,20 @@ const CourseDetail = () => {
     return `฿${priceAmount?.toLocaleString() || 0}`;
   };
 
+  const convertToEmbedUrl = (url: string) => {
+    if (!url) return "";
+    
+    // Convert YouTube watch URLs to embed URLs
+    const youtubeRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/;
+    const match = url.match(youtubeRegex);
+    
+    if (match) {
+      return `https://www.youtube.com/embed/${match[1]}`;
+    }
+    
+    return url;
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
@@ -163,10 +177,11 @@ const CourseDetail = () => {
               <div className="aspect-video bg-black rounded-lg overflow-hidden shadow-lg">
                 {currentVideoUrl ? (
                   <iframe
-                    src={currentVideoUrl}
+                    src={convertToEmbedUrl(currentVideoUrl)}
                     className="w-full h-full"
                     allowFullScreen
                     title="Course Video"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-white">
@@ -239,23 +254,14 @@ const CourseDetail = () => {
                     </div>
                   )}
 
-                  <div className="mt-6 pt-6 border-t">
-                    <Button 
-                      className="w-full crypto-button h-12 text-lg font-semibold"
-                      onClick={() => {
-                        if (course.price_type === 'free') {
-                          toast({
-                            title: "เริ่มเรียนแล้ว!",
-                            description: "คุณสามารถเรียนคอร์สนี้ฟรีได้เลย",
-                          });
-                        } else {
-                          navigate('/payment', { state: { course } });
-                        }
-                      }}
-                    >
-                      {course.price_type === 'free' ? 'เริ่มเรียนฟรี' : 'ซื้อคอร์ส'}
-                    </Button>
-                  </div>
+                  {course.price_type === 'free' && (
+                    <div className="mt-6 pt-6 border-t">
+                      <div className="text-center p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
+                        <p className="text-green-400 font-medium">✅ คอร์สนี้เรียนฟรี</p>
+                        <p className="text-sm text-muted-foreground mt-1">เลือกตอนเรียนจากรายการด้านขวาเพื่อเริ่มเรียน</p>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
@@ -283,10 +289,6 @@ const CourseDetail = () => {
                           onClick={() => {
                             if (episode.video_url) {
                               setCurrentVideoUrl(episode.video_url);
-                              toast({
-                                title: "เปลี่ยนวิดิโอแล้ว",
-                                description: `กำลังเล่น: ${episode.title}`,
-                              });
                             }
                           }}
                         >
