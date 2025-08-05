@@ -201,39 +201,39 @@ const Courses = () => {
                     className="crypto-card hover:scale-105 transition-all duration-300 animate-slide-up group"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
-                    <CardHeader>
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="w-full h-40 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg flex items-center justify-center mb-4">
-                          {course.thumbnail_url ? (
-                            <img 
-                              src={course.thumbnail_url} 
-                              alt={course.title}
-                              className="w-full h-full object-cover rounded-lg"
-                            />
-                          ) : (
-                            <div className="text-4xl">📚</div>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between mb-2">
-                        <Badge 
-                          variant={course.price_type === 'free' ? 'secondary' : 'default'}
-                          className={course.price_type === 'free' ? 'bg-green-500/20 text-green-400' : 'bg-primary/20 text-primary'}
-                        >
-                          {course.price_type === 'free' ? 'ฟรี' : 'พรีเมี่ยม'}
-                        </Badge>
-                        {course.course_categories && (
-                          <Badge variant="outline">
-                            {course.course_categories.name}
-                          </Badge>
+                    <CardHeader className="p-0">
+                      <div className="w-full h-40 bg-gradient-to-br from-primary/20 to-accent/20 rounded-t-lg flex items-center justify-center">
+                        {course.thumbnail_url ? (
+                          <img 
+                            src={course.thumbnail_url} 
+                            alt={course.title}
+                            className="w-full h-full object-cover rounded-t-lg"
+                          />
+                        ) : (
+                          <div className="text-4xl">📚</div>
                         )}
                       </div>
-                      <CardTitle className="text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                        {course.title}
-                      </CardTitle>
-                      <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
-                        {course.description || "คำอธิบายคอร์ส"}
-                      </p>
+                      <div className="p-6 pb-0">
+                        <div className="flex items-center justify-between mb-2">
+                          <Badge 
+                            variant={course.price_type === 'free' ? 'secondary' : 'default'}
+                            className={course.price_type === 'free' ? 'bg-green-500/20 text-green-400' : 'bg-primary/20 text-primary'}
+                          >
+                            {course.price_type === 'free' ? 'ฟรี' : 'พรีเมี่ยม'}
+                          </Badge>
+                          {course.course_categories && (
+                            <Badge variant="outline">
+                              {course.course_categories.name}
+                            </Badge>
+                          )}
+                        </div>
+                        <CardTitle className="text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                          {course.title}
+                        </CardTitle>
+                        <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
+                          {course.description || "คำอธิบายคอร์ส"}
+                        </p>
+                      </div>
                     </CardHeader>
 
                     <CardContent className="space-y-4">
