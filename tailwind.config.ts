@@ -70,6 +70,7 @@ export default {
 				'gradient-crypto': 'linear-gradient(135deg, hsl(var(--crypto-primary)), hsl(var(--crypto-secondary)))',
 				'gradient-dark': 'linear-gradient(180deg, hsl(var(--crypto-dark)), hsl(var(--crypto-darker)))',
 				'gradient-accent': 'linear-gradient(45deg, hsl(var(--crypto-accent)), hsl(var(--crypto-glow)))',
+				'gradient-hero': 'linear-gradient(135deg, hsl(var(--crypto-primary)/0.8), hsl(var(--crypto-secondary)/0.8), hsl(var(--crypto-accent)/0.8))',
 			},
 			boxShadow: {
 				'crypto': '0 10px 40px -10px hsl(var(--crypto-primary) / 0.3)',
