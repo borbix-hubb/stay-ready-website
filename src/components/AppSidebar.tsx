@@ -64,38 +64,38 @@ export function AppSidebar({ userRole, membershipStatus, activeTab, onTabChange 
 
   // เมนูหลัก
   const mainItems = [
-    { title: "แดชบอร์ด", tab: "overview", icon: Home },
-    { title: "ผลงาน", tab: "portfolio", icon: Star },
+    { title: "แดชบอร์ด", tab: "overview", icon: Home, emoji: "🏠" },
+    { title: "ผลงาน", tab: "portfolio", icon: Star, emoji: "⭐" },
   ]
 
   // พรีเมี่ยม (คอร์สเรียน)
   const premiumItems = [
-    { title: "คอร์สออนไลน์", tab: "courses", icon: BookOpen },
-    { title: "Pattern Chart", tab: "pattern-chart", icon: Target },
-    { title: "Money Management", tab: "money-management", icon: BarChart3 },
-    { title: "VIP Program", tab: "vip", icon: Gift },
+    { title: "คอร์สออนไลน์", tab: "courses", icon: BookOpen, emoji: "📚" },
+    { title: "Pattern Chart", tab: "pattern-chart", icon: Target, emoji: "🎯" },
+    { title: "Money Management", tab: "money-management", icon: BarChart3, emoji: "💰" },
+    { title: "VIP Program", tab: "vip", icon: Gift, emoji: "🎁" },
   ]
 
   // สำหรับ Admin
   const adminItems = [
-    { title: "จัดการคอร์ส", tab: "course-management", icon: BookOpen },
-    { title: "จัดการผู้ใช้", tab: "user-management", icon: Users },
-    { title: "รายการแจ้งชำระ", tab: "payment-confirmations", icon: CreditCard },
-    { title: "จัดการสมาชิก", tab: "admin-members", icon: Users },
-    { title: "รายงานสถิติ", tab: "admin-report", icon: BarChart3 },
+    { title: "จัดการคอร์ส", tab: "course-management", icon: BookOpen, emoji: "📖" },
+    { title: "จัดการผู้ใช้", tab: "user-management", icon: Users, emoji: "👥" },
+    { title: "รายการแจ้งชำระ", tab: "payment-confirmations", icon: CreditCard, emoji: "💳" },
+    { title: "จัดการสมาชิก", tab: "admin-members", icon: Users, emoji: "👑" },
+    { title: "รายงานสถิติ", tab: "admin-report", icon: BarChart3, emoji: "📊" },
   ]
 
   // BONUS
   const bonusItems = [
-    { title: "Template การวางแผนการเทรด", tab: "trading-template", icon: Target },
-    { title: "VDO Backtest", tab: "vdo-backtest", icon: Video },
+    { title: "Template การวางแผนการเทรด", tab: "trading-template", icon: Target, emoji: "📋" },
+    { title: "VDO Backtest", tab: "vdo-backtest", icon: Video, emoji: "🎬" },
   ]
 
   // การจัดการบัญชี
   const accountItems = [
-    { title: "การชำระเงิน", tab: "payment", icon: CreditCard },
-    { title: "โปรไฟล์", tab: "profile", icon: User },
-    { title: "Mindset", tab: "mindset", icon: User },
+    { title: "การชำระเงิน", tab: "payment", icon: CreditCard, emoji: "💸" },
+    { title: "โปรไฟล์", tab: "profile", icon: User, emoji: "👤" },
+    { title: "Mindset", tab: "mindset", icon: User, emoji: "🧠" },
   ]
 
   return (
@@ -133,7 +133,7 @@ export function AppSidebar({ userRole, membershipStatus, activeTab, onTabChange 
                     onClick={() => handleNavClick(item.tab)}
                     className={getNavCls(item.tab)}
                   >
-                    <item.icon className="h-4 w-4" />
+                    <span className="text-lg filter-none emoji-no-filter" style={{ filter: 'none' }}>{item.emoji}</span>
                     {!isCollapsed && <span className="text-slate-300">{item.title}</span>}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -154,7 +154,7 @@ export function AppSidebar({ userRole, membershipStatus, activeTab, onTabChange 
                       onClick={() => handleNavClick(item.tab)}
                       className={getNavCls(item.tab)}
                     >
-                      <item.icon className="h-4 w-4" />
+                      <span className="text-lg filter-none emoji-no-filter" style={{ filter: 'none' }}>{item.emoji}</span>
                       {!isCollapsed && <span className="text-slate-300">{item.title}</span>}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -176,7 +176,7 @@ export function AppSidebar({ userRole, membershipStatus, activeTab, onTabChange 
                       onClick={() => handleNavClick(item.tab)}
                       className={getNavCls(item.tab)}
                     >
-                      <item.icon className="h-4 w-4" />
+                      <span className="text-lg filter-none emoji-no-filter" style={{ filter: 'none' }}>{item.emoji}</span>
                       {!isCollapsed && <span className="text-slate-300">{item.title}</span>}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -197,7 +197,7 @@ export function AppSidebar({ userRole, membershipStatus, activeTab, onTabChange 
                     onClick={() => handleNavClick(item.tab)}
                     className={getNavCls(item.tab)}
                   >
-                    <item.icon className="h-4 w-4" />
+                    <span className="text-lg filter-none emoji-no-filter" style={{ filter: 'none' }}>{item.emoji}</span>
                     {!isCollapsed && <span className="text-slate-300">{item.title}</span>}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -217,7 +217,7 @@ export function AppSidebar({ userRole, membershipStatus, activeTab, onTabChange 
                     onClick={() => handleNavClick(item.tab)}
                     className={getNavCls(item.tab)}
                   >
-                    <item.icon className="h-4 w-4" />
+                    <span className="text-lg filter-none emoji-no-filter" style={{ filter: 'none' }}>{item.emoji}</span>
                     {!isCollapsed && <span className="text-slate-300">{item.title}</span>}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -232,7 +232,7 @@ export function AppSidebar({ userRole, membershipStatus, activeTab, onTabChange 
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton onClick={handleSignOut} className="text-red-400 hover:bg-red-500/10">
-                  <LogOut className="h-4 w-4" />
+                  <span className="text-lg filter-none emoji-no-filter" style={{ filter: 'none' }}>🔴</span>
                   {!isCollapsed && <span>ออกจากระบบ</span>}
                 </SidebarMenuButton>
               </SidebarMenuItem>
