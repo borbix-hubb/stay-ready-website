@@ -8,7 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Star, Clock, Users, PlayCircle, Search, Filter, Plus } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Star, Clock, Users, PlayCircle, Search, Filter, Plus, ChevronDown, List } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Course {
@@ -29,11 +30,22 @@ interface Course {
   };
 }
 
+interface Episode {
+  id: string;
+  title: string;
+  description: string | null;
+  video_url: string | null;
+  duration_minutes: number | null;
+  episode_order: number;
+  is_free: boolean;
+}
+
 const Courses = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [courses, setCourses] = useState<Course[]>([]);
   const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
+  const [episodes, setEpisodes] = useState<{ [courseId: string]: Episode[] }>({});
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -41,6 +53,7 @@ const Courses = () => {
 
   useEffect(() => {
     fetchCourses();
+    fetchEpisodes();
   }, []);
 
   useEffect(() => {
@@ -68,6 +81,38 @@ const Courses = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchEpisodes = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('course_episodes')
+        .select('*')
+        .order('episode_order', { ascending: true });
+
+      if (error) throw error;
+      
+      // Group episodes by course_id
+      const episodesByCourse = (data || []).reduce((acc, episode) => {
+        if (!acc[episode.course_id]) {
+          acc[episode.course_id] = [];
+        }
+        acc[episode.course_id].push(episode);
+        return acc;
+      }, {} as { [courseId: string]: Episode[] });
+      
+      setEpisodes(episodesByCourse);
+    } catch (error: any) {
+      console.error('Error fetching episodes:', error);
+    }
+  };
+
+  const getFirstEpisodeUrl = (courseId: string) => {
+    const courseEpisodes = episodes[courseId];
+    if (courseEpisodes && courseEpisodes.length > 0) {
+      return courseEpisodes[0].video_url;
+    }
+    return null;
   };
 
   const filterCourses = () => {
@@ -146,7 +191,7 @@ const Courses = () => {
             </div>
 
             {/* Search and Filter */}
-            <div className="max-w-4xl mx-auto mb-12">
+            <div className="max-w-4xl mx-auto">
               <div className="flex flex-col md:flex-row gap-4 items-center">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
@@ -185,7 +230,7 @@ const Courses = () => {
         </section>
 
         {/* Courses Grid */}
-        <section className="py-20">
+        <section className="py-8">
           <div className="container mx-auto px-4">
             {filteredCourses.length === 0 ? (
               <div className="text-center py-20">
@@ -258,11 +303,68 @@ const Courses = () => {
                         </div>
                       )}
 
+                      {/* Episodes List */}
+                      {episodes[course.id] && episodes[course.id].length > 0 && (
+                        <Collapsible>
+                          <CollapsibleTrigger asChild>
+                            <Button variant="ghost" className="w-full justify-between p-2 h-auto">
+                              <div className="flex items-center gap-2">
+                                <List className="w-4 h-4" />
+                                <span className="text-sm">สารบัญ ({episodes[course.id].length} ตอน)</span>
+                              </div>
+                              <ChevronDown className="w-4 h-4" />
+                            </Button>
+                          </CollapsibleTrigger>
+                          <CollapsibleContent className="space-y-2">
+                            <div className="max-h-32 overflow-y-auto space-y-1">
+                              {episodes[course.id].map((episode, episodeIndex) => (
+                                <div 
+                                  key={episode.id} 
+                                  className="text-xs p-2 bg-muted/30 rounded cursor-pointer hover:bg-muted/50 transition-colors"
+                                  onClick={() => episode.video_url && window.open(episode.video_url, '_blank')}
+                                >
+                                  <div className="flex items-center justify-between">
+                                    <span className="font-medium">
+                                      {episodeIndex + 1}. {episode.title}
+                                    </span>
+                                    {episode.is_free && (
+                                      <Badge variant="secondary" className="text-xs bg-green-500/20 text-green-400">
+                                        ฟรี
+                                      </Badge>
+                                    )}
+                                  </div>
+                                  {episode.description && (
+                                    <p className="text-muted-foreground mt-1 line-clamp-2">
+                                      {episode.description}
+                                    </p>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </CollapsibleContent>
+                        </Collapsible>
+                      )}
+
                       <div className="flex items-center justify-between pt-4 border-t border-primary/20">
                         <div className="text-xl font-bold text-accent">
                           {formatPrice(course.price_type, course.price_amount)}
                         </div>
-                        <Button className="crypto-button group" size="sm">
+                        <Button 
+                          className="crypto-button group" 
+                          size="sm"
+                          onClick={() => {
+                            const firstEpisodeUrl = getFirstEpisodeUrl(course.id);
+                            if (firstEpisodeUrl) {
+                              window.open(firstEpisodeUrl, '_blank');
+                            } else {
+                              toast({
+                                title: "ไม่พบตอนเรียน",
+                                description: "คอร์สนี้ยังไม่มีตอนเรียน",
+                                variant: "destructive",
+                              });
+                            }
+                          }}
+                        >
                           <PlayCircle className="w-4 h-4 mr-2" />
                           เริ่มเรียน
                         </Button>
