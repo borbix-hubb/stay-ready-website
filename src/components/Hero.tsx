@@ -23,19 +23,20 @@ const Hero = () => {
       <div className="container mx-auto px-4 z-10 text-center">
         <div className="max-w-4xl mx-auto animate-fade-in">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground mb-8">
-            <Zap className="w-4 h-4 text-crypto-accent" />
-            <span>แพลตฟอร์มสอนคริปโต #1 ในไทย</span>
+          <div className="inline-flex items-center gap-2 text-sm font-medium text-crypto-accent/90 mb-8 px-4 py-2 rounded-full bg-crypto-primary/10 border border-crypto-accent/20 backdrop-blur-sm">
+            <Zap className="w-4 h-4 text-crypto-accent animate-pulse" />
+            <span>แพลตฟอร์มสำหรับมือใหม่หารายได้เสริม</span>
           </div>
 
           {/* Main Heading with Animations */}
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-            เรียนรู้{" "}
-            <span className="bg-gradient-to-r from-crypto-primary via-crypto-accent to-crypto-secondary bg-clip-text text-transparent animate-glow-pulse">
-              คริปโต
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight">
+            <span className="block mb-2">
+              เรียนรู้{" "}
+              <span className="bg-gradient-to-r from-crypto-primary via-crypto-accent to-crypto-secondary bg-clip-text text-transparent animate-glow-pulse">
+                คริปโต
+              </span>
             </span>
-            <br />
-            <span className="bg-gradient-to-r from-crypto-accent to-crypto-primary bg-clip-text text-transparent animate-fade-in">
+            <span className="block bg-gradient-to-r from-crypto-accent to-crypto-primary bg-clip-text text-transparent animate-fade-in">
               แบบมืออาชีพ
             </span>
           </h1>
