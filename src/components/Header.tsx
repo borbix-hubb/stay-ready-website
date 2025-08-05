@@ -59,6 +59,18 @@ const Header = () => {
               <NavigationMenuLink
                 className={cn(
                   navigationMenuTriggerStyle(),
+                  location.pathname === "/portfolio" ? "bg-accent" : ""
+                )}
+                asChild
+              >
+                <Link to="/portfolio">ผลงาน</Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                className={cn(
+                  navigationMenuTriggerStyle(),
                   location.pathname === "/contact" ? "bg-accent" : ""
                 )}
                 asChild

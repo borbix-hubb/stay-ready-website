@@ -12,6 +12,7 @@ import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
 import Payment from "./pages/Payment";
 import PaymentConfirm from "./pages/PaymentConfirm";
+import Portfolio from "./pages/Portfolio";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -94,6 +95,7 @@ const App = () => {
             </ProtectedRoute>
           } 
         />
+        <Route path="/portfolio" element={<Portfolio />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>

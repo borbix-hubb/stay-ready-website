@@ -45,7 +45,7 @@ const Portfolio = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setPortfolioItems(data || []);
+      setPortfolioItems((data as PortfolioItem[]) || []);
     } catch (error) {
       console.error('Error fetching portfolio items:', error);
       toast.error("เกิดข้อผิดพลาดในการโหลดผลงาน");
@@ -105,7 +105,7 @@ const Portfolio = () => {
           description: description.trim(),
           image_url: imageUrl,
           user_id: user?.id
-        });
+        } as any);
 
       if (error) throw error;
 
@@ -129,7 +129,7 @@ const Portfolio = () => {
       const { error } = await supabase
         .from('portfolio_items')
         .delete()
-        .eq('id', id);
+        .eq('id', id) as any;
 
       if (error) throw error;
 
