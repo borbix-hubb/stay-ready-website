@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Edit, Trash2, BookOpen, Video, Tag } from "lucide-react";
+import { Plus, Edit, Trash2, BookOpen, Video, Tag, FileText } from "lucide-react";
 
 interface Course {
   id: string;
@@ -53,12 +53,30 @@ interface Episode {
   };
 }
 
+interface CourseDocument {
+  id: string;
+  course_id: string;
+  title: string;
+  description: string | null;
+  file_url: string | null;
+  file_type: string | null;
+  file_size: number | null;
+  document_order: number;
+  is_downloadable: boolean;
+  created_at: string;
+  updated_at: string;
+  courses?: {
+    title: string;
+  } | null;
+}
+
 const CourseManagement = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [courses, setCourses] = useState<Course[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [episodes, setEpisodes] = useState<Episode[]>([]);
+  const [documents, setDocuments] = useState<CourseDocument[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState<string>("");
 
@@ -90,10 +108,22 @@ const CourseManagement = () => {
     is_free: false
   });
 
+  const [documentForm, setDocumentForm] = useState({
+    course_id: "",
+    title: "",
+    description: "",
+    file_url: "",
+    file_type: "",
+    file_size: 0,
+    document_order: 1,
+    is_downloadable: true
+  });
+
   const [uploading, setUploading] = useState(false);
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [editingEpisode, setEditingEpisode] = useState<Episode | null>(null);
+  const [editingDocument, setEditingDocument] = useState<CourseDocument | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -105,7 +135,8 @@ const CourseManagement = () => {
       await Promise.all([
         fetchCourses(),
         fetchCategories(),
-        fetchEpisodes()
+        fetchEpisodes(),
+        fetchDocuments()
       ]);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -148,6 +179,19 @@ const CourseManagement = () => {
 
     if (error) throw error;
     setEpisodes(data || []);
+  };
+
+  const fetchDocuments = async () => {
+    const { data, error } = await supabase
+      .from('course_documents')
+      .select(`
+        *,
+        courses(title)
+      `)
+      .order('document_order');
+
+    if (error) throw error;
+    setDocuments((data as any) || []);
   };
 
   const createCourse = async () => {
@@ -357,6 +401,64 @@ const CourseManagement = () => {
     }
   };
 
+  const createDocument = async () => {
+    try {
+      const { error } = await supabase
+        .from('course_documents')
+        .insert(documentForm);
+
+      if (error) throw error;
+
+      toast({
+        title: "สร้างเอกสารสำเร็จ",
+        description: "เอกสารใหม่ถูกเพิ่มแล้ว",
+      });
+
+      setDocumentForm({
+        course_id: "",
+        title: "",
+        description: "",
+        file_url: "",
+        file_type: "",
+        file_size: 0,
+        document_order: 1,
+        is_downloadable: true
+      });
+
+      fetchDocuments();
+    } catch (error: any) {
+      toast({
+        title: "เกิดข้อผิดพลาด",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const deleteDocument = async (documentId: string) => {
+    try {
+      const { error } = await supabase
+        .from('course_documents')
+        .delete()
+        .eq('id', documentId);
+
+      if (error) throw error;
+
+      toast({
+        title: "ลบเอกสารสำเร็จ",
+        description: "เอกสารถูกลบแล้ว",
+      });
+
+      fetchDocuments();
+    } catch (error: any) {
+      toast({
+        title: "เกิดข้อผิดพลาด",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -368,7 +470,7 @@ const CourseManagement = () => {
   return (
     <div className="space-y-6">
       <Tabs defaultValue="courses" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="courses" className="flex items-center gap-2">
             <BookOpen className="w-4 h-4" />
             จัดการคอร์ส
@@ -380,6 +482,10 @@ const CourseManagement = () => {
           <TabsTrigger value="episodes" className="flex items-center gap-2">
             <Video className="w-4 h-4" />
             ตอนเรียน
+          </TabsTrigger>
+          <TabsTrigger value="documents" className="flex items-center gap-2">
+            <FileText className="w-4 h-4" />
+            เอกสารเรียน
           </TabsTrigger>
         </TabsList>
 
@@ -1160,6 +1266,318 @@ const CourseManagement = () => {
                   <Button 
                     variant="outline" 
                     onClick={() => setEditingEpisode(null)}
+                    className="flex-1"
+                  >
+                    ยกเลิก
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          )}
+        </TabsContent>
+
+        <TabsContent value="documents" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                จัดการเอกสารเรียน
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="crypto-button">
+                      <Plus className="w-4 h-4 mr-2" />
+                      เพิ่มเอกสาร
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl">
+                    <DialogHeader>
+                      <DialogTitle>เพิ่มเอกสารใหม่</DialogTitle>
+                      <DialogDescription>
+                        เพิ่มไฟล์เรียนหรือ Blog Post
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="col-span-2 space-y-2">
+                        <Label>คอร์ส</Label>
+                        <Select
+                          value={documentForm.course_id}
+                          onValueChange={(value) => setDocumentForm({...documentForm, course_id: value})}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="เลือกคอร์ส" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {courses.map(course => (
+                              <SelectItem key={course.id} value={course.id}>{course.title}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>ชื่อเอกสาร</Label>
+                        <Input
+                          value={documentForm.title}
+                          onChange={(e) => setDocumentForm({...documentForm, title: e.target.value})}
+                          placeholder="เช่น แนวทางการเทรด PDF"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>ประเภทไฟล์</Label>
+                        <Select
+                          value={documentForm.file_type}
+                          onValueChange={(value) => setDocumentForm({...documentForm, file_type: value})}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="เลือกประเภท" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="pdf">PDF</SelectItem>
+                            <SelectItem value="doc">Word Document</SelectItem>
+                            <SelectItem value="blog">Blog Post</SelectItem>
+                            <SelectItem value="link">External Link</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="col-span-2 space-y-2">
+                        <Label>รายละเอียด</Label>
+                        <Textarea
+                          value={documentForm.description}
+                          onChange={(e) => setDocumentForm({...documentForm, description: e.target.value})}
+                          placeholder="รายละเอียดเอกสาร"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>URL/ลิงก์ไฟล์</Label>
+                        <Input
+                          value={documentForm.file_url}
+                          onChange={(e) => setDocumentForm({...documentForm, file_url: e.target.value})}
+                          placeholder="https://..."
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>ลำดับเอกสาร</Label>
+                        <Input
+                          type="number"
+                          value={documentForm.document_order}
+                          onChange={(e) => setDocumentForm({...documentForm, document_order: Number(e.target.value)})}
+                        />
+                      </div>
+                      <div className="col-span-2 flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          id="is_downloadable"
+                          checked={documentForm.is_downloadable}
+                          onChange={(e) => setDocumentForm({...documentForm, is_downloadable: e.target.checked})}
+                        />
+                        <Label htmlFor="is_downloadable">ดาวน์โหลดได้</Label>
+                      </div>
+                    </div>
+                    <Button onClick={createDocument} className="crypto-button w-full">
+                      เพิ่มเอกสาร
+                    </Button>
+                  </DialogContent>
+                </Dialog>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {documents.map((document) => (
+                  <div key={document.id} className="border rounded-lg p-4">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-1">
+                        <h3 className="font-semibold flex items-center gap-2">
+                          <FileText className="w-4 h-4" />
+                          {document.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          คอร์ส: {document.courses?.title}
+                        </p>
+                        <p className="text-sm">{document.description}</p>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline">
+                            {document.file_type?.toUpperCase() || 'FILE'}
+                          </Badge>
+                          <Badge variant={document.is_downloadable ? 'outline' : 'secondary'}>
+                            {document.is_downloadable ? 'ดาวน์โหลดได้' : 'ดูอย่างเดียว'}
+                          </Badge>
+                          <span className="text-xs text-muted-foreground">
+                            ลำดับ: {document.document_order}
+                          </span>
+                        </div>
+                        {document.file_url && (
+                          <a 
+                            href={document.file_url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-sm text-blue-500 hover:underline inline-flex items-center gap-1"
+                          >
+                            <FileText className="w-3 h-3" />
+                            ดูเอกสาร
+                          </a>
+                        )}
+                      </div>
+                      <div className="flex gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => {
+                            setEditingDocument(document);
+                            setDocumentForm({
+                              course_id: document.course_id,
+                              title: document.title,
+                              description: document.description || "",
+                              file_url: document.file_url || "",
+                              file_type: document.file_type || "",
+                              file_size: document.file_size || 0,
+                              document_order: document.document_order,
+                              is_downloadable: document.is_downloadable
+                            });
+                          }}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button 
+                          variant="destructive" 
+                          size="sm"
+                          onClick={() => deleteDocument(document.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* Edit Document Dialog */}
+          {editingDocument && (
+            <Dialog open={!!editingDocument} onOpenChange={() => setEditingDocument(null)}>
+              <DialogContent className="max-w-2xl">
+                <DialogHeader>
+                  <DialogTitle>แก้ไขเอกสาร</DialogTitle>
+                  <DialogDescription>
+                    แก้ไขข้อมูลเอกสาร
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="col-span-2 space-y-2">
+                    <Label>คอร์ส</Label>
+                    <Select
+                      value={documentForm.course_id}
+                      onValueChange={(value) => setDocumentForm({...documentForm, course_id: value})}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="เลือกคอร์ส" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {courses.map(course => (
+                          <SelectItem key={course.id} value={course.id}>{course.title}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>ชื่อเอกสาร</Label>
+                    <Input
+                      value={documentForm.title}
+                      onChange={(e) => setDocumentForm({...documentForm, title: e.target.value})}
+                      placeholder="เช่น แนวทางการเทรด PDF"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>ประเภทไฟล์</Label>
+                    <Select
+                      value={documentForm.file_type}
+                      onValueChange={(value) => setDocumentForm({...documentForm, file_type: value})}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="เลือกประเภท" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="pdf">PDF</SelectItem>
+                        <SelectItem value="doc">Word Document</SelectItem>
+                        <SelectItem value="blog">Blog Post</SelectItem>
+                        <SelectItem value="link">External Link</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="col-span-2 space-y-2">
+                    <Label>รายละเอียด</Label>
+                    <Textarea
+                      value={documentForm.description}
+                      onChange={(e) => setDocumentForm({...documentForm, description: e.target.value})}
+                      placeholder="รายละเอียดเอกสาร"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>URL/ลิงก์ไฟล์</Label>
+                    <Input
+                      value={documentForm.file_url}
+                      onChange={(e) => setDocumentForm({...documentForm, file_url: e.target.value})}
+                      placeholder="https://..."
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>ลำดับเอกสาร</Label>
+                    <Input
+                      type="number"
+                      value={documentForm.document_order}
+                      onChange={(e) => setDocumentForm({...documentForm, document_order: Number(e.target.value)})}
+                    />
+                  </div>
+                  <div className="col-span-2 flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="edit_is_downloadable"
+                      checked={documentForm.is_downloadable}
+                      onChange={(e) => setDocumentForm({...documentForm, is_downloadable: e.target.checked})}
+                    />
+                    <Label htmlFor="edit_is_downloadable">ดาวน์โหลดได้</Label>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button 
+                    onClick={async () => {
+                      try {
+                        const { error } = await supabase
+                          .from('course_documents')
+                          .update({
+                            course_id: documentForm.course_id,
+                            title: documentForm.title,
+                            description: documentForm.description,
+                            file_url: documentForm.file_url,
+                            file_type: documentForm.file_type,
+                            file_size: documentForm.file_size,
+                            document_order: documentForm.document_order,
+                            is_downloadable: documentForm.is_downloadable
+                          })
+                          .eq('id', editingDocument.id);
+
+                        if (error) throw error;
+
+                        toast({
+                          title: "อัปเดตเอกสารสำเร็จ",
+                          description: "เอกสารได้รับการอัปเดตแล้ว",
+                        });
+
+                        setEditingDocument(null);
+                        fetchDocuments();
+                      } catch (error: any) {
+                        toast({
+                          title: "เกิดข้อผิดพลาด",
+                          description: error.message,
+                          variant: "destructive",
+                        });
+                      }
+                    }}
+                    className="crypto-button flex-1"
+                  >
+                    อัปเดตเอกสาร
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setEditingDocument(null)}
                     className="flex-1"
                   >
                     ยกเลิก
