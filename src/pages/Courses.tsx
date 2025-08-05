@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -5,108 +8,124 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Star, Clock, Users, PlayCircle, Search, Filter } from "lucide-react";
+import { Star, Clock, Users, PlayCircle, Search, Filter, Plus } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
-const courses = [
-  {
-    title: "Bitcoin & Cryptocurrency Fundamentals",
-    description: "เรียนรู้พื้นฐานของ Bitcoin และสกุลเงินดิจิทัลอื่นๆ ตั้งแต่เริ่มต้น",
-    image: "🪙",
-    duration: "8 ชั่วโมง",
-    students: 15420,
-    rating: 4.9,
-    level: "เริ่มต้น",
-    price: "ฟรี",
-    category: "พื้นฐาน",
-    features: ["พื้นฐาน Blockchain", "วิธีการซื้อขาย", "การจัดเก็บที่ปลอดภัย"]
-  },
-  {
-    title: "Advanced Trading Strategies",
-    description: "กลยุทธ์การเทรดขั้นสูงสำหรับมืออาชีพ รวมถึงการวิเคราะห์ทางเทคนิค",
-    image: "📈",
-    duration: "12 ชั่วโมง",
-    students: 8930,
-    rating: 4.8,
-    level: "ขั้นสูง",
-    price: "2,999฿",
-    category: "เทรดดิ้ง",
-    features: ["Technical Analysis", "Risk Management", "Portfolio Optimization"]
-  },
-  {
-    title: "DeFi & Yield Farming",
-    description: "เข้าใจระบบการเงินแบบกระจายอำนาจและวิธีการทำกำไรจาก DeFi",
-    image: "🌾",
-    duration: "10 ชั่วโมง", 
-    students: 6540,
-    rating: 4.7,
-    level: "กลาง",
-    price: "1,999฿",
-    category: "DeFi",
-    features: ["Liquidity Mining", "Staking", "Smart Contracts"]
-  },
-  {
-    title: "NFT & Web3 Development",
-    description: "สร้างและเทรด NFT รวมถึงการพัฒนาแอปพลิเคชัน Web3",
-    image: "🎨",
-    duration: "15 ชั่วโมง",
-    students: 4320,
-    rating: 4.6,
-    level: "ขั้นสูง", 
-    price: "3,999฿",
-    category: "พัฒนา",
-    features: ["NFT Creation", "Smart Contract Dev", "Web3 Integration"]
-  },
-  {
-    title: "Cryptocurrency Tax & Legal",
-    description: "เรียนรู้เรื่องภาษีและกฎหมายที่เกี่ยวข้องกับการเทรดคริปโต",
-    image: "⚖️",
-    duration: "6 ชั่วโมง",
-    students: 3210,
-    rating: 4.5,
-    level: "กลาง",
-    price: "1,499฿",
-    category: "กฎหมาย",
-    features: ["Tax Planning", "Legal Compliance", "Record Keeping"]
-  },
-  {
-    title: "Institutional Trading",
-    description: "การเทรดแบบสถาบัน เรียนรู้กลยุทธ์ที่ใช้ในองค์กรขนาดใหญ่",
-    image: "🏛️",
-    duration: "20 ชั่วโมง",
-    students: 1890,
-    rating: 4.9,
-    level: "ผู้เชี่ยวชาญ",
-    price: "9,999฿",
-    category: "เทรดดิ้ง",
-    features: ["Algorithmic Trading", "Institutional Tools", "Advanced Analytics"]
-  },
-  {
-    title: "Blockchain Development",
-    description: "เรียนรู้การพัฒนา Blockchain และ Smart Contract ตั้งแต่พื้นฐาน",
-    image: "⛓️",
-    duration: "18 ชั่วโมง",
-    students: 2560,
-    rating: 4.7,
-    level: "ขั้นสูง",
-    price: "4,999฿",
-    category: "พัฒนา",
-    features: ["Solidity Programming", "Blockchain Architecture", "Security Auditing"]
-  },
-  {
-    title: "Cryptocurrency Mining",
-    description: "เข้าใจกระบวนการขุดเหรียญและการจัดการฟาร์มขุด",
-    image: "⛏️",
-    duration: "14 ชั่วโมง",
-    students: 3890,
-    rating: 4.6,
-    level: "กลาง",
-    price: "2,499฿",
-    category: "การขุด",
-    features: ["Mining Hardware", "Pool Mining", "Profitability Analysis"]
-  }
-];
+interface Course {
+  id: string;
+  title: string;
+  description: string | null;
+  thumbnail_url: string | null;
+  instructor: string;
+  price_type: string;
+  price_amount: number | null;
+  tags: string[] | null;
+  category_id: string | null;
+  duration_hours: number | null;
+  duration_minutes: number | null;
+  created_at: string;
+  course_categories?: {
+    name: string;
+  };
+}
 
 const Courses = () => {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [priceFilter, setPriceFilter] = useState("all");
+
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  useEffect(() => {
+    filterCourses();
+  }, [courses, searchTerm, selectedCategory, priceFilter]);
+
+  const fetchCourses = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('courses')
+        .select(`
+          *,
+          course_categories(name)
+        `)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setCourses(data || []);
+    } catch (error: any) {
+      toast({
+        title: "เกิดข้อผิดพลาด",
+        description: "ไม่สามารถโหลดคอร์สได้",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filterCourses = () => {
+    let filtered = courses;
+
+    // Search filter
+    if (searchTerm) {
+      filtered = filtered.filter(course =>
+        course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        course.description?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Category filter
+    if (selectedCategory !== "all") {
+      filtered = filtered.filter(course =>
+        course.course_categories?.name === selectedCategory
+      );
+    }
+
+    // Price filter
+    if (priceFilter !== "all") {
+      if (priceFilter === "free") {
+        filtered = filtered.filter(course => course.price_type === "free");
+      } else if (priceFilter === "premium") {
+        filtered = filtered.filter(course => course.price_type === "premium");
+      }
+    }
+
+    setFilteredCourses(filtered);
+  };
+
+  const formatDuration = (hours: number | null, minutes: number | null) => {
+    const totalMinutes = (hours || 0) * 60 + (minutes || 0);
+    if (totalMinutes < 60) {
+      return `${totalMinutes} นาที`;
+    }
+    const h = Math.floor(totalMinutes / 60);
+    const m = totalMinutes % 60;
+    return m > 0 ? `${h} ชม. ${m} นาที` : `${h} ชั่วโมง`;
+  };
+
+  const formatPrice = (priceType: string, priceAmount: number | null) => {
+    if (priceType === "free") return "ฟรี";
+    return `฿${priceAmount?.toLocaleString() || 0}`;
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="flex items-center justify-center pt-32">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -134,33 +153,30 @@ const Courses = () => {
                   <Input 
                     placeholder="ค้นหาคอร์สที่ต้องการ..." 
                     className="pl-10"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </div>
-                <Select>
+                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                   <SelectTrigger className="w-full md:w-48">
                     <Filter className="w-4 h-4 mr-2" />
-                    <SelectValue placeholder="ระดับความยาก" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">ทุกระดับ</SelectItem>
-                    <SelectItem value="beginner">เริ่มต้น</SelectItem>
-                    <SelectItem value="intermediate">กลาง</SelectItem>
-                    <SelectItem value="advanced">ขั้นสูง</SelectItem>
-                    <SelectItem value="expert">ผู้เชี่ยวชาญ</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Select>
-                  <SelectTrigger className="w-full md:w-48">
                     <SelectValue placeholder="หมวดหมู่" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">ทุกหมวดหมู่</SelectItem>
-                    <SelectItem value="basic">พื้นฐาน</SelectItem>
-                    <SelectItem value="trading">เทรดดิ้ง</SelectItem>
-                    <SelectItem value="defi">DeFi</SelectItem>
-                    <SelectItem value="development">พัฒนา</SelectItem>
-                    <SelectItem value="legal">กฎหมาย</SelectItem>
-                    <SelectItem value="mining">การขุด</SelectItem>
+                    <SelectItem value="พื้นฐาน">พื้นฐาน</SelectItem>
+                    <SelectItem value="เทรดดิ้ง">เทรดดิ้ง</SelectItem>
+                    <SelectItem value="ขั้นสูง">ขั้นสูง</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select value={priceFilter} onValueChange={setPriceFilter}>
+                  <SelectTrigger className="w-full md:w-48">
+                    <SelectValue placeholder="ประเภทราคา" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">ทุกประเภท</SelectItem>
+                    <SelectItem value="free">ฟรี</SelectItem>
+                    <SelectItem value="premium">พรีเมี่ยม</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -171,86 +187,91 @@ const Courses = () => {
         {/* Courses Grid */}
         <section className="py-20">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {courses.map((course, index) => (
-                <Card 
-                  key={course.title} 
-                  className="crypto-card hover:scale-105 transition-all duration-300 animate-slide-up group"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <CardHeader>
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="text-4xl mb-2">{course.image}</div>
-                      <Badge 
-                        variant="secondary" 
-                        className={`
-                          ${course.level === 'เริ่มต้น' ? 'bg-crypto-success/20 text-crypto-success' : ''}
-                          ${course.level === 'กลาง' ? 'bg-crypto-warning/20 text-crypto-warning' : ''}
-                          ${course.level === 'ขั้นสูง' ? 'bg-crypto-primary/20 text-crypto-primary' : ''}
-                          ${course.level === 'ผู้เชี่ยวชาญ' ? 'bg-crypto-secondary/20 text-crypto-secondary' : ''}
-                        `}
-                      >
-                        {course.level}
-                      </Badge>
-                    </div>
-                    <CardTitle className="text-lg mb-2 group-hover:text-crypto-primary transition-colors line-clamp-2">
-                      {course.title}
-                    </CardTitle>
-                    <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
-                      {course.description}
-                    </p>
-                  </CardHeader>
-
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between text-sm text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        {course.duration}
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Users className="w-4 h-4" />
-                        {course.students.toLocaleString()}
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-1">
-                        <Star className="w-4 h-4 fill-crypto-warning text-crypto-warning" />
-                        <span className="font-medium">{course.rating}</span>
-                      </div>
-                      <span className="text-sm text-muted-foreground">
-                        ({course.students.toLocaleString()} รีวิว)
-                      </span>
-                    </div>
-
-                    <div className="space-y-2">
-                      {course.features.slice(0, 2).map((feature) => (
-                        <div key={feature} className="flex items-center gap-2 text-sm">
-                          <div className="w-1.5 h-1.5 rounded-full bg-crypto-accent" />
-                          {feature}
+            {filteredCourses.length === 0 ? (
+              <div className="text-center py-20">
+                <div className="text-6xl mb-4">📚</div>
+                <h3 className="text-2xl font-bold mb-2">ไม่พบคอร์สที่ค้นหา</h3>
+                <p className="text-muted-foreground">ลองเปลี่ยนคำค้นหาหรือตัวกรองใหม่</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                {filteredCourses.map((course, index) => (
+                  <Card 
+                    key={course.id} 
+                    className="crypto-card hover:scale-105 transition-all duration-300 animate-slide-up group"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <CardHeader>
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="w-full h-40 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg flex items-center justify-center mb-4">
+                          {course.thumbnail_url ? (
+                            <img 
+                              src={course.thumbnail_url} 
+                              alt={course.title}
+                              className="w-full h-full object-cover rounded-lg"
+                            />
+                          ) : (
+                            <div className="text-4xl">📚</div>
+                          )}
                         </div>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center justify-between pt-4 border-t border-crypto-primary/20">
-                      <div className="text-xl font-bold text-crypto-accent">
-                        {course.price}
                       </div>
-                      <Button className="crypto-button group" size="sm">
-                        <PlayCircle className="w-4 h-4 mr-2" />
-                        เริ่มเรียน
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                      <div className="flex items-center justify-between mb-2">
+                        <Badge 
+                          variant={course.price_type === 'free' ? 'secondary' : 'default'}
+                          className={course.price_type === 'free' ? 'bg-green-500/20 text-green-400' : 'bg-primary/20 text-primary'}
+                        >
+                          {course.price_type === 'free' ? 'ฟรี' : 'พรีเมี่ยม'}
+                        </Badge>
+                        {course.course_categories && (
+                          <Badge variant="outline">
+                            {course.course_categories.name}
+                          </Badge>
+                        )}
+                      </div>
+                      <CardTitle className="text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                        {course.title}
+                      </CardTitle>
+                      <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
+                        {course.description || "คำอธิบายคอร์ส"}
+                      </p>
+                    </CardHeader>
 
-            <div className="text-center mt-16">
-              <Button className="crypto-button" size="lg">
-                โหลดคอร์สเพิ่มเติม
-              </Button>
-            </div>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          {formatDuration(course.duration_hours, course.duration_minutes)}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Users className="w-4 h-4" />
+                          {course.instructor}
+                        </div>
+                      </div>
+
+                      {course.tags && course.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1">
+                          {course.tags.slice(0, 2).map((tag, tagIndex) => (
+                            <Badge key={tagIndex} variant="outline" className="text-xs">
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+
+                      <div className="flex items-center justify-between pt-4 border-t border-primary/20">
+                        <div className="text-xl font-bold text-accent">
+                          {formatPrice(course.price_type, course.price_amount)}
+                        </div>
+                        <Button className="crypto-button group" size="sm">
+                          <PlayCircle className="w-4 h-4 mr-2" />
+                          เริ่มเรียน
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       </main>
