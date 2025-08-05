@@ -5,16 +5,16 @@ import { Check, Zap, Crown, Rocket } from "lucide-react";
 
 const plans = [
   {
-    name: "🟢 Rookie Mode",
+    name: "Rookie Mode",
     subtitle: "เทรดเข้าใจ ไม่หลงทาง",
     price: "1,499",
-    originalPrice: "5,996", 
+    originalPrice: "2,999", 
     duration: "ต่อเดือน",
     description: "มือใหม่ที่อยากเริ่มแบบถูกวิธี",
     icon: Zap,
-    color: "text-green-500",
-    bgColor: "bg-green-500/10",
-    borderColor: "border-green-500/20",
+    color: "text-[hsl(var(--crypto-warning))]",
+    bgColor: "bg-[hsl(var(--crypto-warning)/0.1)]",
+    borderColor: "border-[hsl(var(--crypto-warning)/0.2)]",
     features: [
       "คอร์สพื้นฐาน Rookie Mode",
       "เรียนรู้การอ่านกราฟเบื้องต้น",
@@ -30,16 +30,16 @@ const plans = [
     ]
   },
   {
-    name: "🔵 Strategy Mode",
+    name: "Strategy Mode",
     subtitle: "เทรดมีแผน ทำกำไรสม่ำเสมอ",
     price: "2,499",
-    originalPrice: "9,996",
+    originalPrice: "4,999",
     duration: "ต่อเดือน",
     description: "คนที่อยากมีระบบเทรดของตัวเอง",
     icon: Crown,
-    color: "text-blue-500",
-    bgColor: "bg-blue-500/10",
-    borderColor: "border-blue-500/20",
+    color: "text-[hsl(var(--crypto-primary))]",
+    bgColor: "bg-[hsl(var(--crypto-primary)/0.1)]",
+    borderColor: "border-[hsl(var(--crypto-primary)/0.2)]",
     popular: true,
     features: [
       "คอร์ส Strategy Mode ครบชุด",
@@ -53,16 +53,16 @@ const plans = [
     ]
   },
   {
-    name: "🟣 Full System Access",
+    name: "Full System Access",
     subtitle: "ระบบเทรดทำเงินจริง",
     price: "7,499",
-    originalPrice: "29,996", 
+    originalPrice: "14,999", 
     duration: "ต่อเดือน",
     description: "คนที่จริงจัง อยากได้สูตรสำเร็จพร้อมใช้",
     icon: Rocket,
-    color: "text-purple-500",
-    bgColor: "bg-purple-500/10", 
-    borderColor: "border-purple-500/20",
+    color: "text-[hsl(var(--crypto-secondary))]",
+    bgColor: "bg-[hsl(var(--crypto-secondary)/0.1)]", 
+    borderColor: "border-[hsl(var(--crypto-secondary)/0.2)]",
     features: [
       "ทุกอย่างใน Strategy Mode",
       "ระบบเทรดสำเร็จรูป",
@@ -118,7 +118,9 @@ const Pricing = () => {
                 {plan.originalPrice && (
                   <div className="mb-2">
                     <span className="text-lg text-muted-foreground line-through">฿{plan.originalPrice}</span>
-                    <span className="ml-2 text-sm bg-red-500 text-white px-2 py-1 rounded">ลด 75%</span>
+                    <span className="ml-2 text-sm bg-red-500 text-white px-2 py-1 rounded">
+                      ลด {plan.name === 'Rookie Mode' ? '50%' : '50%'}
+                    </span>
                   </div>
                 )}
                 
@@ -153,14 +155,11 @@ const Pricing = () => {
                 )}
 
                 <Button 
-                  className={`
-                    w-full mt-6
-                    ${plan.name === 'Starter' ? 'border-crypto-success text-crypto-success hover:bg-crypto-success/10' : 'crypto-button'}
-                  `}
-                  variant={plan.name === 'Starter' ? 'outline' : 'default'}
+                  className="w-full mt-6 crypto-button"
                   size="lg"
+                  onClick={() => window.location.href = '/payment-confirm'}
                 >
-                  {plan.name === 'Starter' ? 'เริ่มใช้ฟรี' : 'เริ่มใช้งาน'}
+                  เลือกแพ็คเกจ
                 </Button>
               </CardContent>
             </Card>
