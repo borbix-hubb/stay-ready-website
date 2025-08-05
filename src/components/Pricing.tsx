@@ -5,20 +5,23 @@ import { Check, Zap, Crown, Rocket } from "lucide-react";
 
 const plans = [
   {
-    name: "Starter",
-    price: "ฟรี",
-    duration: "ตลอดไป",
-    description: "เหมาะสำหรับผู้เริ่มต้น",
+    name: "🟢 Rookie Mode",
+    subtitle: "เทรดเข้าใจ ไม่หลงทาง",
+    price: "1,499",
+    originalPrice: "5,996", 
+    duration: "ต่อเดือน",
+    description: "มือใหม่ที่อยากเริ่มแบบถูกวิธี",
     icon: Zap,
-    color: "text-crypto-success",
-    bgColor: "bg-crypto-success/10",
-    borderColor: "border-crypto-success/20",
+    color: "text-green-500",
+    bgColor: "bg-green-500/10",
+    borderColor: "border-green-500/20",
     features: [
-      "คอร์สพื้นฐาน 3 คอร์ส",
-      "วิดีโอบทเรียน 20+ ชั่วโมง",
-      "คอมมูนิตี้ทั่วไป",
-      "การสนับสนุนพื้นฐาน",
-      "อัปเดตรายสัปดาห์"
+      "คอร์สพื้นฐาน Rookie Mode",
+      "เรียนรู้การอ่านกราฟเบื้องต้น",
+      "เทคนิคการเทรดขั้นพื้นฐาน",
+      "การจัดการความเสี่ยง",
+      "คอมมูนิตี้ผู้เริ่มต้น",
+      "การสนับสนุนพื้นฐาน"
     ],
     limitations: [
       "ไม่มีคอร์สขั้นสูง",
@@ -27,45 +30,49 @@ const plans = [
     ]
   },
   {
-    name: "Pro",
-    price: "999",
+    name: "🔵 Strategy Mode",
+    subtitle: "เทรดมีแผน ทำกำไรสม่ำเสมอ",
+    price: "2,499",
+    originalPrice: "9,996",
     duration: "ต่อเดือน",
-    description: "สำหรับเทรดเดอร์จริงจัง",
+    description: "คนที่อยากมีระบบเทรดของตัวเอง",
     icon: Crown,
-    color: "text-crypto-primary",
-    bgColor: "bg-crypto-primary/10",
-    borderColor: "border-crypto-primary/20",
+    color: "text-blue-500",
+    bgColor: "bg-blue-500/10",
+    borderColor: "border-blue-500/20",
     popular: true,
     features: [
-      "คอร์สทั้งหมด 100+ คอร์ส",
-      "Trading signals แบบเรียลไทม์",
+      "คอร์ส Strategy Mode ครบชุด",
+      "สร้างกลยุทธ์เทรดส่วนตัว",
+      "การวิเคราะห์เชิงเทคนิค",
+      "เครื่องมือเทรดขั้นสูง",
       "คอมมูนิตี้ VIP",
-      "1-on-1 mentoring รายเดือน",
-      "เครื่องมือวิเคราะห์ขั้นสูง",
       "การสนับสนุน 24/7",
-      "Portfolio tracking",
-      "การแจ้งเตือนราคา"
+      "ระบบ Backtesting",
+      "Portfolio tracking"
     ]
   },
   {
-    name: "Elite",
-    price: "2,999",
-    duration: "ต่อเดือน", 
-    description: "สำหรับนักลงทุนมืออาชีพ",
+    name: "🟣 Full System Access",
+    subtitle: "ระบบเทรดทำเงินจริง",
+    price: "7,499",
+    originalPrice: "29,996", 
+    duration: "ต่อเดือน",
+    description: "คนที่จริงจัง อยากได้สูตรสำเร็จพร้อมใช้",
     icon: Rocket,
-    color: "text-crypto-secondary",
-    bgColor: "bg-crypto-secondary/10", 
-    borderColor: "border-crypto-secondary/20",
+    color: "text-purple-500",
+    bgColor: "bg-purple-500/10", 
+    borderColor: "border-purple-500/20",
     features: [
-      "ทุกอย่างใน Pro Plan",
-      "AI-powered trading bot",
+      "ทุกอย่างใน Strategy Mode",
+      "ระบบเทรดสำเร็จรูป",
+      "AI-powered trading signals",
       "การวิเคราะห์แบบสถาบัน",
-      "Weekly 1-on-1 coaching",
+      "1-on-1 coaching รายสัปดาห์",
       "ข้อมูลภายในจากผู้เชี่ยวชาญ",
       "การเข้าถึง exclusive events",
       "Custom trading strategies",
-      "Risk management tools",
-      "Tax optimization guidance"
+      "Risk management tools ขั้นสูง"
     ]
   }
 ];
@@ -106,15 +113,18 @@ const Pricing = () => {
                   <plan.icon className="w-8 h-8" />
                 </div>
                 <CardTitle className="text-2xl mb-2">{plan.name}</CardTitle>
+                <p className="text-lg font-semibold text-muted-foreground mb-4">{plan.subtitle}</p>
+                
+                {plan.originalPrice && (
+                  <div className="mb-2">
+                    <span className="text-lg text-muted-foreground line-through">฿{plan.originalPrice}</span>
+                    <span className="ml-2 text-sm bg-red-500 text-white px-2 py-1 rounded">ลด 75%</span>
+                  </div>
+                )}
+                
                 <div className="text-4xl font-bold mb-2">
-                  {plan.price === "ฟรี" ? (
-                    <span className="text-crypto-success">{plan.price}</span>
-                  ) : (
-                    <>
-                      <span className={plan.color}>{plan.price}</span>
-                      <span className="text-lg font-normal text-muted-foreground">฿</span>
-                    </>
-                  )}
+                  <span className={plan.color}>{plan.price}</span>
+                  <span className="text-lg font-normal text-muted-foreground">฿</span>
                 </div>
                 <p className="text-sm text-muted-foreground">{plan.duration}</p>
                 <p className="text-muted-foreground mt-2">{plan.description}</p>
