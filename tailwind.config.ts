@@ -142,7 +142,11 @@ export default {
 				'fade-in': 'fade-in 0.6s ease-out',
 				'slide-up': 'slide-up 0.8s ease-out',
 				'glow-pulse': 'glow-pulse 2s ease-in-out infinite alternate',
-				'float': 'float 6s ease-in-out infinite'
+				'float': 'float 6s ease-in-out infinite',
+				'animation-delay-500': 'float 6s ease-in-out infinite 0.5s',
+				'animation-delay-1000': 'float 6s ease-in-out infinite 1s',
+				'animation-delay-1500': 'float 6s ease-in-out infinite 1.5s',
+				'animation-delay-2000': 'float 6s ease-in-out infinite 2s'
 			}
 		}
 	},

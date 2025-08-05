@@ -8,42 +8,42 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Bright Yellow-Orange Theme */
-    --background: 210 20% 15%;
-    --foreground: 50 15% 95%;
+    /* Blue Trading Theme */
+    --background: 220 40% 8%;
+    --foreground: 210 40% 95%;
 
-    --card: 210 15% 18%;
-    --card-foreground: 50 15% 95%;
+    --card: 220 35% 12%;
+    --card-foreground: 210 40% 95%;
 
-    --popover: 210 15% 18%;
-    --popover-foreground: 50 15% 95%;
+    --popover: 220 35% 12%;
+    --popover-foreground: 210 40% 95%;
 
-    --primary: 45 95% 58%;
-    --primary-foreground: 210 20% 15%;
+    --primary: 210 100% 60%;
+    --primary-foreground: 220 40% 8%;
 
-    --secondary: 210 15% 22%;
-    --secondary-foreground: 50 15% 95%;
+    --secondary: 220 35% 16%;
+    --secondary-foreground: 210 40% 95%;
 
-    --muted: 210 15% 22%;
-    --muted-foreground: 220 8% 70%;
+    --muted: 220 35% 16%;
+    --muted-foreground: 215 20% 70%;
 
-    --accent: 35 100% 65%;
-    --accent-foreground: 210 20% 15%;
+    --accent: 195 100% 50%;
+    --accent-foreground: 220 40% 8%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 50 15% 95%;
+    --destructive-foreground: 210 40% 95%;
 
-    --border: 210 15% 25%;
-    --input: 210 15% 22%;
-    --ring: 45 95% 58%;
+    --border: 220 35% 18%;
+    --input: 220 35% 16%;
+    --ring: 210 100% 60%;
 
-    /* Custom Yellow-Orange Colors */
-    --crypto-primary: 45 95% 58%;
-    --crypto-secondary: 35 100% 65%;
-    --crypto-accent: 50 100% 70%;
-    --crypto-glow: 45 100% 75%;
-    --crypto-dark: 210 20% 15%;
-    --crypto-darker: 210 25% 12%;
+    /* Custom Blue Trading Colors */
+    --crypto-primary: 210 100% 60%;
+    --crypto-secondary: 195 100% 50%;
+    --crypto-accent: 180 100% 55%;
+    --crypto-glow: 210 100% 70%;
+    --crypto-dark: 220 40% 8%;
+    --crypto-darker: 220 45% 5%;
     --crypto-success: 142 72% 56%;
     --crypto-warning: 43 100% 62%;
 

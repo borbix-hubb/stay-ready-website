@@ -7,11 +7,17 @@ const Hero = () => {
   return (
     <>
       <Header />
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-background to-crypto-darker">
-      {/* Subtle Background */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-crypto-dark via-background to-crypto-darker">
+      {/* Chart Background */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,hsl(var(--crypto-primary)/0.08)_0%,transparent_70%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(135deg,hsl(var(--crypto-accent)/0.03)_0%,transparent_50%)]" />
+        <img 
+          src={cryptoHero} 
+          alt="Trading Chart Background" 
+          className="w-full h-full object-cover opacity-15"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-crypto-dark/70 via-background/80 to-crypto-darker/90" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,hsl(var(--crypto-primary)/0.1)_0%,transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,hsl(var(--crypto-accent)/0.08)_0%,transparent_50%)]" />
       </div>
 
       <div className="container mx-auto px-4 z-10 text-center">
@@ -22,33 +28,35 @@ const Hero = () => {
             <span>แพลตฟอร์มสอนคริปโต #1 ในไทย</span>
           </div>
 
-          {/* Main Heading */}
+          {/* Main Heading with Animations */}
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
             เรียนรู้{" "}
-            <span className="bg-gradient-to-r from-crypto-primary to-crypto-accent bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-crypto-primary via-crypto-accent to-crypto-secondary bg-clip-text text-transparent animate-glow-pulse">
               คริปโต
             </span>
             <br />
-            แบบมืออาชีพ
+            <span className="bg-gradient-to-r from-crypto-accent to-crypto-primary bg-clip-text text-transparent animate-fade-in">
+              แบบมืออาชีพ
+            </span>
           </h1>
 
-          {/* Subheading */}
-          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
+          {/* Subheading with Animation */}
+          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed animate-slide-up">
             ปลดล็อกความลับของการเทรดคริปโต การลงทุน และเทคโนโลยี Blockchain 
             พร้อมคอร์สเรียนที่ครบครันที่สุด
           </p>
 
-          {/* Features */}
-          <div className="flex flex-wrap justify-center gap-6 mb-10">
-            <div className="flex items-center gap-2 text-crypto-accent">
+          {/* Features with Animation */}
+          <div className="flex flex-wrap justify-center gap-6 mb-10 animate-fade-in">
+            <div className="flex items-center gap-2 text-crypto-accent animate-float">
               <TrendingUp className="w-5 h-5" />
               <span>กลยุทธ์การเทรดขั้นสูง</span>
             </div>
-            <div className="flex items-center gap-2 text-crypto-accent">
+            <div className="flex items-center gap-2 text-crypto-accent animate-float animation-delay-500">
               <Shield className="w-5 h-5" />
               <span>การจัดการความเสี่ยง</span>
             </div>
-            <div className="flex items-center gap-2 text-crypto-accent">
+            <div className="flex items-center gap-2 text-crypto-accent animate-float animation-delay-1000">
               <Zap className="w-5 h-5" />
               <span>เทรดแบบ Real-time</span>
             </div>

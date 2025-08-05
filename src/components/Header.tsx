@@ -89,7 +89,7 @@ const Header = () => {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center space-x-2">
                   <User className="w-4 h-4" />
-                  <span>สวัสดี</span>
+                  <span>สวัสดี, คุณ {user.email?.split('@')[0] || 'ผู้ใช้'}</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
