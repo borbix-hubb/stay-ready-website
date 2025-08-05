@@ -8,33 +8,33 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Blue Trading Theme */
-    --background: 220 40% 8%;
-    --foreground: 210 40% 95%;
+    /* Blue Trading Theme - Lighter Version */
+    --background: 220 30% 15%;
+    --foreground: 210 40% 98%;
 
-    --card: 220 35% 12%;
-    --card-foreground: 210 40% 95%;
+    --card: 220 25% 20%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 220 45% 6%;
-    --popover-foreground: 210 40% 95%;
+    --popover: 220 30% 18%;
+    --popover-foreground: 210 40% 98%;
 
     --primary: 210 100% 60%;
-    --primary-foreground: 220 40% 8%;
+    --primary-foreground: 220 30% 15%;
 
-    --secondary: 220 35% 16%;
-    --secondary-foreground: 210 40% 95%;
+    --secondary: 220 25% 25%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 220 35% 16%;
-    --muted-foreground: 215 20% 70%;
+    --muted: 220 25% 25%;
+    --muted-foreground: 215 20% 75%;
 
-    --accent: 195 100% 50%;
-    --accent-foreground: 220 40% 8%;
+    --accent: 195 100% 55%;
+    --accent-foreground: 220 30% 15%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 95%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 220 35% 18%;
-    --input: 220 35% 16%;
+    --border: 220 25% 25%;
+    --input: 220 25% 22%;
     --ring: 210 100% 60%;
 
     /* Custom Blue Trading Colors */

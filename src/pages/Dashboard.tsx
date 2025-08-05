@@ -70,7 +70,7 @@ const Dashboard = () => {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      <div className="min-h-screen flex w-full bg-background">
         <AppSidebar 
           userRole={userRole} 
           membershipStatus={membershipStatus}
@@ -80,12 +80,12 @@ const Dashboard = () => {
         
         <main className="flex-1 flex flex-col">
           {/* Header with sidebar trigger */}
-          <header className="h-16 flex items-center border-b border-slate-700 bg-slate-900/80 backdrop-blur-sm">
+          <header className="h-16 flex items-center border-b border bg-card/80 backdrop-blur-sm">
             <div className="flex items-center gap-4 px-6">
-              <SidebarTrigger className="text-slate-300 hover:text-white" />
+              <SidebarTrigger className="text-muted-foreground hover:text-foreground" />
               <div>
-                <h1 className="text-xl font-bold text-white">Dashboard</h1>
-                <p className="text-sm text-slate-400">จัดการการเรียนรู้และระบบของคุณ</p>
+                <h1 className="text-xl font-bold text-foreground">Dashboard</h1>
+                <p className="text-sm text-muted-foreground">จัดการการเรียนรู้และระบบของคุณ</p>
               </div>
             </div>
           </header>
@@ -102,13 +102,13 @@ const Dashboard = () => {
             <TabsContent value="overview" className="space-y-8">
               {/* Stats Cards */}
               <div className="grid md:grid-cols-3 gap-6">
-                <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+                <Card className="bg-card border backdrop-blur-sm">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-slate-400">คอร์สที่มีทั้งหมด</p>
-                        <p className="text-3xl font-bold text-white">0</p>
-                        <p className="text-xs text-slate-500">คอร์สที่เข้าร่วม</p>
+                        <p className="text-sm text-muted-foreground">คอร์สที่มีทั้งหมด</p>
+                        <p className="text-3xl font-bold text-foreground">0</p>
+                        <p className="text-xs text-muted-foreground">คอร์สที่เข้าร่วม</p>
                       </div>
                       <div className="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center">
                         <BookOpen className="h-6 w-6 text-blue-400" />
@@ -117,13 +117,13 @@ const Dashboard = () => {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+                <Card className="bg-card border backdrop-blur-sm">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-slate-400">คอร์สที่กำลังเรียน</p>
-                        <p className="text-3xl font-bold text-white">0</p>
-                        <p className="text-xs text-slate-500">คอร์สที่กำลังเรียน</p>
+                        <p className="text-sm text-muted-foreground">คอร์สที่กำลังเรียน</p>
+                        <p className="text-3xl font-bold text-foreground">0</p>
+                        <p className="text-xs text-muted-foreground">คอร์สที่กำลังเรียน</p>
                       </div>
                       <div className="w-12 h-12 bg-purple-600/20 rounded-lg flex items-center justify-center">
                         <Award className="h-6 w-6 text-purple-400" />
@@ -132,13 +132,13 @@ const Dashboard = () => {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+                <Card className="bg-card border backdrop-blur-sm">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-slate-400">คอร์สที่เสร็จแล้ว</p>
-                        <p className="text-3xl font-bold text-white">0</p>
-                        <p className="text-xs text-slate-500">คอร์สที่เรียนจบแล้ว</p>
+                        <p className="text-sm text-muted-foreground">คอร์สที่เสร็จแล้ว</p>
+                        <p className="text-3xl font-bold text-foreground">0</p>
+                        <p className="text-xs text-muted-foreground">คอร์สที่เรียนจบแล้ว</p>
                       </div>
                       <div className="w-12 h-12 bg-green-600/20 rounded-lg flex items-center justify-center">
                         <TrendingUp className="h-6 w-6 text-green-400" />
@@ -149,17 +149,17 @@ const Dashboard = () => {
               </div>
 
               {/* Course Statistics */}
-              <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+              <Card className="bg-card border backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-white">📈 คอร์สสถิติการดูที่เข้าร่วม</CardTitle>
-                  <CardDescription className="text-slate-400">
+                  <CardTitle className="text-foreground">📈 คอร์สสถิติการดูที่เข้าร่วม</CardTitle>
+                  <CardDescription className="text-muted-foreground">
                     คอร์สที่คุณเข้าร่วมล่าสุด
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="text-center py-12">
-                    <BookOpen className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-                    <p className="text-slate-400">ยังไม่มีคอร์สที่เข้าร่วม</p>
+                    <BookOpen className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                    <p className="text-muted-foreground">ยังไม่มีคอร์สที่เข้าร่วม</p>
                     <Button 
                       className="mt-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
                       onClick={() => navigate('/courses')}
@@ -227,36 +227,36 @@ const Dashboard = () => {
 
               <TabsContent value="money-management">
                 <div className="text-center py-12">
-                  <h2 className="text-2xl font-bold text-white mb-4">Money Management</h2>
-                  <p className="text-slate-400">หน้า Money Management กำลังพัฒนา</p>
+                  <h2 className="text-2xl font-bold text-foreground mb-4">Money Management</h2>
+                  <p className="text-muted-foreground">หน้า Money Management กำลังพัฒนา</p>
                 </div>
               </TabsContent>
 
               <TabsContent value="vip">
                 <div className="text-center py-12">
-                  <h2 className="text-2xl font-bold text-white mb-4">VIP Program</h2>
-                  <p className="text-slate-400">หน้า VIP Program กำลังพัฒนา</p>
+                  <h2 className="text-2xl font-bold text-foreground mb-4">VIP Program</h2>
+                  <p className="text-muted-foreground">หน้า VIP Program กำลังพัฒนา</p>
                 </div>
               </TabsContent>
 
               <TabsContent value="trading-template">
                 <div className="text-center py-12">
-                  <h2 className="text-2xl font-bold text-white mb-4">Template การวางแผนการเทรด</h2>
-                  <p className="text-slate-400">หน้า Trading Template กำลังพัฒนา</p>
+                  <h2 className="text-2xl font-bold text-foreground mb-4">Template การวางแผนการเทรด</h2>
+                  <p className="text-muted-foreground">หน้า Trading Template กำลังพัฒนา</p>
                 </div>
               </TabsContent>
 
               <TabsContent value="vdo-backtest">
                 <div className="text-center py-12">
-                  <h2 className="text-2xl font-bold text-white mb-4">VDO Backtest</h2>
-                  <p className="text-slate-400">หน้า VDO Backtest กำลังพัฒนา</p>
+                  <h2 className="text-2xl font-bold text-foreground mb-4">VDO Backtest</h2>
+                  <p className="text-muted-foreground">หน้า VDO Backtest กำลังพัฒนา</p>
                 </div>
               </TabsContent>
 
               <TabsContent value="mindset">
                 <div className="text-center py-12">
-                  <h2 className="text-2xl font-bold text-white mb-4">Mindset</h2>
-                  <p className="text-slate-400">หน้า Mindset กำลังพัฒนา</p>
+                  <h2 className="text-2xl font-bold text-foreground mb-4">Mindset</h2>
+                  <p className="text-muted-foreground">หน้า Mindset กำลังพัฒนา</p>
                 </div>
               </TabsContent>
             </Tabs>
