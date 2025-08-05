@@ -5,16 +5,16 @@ import { Check, Zap, Crown, Rocket } from "lucide-react";
 
 const plans = [
   {
+    id: "rookie",
     name: "Rookie Mode",
     subtitle: "เทรดเข้าใจ ไม่หลงทาง",
-    price: "1,499",
-    originalPrice: "2,999", 
-    duration: "ต่อเดือน",
+    price: 1990,
+    originalPrice: 7960,
+    period: "เดือน",
     description: "มือใหม่ที่อยากเริ่มแบบถูกวิธี",
+    popular: false,
+    color: "from-yellow-500 to-amber-500",
     icon: Zap,
-    color: "text-[hsl(var(--crypto-warning))]",
-    bgColor: "bg-[hsl(var(--crypto-warning)/0.1)]",
-    borderColor: "border-[hsl(var(--crypto-warning)/0.2)]",
     features: [
       "คอร์สพื้นฐาน Rookie Mode",
       "เรียนรู้การอ่านกราฟเบื้องต้น",
@@ -22,25 +22,19 @@ const plans = [
       "การจัดการความเสี่ยง",
       "คอมมูนิตี้ผู้เริ่มต้น",
       "การสนับสนุนพื้นฐาน"
-    ],
-    limitations: [
-      "ไม่มีคอร์สขั้นสูง",
-      "ไม่มี 1-on-1 mentoring",
-      "ไม่มี trading signals"
     ]
   },
   {
+    id: "strategy",
     name: "Strategy Mode",
     subtitle: "เทรดมีแผน ทำกำไรสม่ำเสมอ",
-    price: "2,499",
-    originalPrice: "4,999",
-    duration: "ต่อเดือน",
+    price: 8900,
+    originalPrice: 35600,
+    period: "เดือน",
     description: "คนที่อยากมีระบบเทรดของตัวเอง",
-    icon: Crown,
-    color: "text-[hsl(var(--crypto-primary))]",
-    bgColor: "bg-[hsl(var(--crypto-primary)/0.1)]",
-    borderColor: "border-[hsl(var(--crypto-primary)/0.2)]",
     popular: true,
+    color: "from-blue-500 to-cyan-500",
+    icon: Crown,
     features: [
       "คอร์ส Strategy Mode ครบชุด",
       "สร้างกลยุทธ์เทรดส่วนตัว",
@@ -53,16 +47,16 @@ const plans = [
     ]
   },
   {
+    id: "fullsystem",
     name: "Full System Access",
     subtitle: "ระบบเทรดทำเงินจริง",
-    price: "7,499",
-    originalPrice: "14,999", 
-    duration: "ต่อเดือน",
+    price: 30000,
+    originalPrice: 120000,
+    period: "เดือน",
     description: "คนที่จริงจัง อยากได้สูตรสำเร็จพร้อมใช้",
+    popular: false,
+    color: "from-purple-500 to-violet-500",
     icon: Rocket,
-    color: "text-[hsl(var(--crypto-secondary))]",
-    bgColor: "bg-[hsl(var(--crypto-secondary)/0.1)]", 
-    borderColor: "border-[hsl(var(--crypto-secondary)/0.2)]",
     features: [
       "ทุกอย่างใน Strategy Mode",
       "ระบบเทรดสำเร็จรูป",
@@ -106,81 +100,71 @@ const Pricing = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {plans.map((plan, index) => (
             <Card 
-              key={plan.name}
+              key={plan.id}
               className={`
-                relative bg-slate-800/50 border-slate-700 backdrop-blur-sm hover:scale-105 transition-all duration-300 animate-slide-up hover:bg-slate-800/70
-                ${plan.popular ? 'ring-2 ring-purple-500 scale-105 shadow-2xl shadow-purple-500/25' : ''}
+                relative overflow-hidden transition-all duration-500 hover:scale-105 cursor-pointer animate-slide-up
+                ${plan.popular 
+                  ? 'ring-2 ring-purple-500 shadow-2xl shadow-purple-500/25 bg-slate-800/80' 
+                  : 'bg-slate-800/50 hover:bg-slate-800/70'
+                } border-slate-700 backdrop-blur-sm
               `}
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {plan.popular && (
                 <>
                   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500"></div>
-                  <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0">
-                    ⭐ แนะนำ #1
-                  </Badge>
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                    <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-full text-sm font-bold flex items-center gap-1">
+                      <Crown className="w-4 h-4" />
+                      ยอดนิยม #1
+                    </div>
+                  </div>
                 </>
               )}
 
               <CardHeader className="text-center pt-8">
-                <div className={`w-16 h-16 mx-auto rounded-full ${plan.bgColor} flex items-center justify-center mb-4`}>
-                  <plan.icon className={`w-8 h-8 ${plan.color}`} />
+                <div className={`w-16 h-16 mx-auto rounded-full bg-gradient-to-r ${plan.color} flex items-center justify-center mb-4`}>
+                  <plan.icon className="w-8 h-8 text-white" />
                 </div>
-                <CardTitle className="text-2xl mb-2 text-white">{plan.name}</CardTitle>
-                <p className="text-lg font-semibold text-slate-300 mb-4">{plan.subtitle}</p>
+                <CardTitle className="text-2xl font-bold text-white">{plan.name}</CardTitle>
+                <p className="text-lg font-semibold text-slate-300 mb-2">{plan.subtitle}</p>
+                <p className="text-slate-400">{plan.description}</p>
                 
-                {plan.originalPrice && (
-                  <div className="mb-2">
-                    <span className="text-lg text-slate-400 line-through">฿{plan.originalPrice}</span>
-                    <span className="ml-2 text-sm bg-red-600 text-white px-3 py-1 rounded-full">
-                      ลด 75%
-                    </span>
+                <div className="mt-6">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <span className="text-lg text-slate-400 line-through">฿{plan.originalPrice.toLocaleString()}</span>
+                    <Badge className="bg-red-600 text-white">ลด 75%</Badge>
                   </div>
-                )}
-                
-                <div className="text-4xl font-bold mb-2">
-                  <span className={`${plan.color} text-white`}>฿{plan.price}</span>
+                  <div className="flex items-baseline justify-center gap-1">
+                    <span className="text-4xl font-bold text-white">฿{plan.price.toLocaleString()}</span>
+                    <span className="text-slate-400">/{plan.period}</span>
+                  </div>
+                  <p className="text-sm text-green-400 mt-2">💰 ประหยัด ฿{(plan.originalPrice - plan.price).toLocaleString()}</p>
                 </div>
-                <p className="text-sm text-slate-400">{plan.duration}</p>
-                <p className="text-slate-300 mt-3 font-medium">💰 ประหยัด ฿{(parseInt(plan.originalPrice.replace(',', '')) - parseInt(plan.price.replace(',', ''))).toLocaleString()}</p>
-                <p className="text-slate-400 mt-2">{plan.description}</p>
               </CardHeader>
 
-              <CardContent className="space-y-6 px-6 pb-8">
-                <div className="space-y-3">
-                  {plan.features.map((feature) => (
-                    <div key={feature} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+              <CardContent className="px-6 pb-8">
+                <ul className="space-y-4 mb-8">
+                  {plan.features.map((feature, index) => (
+                    <li key={index} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
                       <span className="text-sm text-slate-300">{feature}</span>
-                    </div>
+                    </li>
                   ))}
-                </div>
-
-                {plan.limitations && (
-                  <div className="space-y-2 pt-4 border-t border-slate-600">
-                    <p className="text-xs text-slate-400 font-medium">ข้อจำกัด:</p>
-                    {plan.limitations.map((limitation) => (
-                      <div key={limitation} className="flex items-start gap-2">
-                        <div className="w-3 h-3 rounded-full bg-slate-600 mt-2 flex-shrink-0" />
-                        <span className="text-xs text-slate-400">{limitation}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                </ul>
 
                 <Button 
-                  className={`w-full mt-6 text-lg py-6 ${
+                  className={`w-full text-lg py-6 ${
                     plan.popular 
                       ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-purple-500/25' 
-                      : 'bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600'
+                      : `bg-gradient-to-r ${plan.color} hover:opacity-90`
                   }`}
-                  size="lg"
                   onClick={() => window.location.href = '/payment-confirm'}
                 >
-                  {plan.popular ? '🚀' : '⚡'} เลือกแพ็คเกจ
+                  {plan.popular ? '🚀' : '⚡'} เลือกแพ็ค {plan.name}
                 </Button>
               </CardContent>
             </Card>
