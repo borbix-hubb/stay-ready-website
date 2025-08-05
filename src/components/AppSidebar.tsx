@@ -37,9 +37,11 @@ import {
 interface AppSidebarProps {
   userRole: string;
   membershipStatus: string;
+  activeTab: string;
+  onTabChange: (tab: string) => void;
 }
 
-export function AppSidebar({ userRole, membershipStatus }: AppSidebarProps) {
+export function AppSidebar({ userRole, membershipStatus, activeTab, onTabChange }: AppSidebarProps) {
   const { state } = useSidebar()
   const location = useLocation()
   const currentPath = location.pathname
@@ -52,36 +54,39 @@ export function AppSidebar({ userRole, membershipStatus }: AppSidebarProps) {
     await signOut()
   }
 
-  const isActive = (path: string) => currentPath === path
-  const getNavCls = ({ isActive }: { isActive: boolean }) =>
-    isActive ? "bg-muted text-primary font-medium" : "hover:bg-muted/50"
+  const isActive = (tab: string) => activeTab === tab
+  const getNavCls = (tab: string) =>
+    isActive(tab) ? "bg-muted text-primary font-medium" : "hover:bg-muted/50"
+
+  const handleNavClick = (tab: string) => {
+    onTabChange(tab)
+  }
 
   // เมนูหลัก
   const mainItems = [
-    { title: "แดชบอร์ด", url: "/dashboard", icon: Home },
-    { title: "Money Management", url: "/money-management", icon: BarChart3 },
-    { title: "ผลงาน", url: "/portfolio", icon: Star },
+    { title: "แดชบอร์ด", tab: "overview", icon: Home },
+    { title: "ผลงาน", tab: "portfolio", icon: Star },
   ]
 
   // พรีเมี่ยม (คอร์สเรียน)
   const premiumItems = [
-    { title: "คอร์สออนไลน์", url: "/courses", icon: BookOpen },
-    { title: "Pattern Chart", url: "/pattern-chart", icon: Target },
-    { title: "Money Management", url: "/money-management", icon: BarChart3 },
-    { title: "VIP Program", url: "/vip", icon: Gift },
+    { title: "คอร์สออนไลน์", tab: "courses", icon: BookOpen },
+    { title: "Pattern Chart", tab: "pattern-chart", icon: Target },
+    { title: "Money Management", tab: "money-management", icon: BarChart3 },
+    { title: "VIP Program", tab: "vip", icon: Gift },
   ]
 
   // BONUS
   const bonusItems = [
-    { title: "Template การวางแผนการเทรด", url: "/trading-template", icon: Target },
-    { title: "VDO Backtest", url: "/vdo-backtest", icon: Video },
+    { title: "Template การวางแผนการเทรด", tab: "trading-template", icon: Target },
+    { title: "VDO Backtest", tab: "vdo-backtest", icon: Video },
   ]
 
   // การจัดการบัญชี
   const accountItems = [
-    { title: "การชำระเงิน", url: "/payment", icon: CreditCard },
-    { title: "โปรไฟล์", url: "/dashboard?tab=profile", icon: User },
-    { title: "Mindset", url: "/mindset", icon: User },
+    { title: "การชำระเงิน", tab: "payment", icon: CreditCard },
+    { title: "โปรไฟล์", tab: "profile", icon: User },
+    { title: "Mindset", tab: "mindset", icon: User },
   ]
 
   return (
@@ -115,11 +120,12 @@ export function AppSidebar({ userRole, membershipStatus }: AppSidebarProps) {
             <SidebarMenu>
               {mainItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink to={item.url} className={getNavCls}>
-                      <item.icon className="h-4 w-4" />
-                      {!isCollapsed && <span className="text-slate-300">{item.title}</span>}
-                    </NavLink>
+                  <SidebarMenuButton 
+                    onClick={() => handleNavClick(item.tab)}
+                    className={getNavCls(item.tab)}
+                  >
+                    <item.icon className="h-4 w-4" />
+                    {!isCollapsed && <span className="text-slate-300">{item.title}</span>}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -135,11 +141,12 @@ export function AppSidebar({ userRole, membershipStatus }: AppSidebarProps) {
               <SidebarMenu>
                 {premiumItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <NavLink to={item.url} className={getNavCls}>
-                        <item.icon className="h-4 w-4" />
-                        {!isCollapsed && <span className="text-slate-300">{item.title}</span>}
-                      </NavLink>
+                    <SidebarMenuButton 
+                      onClick={() => handleNavClick(item.tab)}
+                      className={getNavCls(item.tab)}
+                    >
+                      <item.icon className="h-4 w-4" />
+                      {!isCollapsed && <span className="text-slate-300">{item.title}</span>}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -155,11 +162,12 @@ export function AppSidebar({ userRole, membershipStatus }: AppSidebarProps) {
             <SidebarMenu>
               {bonusItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink to={item.url} className={getNavCls}>
-                      <item.icon className="h-4 w-4" />
-                      {!isCollapsed && <span className="text-slate-300">{item.title}</span>}
-                    </NavLink>
+                  <SidebarMenuButton 
+                    onClick={() => handleNavClick(item.tab)}
+                    className={getNavCls(item.tab)}
+                  >
+                    <item.icon className="h-4 w-4" />
+                    {!isCollapsed && <span className="text-slate-300">{item.title}</span>}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -174,11 +182,12 @@ export function AppSidebar({ userRole, membershipStatus }: AppSidebarProps) {
             <SidebarMenu>
               {accountItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink to={item.url} className={getNavCls}>
-                      <item.icon className="h-4 w-4" />
-                      {!isCollapsed && <span className="text-slate-300">{item.title}</span>}
-                    </NavLink>
+                  <SidebarMenuButton 
+                    onClick={() => handleNavClick(item.tab)}
+                    className={getNavCls(item.tab)}
+                  >
+                    <item.icon className="h-4 w-4" />
+                    {!isCollapsed && <span className="text-slate-300">{item.title}</span>}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

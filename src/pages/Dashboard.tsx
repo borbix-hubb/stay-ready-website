@@ -14,16 +14,24 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import Portfolio from "./Portfolio";
+import PatternChart from "./PatternChart";
+import Courses from "./Courses";
+import Payment from "./Payment";
 
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [userRole, setUserRole] = useState<string>('user');
   const [membershipStatus, setMembershipStatus] = useState<string>('free');
   
   // ดึง tab จาก URL parameter
-  const currentTab = searchParams.get('tab') || (userRole === 'admin' ? 'courses' : 'overview');
+  const currentTab = searchParams.get('tab') || 'overview';
+
+  const handleTabChange = (tab: string) => {
+    setSearchParams({ tab });
+  };
 
   useEffect(() => {
     if (user) {
@@ -63,7 +71,12 @@ const Dashboard = () => {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-        <AppSidebar userRole={userRole} membershipStatus={membershipStatus} />
+        <AppSidebar 
+          userRole={userRole} 
+          membershipStatus={membershipStatus}
+          activeTab={currentTab}
+          onTabChange={handleTabChange}
+        />
         
         <main className="flex-1 flex flex-col">
           {/* Header with sidebar trigger */}
@@ -78,66 +91,13 @@ const Dashboard = () => {
           </header>
 
           <div className="flex-1 p-6">
-            <Tabs value={currentTab} className="w-full">
-              <TabsList className="bg-slate-800/50 border-slate-700 mb-8">
-                <TabsTrigger 
-                  value="overview" 
-                  className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
-                  onClick={() => navigate('/dashboard')}
-                >
-                  📊 ภาพรวม
-                </TabsTrigger>
-                {isAdmin && (
-                  <TabsTrigger 
-                    value="courses" 
-                    className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
-                    onClick={() => navigate('/dashboard?tab=courses')}
-                  >
-                    📚 จัดการคอร์ส
-                  </TabsTrigger>
-                )}
-                {isAdmin && (
-                  <TabsTrigger 
-                    value="payments" 
-                    className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
-                    onClick={() => navigate('/dashboard?tab=payments')}
-                  >
-                    💳 รายการแจ้งชำระ
-                  </TabsTrigger>
-                )}
-                {isAdmin && (
-                  <TabsTrigger 
-                    value="admin-members" 
-                    className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
-                    onClick={() => navigate('/dashboard?tab=admin-members')}
-                  >
-                    👥 จัดการสมาชิก
-                  </TabsTrigger>
-                )}
-                {isAdmin && (
-                  <TabsTrigger 
-                    value="admin-report" 
-                    className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
-                    onClick={() => navigate('/dashboard?tab=admin-report')}
-                  >
-                    📊 รายงานสถิติ
-                  </TabsTrigger>
-                )}
-                <TabsTrigger 
-                  value="profile" 
-                  className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
-                  onClick={() => navigate('/dashboard?tab=profile')}
-                >
-                  👤 โปรไฟล์
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="management" 
-                  className="text-slate-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
-                  onClick={() => navigate('/dashboard?tab=management')}
-                >
-                  ⚙️ จัดการข้อมูล
-                </TabsTrigger>
-              </TabsList>
+            <Tabs value={currentTab} onValueChange={handleTabChange} className="w-full">
+              {/* ซ่อน TabsList เพราะใช้ sidebar แทน */}
+              <div className="hidden">
+                <TabsList>
+                  <TabsTrigger value="overview">ภาพรวม</TabsTrigger>
+                </TabsList>
+              </div>
 
             <TabsContent value="overview" className="space-y-8">
               {/* Stats Cards */}
@@ -241,6 +201,57 @@ const Dashboard = () => {
 
               <TabsContent value="management">
                 <UserManagement />
+              </TabsContent>
+
+              <TabsContent value="portfolio">
+                <Portfolio />
+              </TabsContent>
+
+              <TabsContent value="pattern-chart">
+                <PatternChart />
+              </TabsContent>
+
+              <TabsContent value="courses">
+                <Courses />
+              </TabsContent>
+
+              <TabsContent value="payment">
+                <Payment />
+              </TabsContent>
+
+              <TabsContent value="money-management">
+                <div className="text-center py-12">
+                  <h2 className="text-2xl font-bold text-white mb-4">Money Management</h2>
+                  <p className="text-slate-400">หน้า Money Management กำลังพัฒนา</p>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="vip">
+                <div className="text-center py-12">
+                  <h2 className="text-2xl font-bold text-white mb-4">VIP Program</h2>
+                  <p className="text-slate-400">หน้า VIP Program กำลังพัฒนา</p>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="trading-template">
+                <div className="text-center py-12">
+                  <h2 className="text-2xl font-bold text-white mb-4">Template การวางแผนการเทรด</h2>
+                  <p className="text-slate-400">หน้า Trading Template กำลังพัฒนา</p>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="vdo-backtest">
+                <div className="text-center py-12">
+                  <h2 className="text-2xl font-bold text-white mb-4">VDO Backtest</h2>
+                  <p className="text-slate-400">หน้า VDO Backtest กำลังพัฒนา</p>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="mindset">
+                <div className="text-center py-12">
+                  <h2 className="text-2xl font-bold text-white mb-4">Mindset</h2>
+                  <p className="text-slate-400">หน้า Mindset กำลังพัฒนา</p>
+                </div>
               </TabsContent>
             </Tabs>
           </div>
