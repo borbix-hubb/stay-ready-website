@@ -8,42 +8,42 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Modern Orange & Purple Theme Colors */
-    --background: 20 8% 8%;
-    --foreground: 30 15% 95%;
+    /* Professional Purple-Blue Theme */
+    --background: 230 25% 8%;
+    --foreground: 210 40% 95%;
 
-    --card: 20 10% 12%;
-    --card-foreground: 30 15% 95%;
+    --card: 230 20% 12%;
+    --card-foreground: 210 40% 95%;
 
-    --popover: 20 10% 12%;
-    --popover-foreground: 30 15% 95%;
+    --popover: 230 20% 12%;
+    --popover-foreground: 210 40% 95%;
 
-    --primary: 25 95% 58%;
-    --primary-foreground: 20 8% 8%;
+    --primary: 245 75% 65%;
+    --primary-foreground: 230 25% 8%;
 
-    --secondary: 20 12% 16%;
-    --secondary-foreground: 30 15% 95%;
+    --secondary: 230 20% 16%;
+    --secondary-foreground: 210 40% 95%;
 
-    --muted: 20 12% 16%;
-    --muted-foreground: 25 8% 70%;
+    --muted: 230 20% 16%;
+    --muted-foreground: 215 15% 70%;
 
-    --accent: 285 85% 65%;
-    --accent-foreground: 20 8% 8%;
+    --accent: 200 90% 60%;
+    --accent-foreground: 230 25% 8%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 30 15% 95%;
+    --destructive-foreground: 210 40% 95%;
 
-    --border: 20 12% 18%;
-    --input: 20 12% 16%;
-    --ring: 25 95% 58%;
+    --border: 230 20% 18%;
+    --input: 230 20% 16%;
+    --ring: 245 75% 65%;
 
-    /* Custom Crypto Colors - Orange & Purple Theme */
-    --crypto-primary: 25 95% 58%;
-    --crypto-secondary: 285 85% 65%;
-    --crypto-accent: 45 100% 62%;
-    --crypto-glow: 25 100% 75%;
-    --crypto-dark: 20 8% 8%;
-    --crypto-darker: 20 12% 5%;
+    /* Custom Professional Colors */
+    --crypto-primary: 245 75% 65%;
+    --crypto-secondary: 280 80% 70%;
+    --crypto-accent: 200 90% 60%;
+    --crypto-glow: 245 85% 75%;
+    --crypto-dark: 230 25% 8%;
+    --crypto-darker: 230 30% 5%;
     --crypto-success: 142 72% 56%;
     --crypto-warning: 43 100% 62%;
 
