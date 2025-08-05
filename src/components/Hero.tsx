@@ -23,7 +23,7 @@ const Hero = () => {
       <div className="container mx-auto px-4 z-10 text-center">
         <div className="max-w-4xl mx-auto animate-fade-in">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 text-sm font-medium text-crypto-accent/90 mb-8 px-4 py-2 rounded-full bg-crypto-primary/10 backdrop-blur-sm">
+          <div className="inline-flex items-center gap-2 text-sm font-medium text-crypto-accent/90 mb-8">
             <Zap className="w-4 h-4 text-crypto-accent animate-pulse" />
             <span>แพลตฟอร์มสำหรับมือใหม่หารายได้เสริม</span>
           </div>
