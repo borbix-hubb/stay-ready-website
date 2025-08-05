@@ -183,6 +183,48 @@ export type Database = {
           },
         ]
       }
+      pattern_charts: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string
+          pattern_type: string
+          profit_loss: number | null
+          success_rate: number | null
+          timeframe: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url: string
+          pattern_type: string
+          profit_loss?: number | null
+          success_rate?: number | null
+          timeframe: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string
+          pattern_type?: string
+          profit_loss?: number | null
+          success_rate?: number | null
+          timeframe?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       payment_confirmations: {
         Row: {
           amount: number

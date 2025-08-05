@@ -73,7 +73,7 @@ const PatternChart = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setPatterns((data as PatternChart[]) || []);
+      setPatterns((data as any) || []);
     } catch (error) {
       console.error('Error fetching patterns:', error);
       toast.error("เกิดข้อผิดพลาดในการโหลดแพทเทิร์น");
