@@ -88,7 +88,11 @@ const PaymentConfirm = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
+    if (!file) {
+      return;
+    }
+
+    try {
       // Check file size (max 10MB for iPhone compatibility)
       if (file.size > 10 * 1024 * 1024) {
         toast({
@@ -96,6 +100,8 @@ const PaymentConfirm = () => {
           description: "กรุณาเลือกไฟล์ขนาดไม่เกิน 10MB",
           variant: "destructive",
         });
+        // Reset file input
+        event.target.value = '';
         return;
       }
 
@@ -109,15 +115,18 @@ const PaymentConfirm = () => {
         'image/heif'
       ];
       
-      const isSupported = supportedTypes.includes(file.type.toLowerCase()) || 
-                         file.name.toLowerCase().match(/\.(jpg|jpeg|png|webp|heic|heif)$/);
+      const fileExtension = file.name.toLowerCase().split('.').pop();
+      const mimeTypeSupported = supportedTypes.includes(file.type.toLowerCase());
+      const extensionSupported = fileExtension && ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif'].includes(fileExtension);
       
-      if (!isSupported) {
+      if (!mimeTypeSupported && !extensionSupported) {
         toast({
           title: "ประเภทไฟล์ไม่รองรับ",
           description: "รองรับไฟล์: JPG, PNG, WEBP, HEIC, HEIF (รูปจากไอโฟน)",
           variant: "destructive",
         });
+        // Reset file input
+        event.target.value = '';
         return;
       }
 
@@ -126,9 +135,27 @@ const PaymentConfirm = () => {
       // Create preview
       const reader = new FileReader();
       reader.onload = (e) => {
-        setSlipPreview(e.target?.result as string);
+        if (e.target?.result) {
+          setSlipPreview(e.target.result as string);
+        }
+      };
+      reader.onerror = () => {
+        toast({
+          title: "เกิดข้อผิดพลาด",
+          description: "ไม่สามารถอ่านไฟล์ได้ กรุณาลองใหม่อีกครั้ง",
+          variant: "destructive",
+        });
+        event.target.value = '';
       };
       reader.readAsDataURL(file);
+    } catch (error) {
+      console.error('Error processing file:', error);
+      toast({
+        title: "เกิดข้อผิดพลาด",
+        description: "ไม่สามารถประมวลผลไฟล์ได้ กรุณาลองใหม่อีกครั้ง",
+        variant: "destructive",
+      });
+      event.target.value = '';
     }
   };
 
@@ -150,10 +177,31 @@ const PaymentConfirm = () => {
       return;
     }
 
-    if (!formData.payerName || !formData.transferDate || !formData.bankName || !slipFile) {
+    // Validate required fields
+    const errors = [];
+    if (!formData.payerName.trim()) errors.push('ชื่อผู้โอน');
+    if (!formData.transferDate) errors.push('วันที่โอน');
+    if (!formData.bankName) errors.push('ธนาคารที่โอน');
+    if (!slipFile) errors.push('สลิปการโอน');
+
+    if (errors.length > 0) {
       toast({
         title: "กรุณากรอกข้อมูลให้ครบถ้วน",
-        description: "ต้องกรอกข้อมูลทุกช่องและอัพโหลดสลิป",
+        description: `ยังไม่ได้กรอก: ${errors.join(', ')}`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate transfer date is not in the future
+    const transferDate = new Date(formData.transferDate);
+    const today = new Date();
+    today.setHours(23, 59, 59, 999); // End of today
+    
+    if (transferDate > today) {
+      toast({
+        title: "วันที่โอนไม่ถูกต้อง",
+        description: "ไม่สามารถเลือกวันที่ในอนาคตได้",
         variant: "destructive",
       });
       return;
@@ -161,19 +209,34 @@ const PaymentConfirm = () => {
 
     setUploading(true);
     try {
+      // Validate file before upload
+      if (!slipFile || slipFile.size === 0) {
+        throw new Error('ไฟล์สลิปไม่ถูกต้อง');
+      }
+
       // Upload slip to Supabase Storage
-      const fileExt = slipFile.name.split('.').pop();
+      const fileExt = slipFile.name.split('.').pop()?.toLowerCase() || 'jpg';
       const fileName = `${user.id}/${Date.now()}.${fileExt}`;
       
       const { error: uploadError } = await supabase.storage
         .from('payment-slips')
-        .upload(fileName, slipFile);
+        .upload(fileName, slipFile, {
+          cacheControl: '3600',
+          upsert: false
+        });
 
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        throw new Error(`การอัพโหลดล้มเหลว: ${uploadError.message}`);
+      }
 
       const { data: urlData } = supabase.storage
         .from('payment-slips')
         .getPublicUrl(fileName);
+
+      if (!urlData.publicUrl) {
+        throw new Error('ไม่สามารถสร้าง URL สลิปได้');
+      }
 
       // Save payment confirmation to database
       const { error: dbError } = await supabase
@@ -182,14 +245,17 @@ const PaymentConfirm = () => {
           user_id: user.id,
           plan_name: planName,
           amount: amount,
-          payer_name: formData.payerName,
+          payer_name: formData.payerName.trim(),
           transfer_date: formData.transferDate,
           bank_name: formData.bankName,
           slip_url: urlData.publicUrl,
           status: 'pending'
         });
 
-      if (dbError) throw dbError;
+      if (dbError) {
+        console.error('Database error:', dbError);
+        throw new Error(`ไม่สามารถบันทึกข้อมูลได้: ${dbError.message}`);
+      }
 
       setSubmitted(true);
       toast({
@@ -201,7 +267,7 @@ const PaymentConfirm = () => {
       console.error('Error submitting payment:', error);
       toast({
         title: "เกิดข้อผิดพลาด",
-        description: error.message || "ไม่สามารถแจ้งชำระเงินได้",
+        description: error.message || "ไม่สามารถแจ้งชำระเงินได้ กรุณาลองใหม่อีกครั้ง",
         variant: "destructive",
       });
     } finally {
@@ -356,6 +422,11 @@ const PaymentConfirm = () => {
                         onClick={() => {
                           setSlipFile(null);
                           setSlipPreview(null);
+                          // Reset file input
+                          const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+                          if (fileInput) {
+                            fileInput.value = '';
+                          }
                         }}
                         className="absolute top-2 right-2 border-slate-600 text-slate-300 hover:bg-slate-700"
                       >
