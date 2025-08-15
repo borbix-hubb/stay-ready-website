@@ -209,9 +209,25 @@ const ProfileSection = ({ userRole, membershipStatus }: ProfileSectionProps) => 
             <div className="space-y-2">
               <Label className="text-sm text-slate-400">สถานะสมาชิก</Label>
               <div className="flex items-center gap-2 p-2">
-                {membershipStatus === 'premium' ? (
+                {membershipStatus === 'basic' ? (
+                  <Badge className="bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white">
+                    📚 Basic Course
+                  </Badge>
+                ) : membershipStatus === 'scalping' ? (
+                  <Badge className="bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white">
+                    ⚡ Scalping Course
+                  </Badge>
+                ) : membershipStatus === 'advanced' ? (
+                  <Badge className="bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white">
+                    🎯 Advanced Course
+                  </Badge>
+                ) : membershipStatus === 'ema' ? (
+                  <Badge className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white">
+                    🧠 EMA Course
+                  </Badge>
+                ) : membershipStatus === 'premium' ? (
                   <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white">
-                    ⭐ พรีเมี่ยม
+                    ⭐ Premium (All Courses)
                   </Badge>
                 ) : (
                   <>
@@ -224,7 +240,7 @@ const ProfileSection = ({ userRole, membershipStatus }: ProfileSectionProps) => 
                         size="sm"
                         className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-xs"
                       >
-                        💎 อัพเกรด
+                        💎 เลือกคอร์ส
                       </Button>
                     )}
                   </>

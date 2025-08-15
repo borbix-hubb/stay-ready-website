@@ -181,7 +181,33 @@ const AdminMembers = () => {
   };
 
   const getMembershipBadgeVariant = (status: string | null) => {
-    return status === 'premium' ? 'default' : 'secondary';
+    switch (status) {
+      case 'basic':
+      case 'scalping':
+      case 'advanced':
+      case 'ema':
+      case 'premium':
+        return 'default';
+      default:
+        return 'secondary';
+    }
+  };
+
+  const getMembershipStatusText = (status: string | null) => {
+    switch (status) {
+      case 'basic':
+        return '📚 Basic Course';
+      case 'scalping':
+        return '⚡ Scalping Course';
+      case 'advanced':
+        return '🎯 Advanced Course';
+      case 'ema':
+        return '🧠 EMA Course';
+      case 'premium':
+        return '⭐ Premium (All Courses)';
+      default:
+        return '🆓 ฟรี';
+    }
   };
 
   if (loading) {
@@ -238,7 +264,7 @@ const AdminMembers = () => {
                     </TableCell>
                     <TableCell>
                       <Badge variant={getMembershipBadgeVariant(profile.membership_status)}>
-                        {profile.membership_status === 'premium' ? 'พรีเมี่ยม' : 'ฟรี'}
+                        {getMembershipStatusText(profile.membership_status)}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-slate-300">
@@ -304,7 +330,11 @@ const AdminMembers = () => {
                                   </SelectTrigger>
                                   <SelectContent className="bg-slate-700 border-slate-600 z-50">
                                     <SelectItem value="free">🆓 ฟรี</SelectItem>
-                                    <SelectItem value="premium">⭐ พรีเมี่ยม</SelectItem>
+                                    <SelectItem value="basic">📚 Basic Course</SelectItem>
+                                    <SelectItem value="scalping">⚡ Scalping Course</SelectItem>
+                                    <SelectItem value="advanced">🎯 Advanced Course</SelectItem>
+                                    <SelectItem value="ema">🧠 EMA Course</SelectItem>
+                                    <SelectItem value="premium">⭐ Premium (All Courses)</SelectItem>
                                   </SelectContent>
                                 </Select>
                               </div>

@@ -232,6 +232,7 @@ const Courses = () => {
         {/* Courses Grid */}
         <section className="py-8">
           <div className="container mx-auto px-4">
+            
             {filteredCourses.length === 0 ? (
               <div className="text-center py-20">
                 <div className="text-6xl mb-4">📚</div>

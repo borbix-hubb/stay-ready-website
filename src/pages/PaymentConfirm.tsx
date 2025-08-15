@@ -11,8 +11,9 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
 interface LocationState {
-  planName: string;
-  amount: number;
+  courseId: string;
+  courseName: string;
+  selectedCourse: string;
 }
 
 const PaymentConfirm = () => {
@@ -27,7 +28,21 @@ const PaymentConfirm = () => {
     return null;
   }
 
-  const { planName, amount } = state;
+  const { courseId, courseName } = state;
+  
+  // Get course data to extract price
+  const courses = [
+    { id: 'basic', title: 'คอร์สฟอเร็กซ์เบสิกสำหรับมือใหม่', price: 4990 },
+    { id: 'scalping', title: 'คอร์สพาซิ่ง สำหรับคนทุนน้อย', price: 15990 },
+    { id: 'advanced', title: 'คอร์สแอดวานซ์ เทรดแบบเทพสายรอ', price: 24990 },
+    { id: 'ema', title: 'คอร์สถอดสมอง เทรดสบายสำหรับสายขี้เกียจ', price: 29990 },
+    { id: 'basic-scalping', title: 'Basic + Scalping', price: 19990 },
+    { id: 'advanced-ema', title: 'Advanced + EMA', price: 49990 },
+    { id: 'all-in-one', title: 'All-in-One (4 คอร์ส)', price: 69990 }
+  ];
+  
+  const selectedCourse = courses.find(course => course.id === courseId);
+  const amount = selectedCourse?.price || 0;
   
   const [formData, setFormData] = useState({
     payerName: "",
@@ -243,7 +258,7 @@ const PaymentConfirm = () => {
         .from('payment_confirmations')
         .insert({
           user_id: user.id,
-          plan_name: planName,
+          plan_name: courseName,
           amount: amount,
           payer_name: formData.payerName.trim(),
           transfer_date: formData.transferDate,
@@ -315,7 +330,7 @@ const PaymentConfirm = () => {
           <Button 
             variant="outline" 
             size="sm"
-            onClick={() => navigate('/payment')}
+            onClick={() => navigate('/')}
             className="border-slate-600 text-slate-300 hover:bg-slate-700"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -468,7 +483,7 @@ const PaymentConfirm = () => {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center py-3 border-b border-slate-600">
                     <span className="text-slate-300">แพ็คเกจ</span>
-                    <span className="text-white font-medium">{planName}</span>
+                    <span className="text-white font-medium">{courseName}</span>
                   </div>
                   <div className="flex justify-between items-center py-3 border-b border-slate-600">
                     <span className="text-slate-300">จำนวนเงิน</span>

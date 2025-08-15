@@ -1,72 +1,84 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Check, Zap, Crown, Rocket } from "lucide-react";
+import { Check, Zap, Crown, Rocket, Brain } from "lucide-react";
 
 const plans = [
   {
-    id: "rookie",
-    name: "Rookie Mode",
-    subtitle: "เทรดเข้าใจ ไม่หลงทาง",
-    price: 1990,
-    originalPrice: 7960,
-    period: "เดือน",
+    id: "basic",
+    name: "คอร์สฟอเร็กซ์เบสิก",
+    subtitle: "คอร์สจับมือเทรด ปูพื้นฐาน เอาตัวรอดในตลาด",
+    price: 4990,
+    originalPrice: 6990,
+    period: "ครั้งเดียว",
     description: "มือใหม่ที่อยากเริ่มแบบถูกวิธี",
     popular: false,
-    color: "from-yellow-500 to-amber-500",
+    color: "from-indigo-600 to-blue-600",
     icon: Zap,
     features: [
-      "คอร์สพื้นฐาน Rookie Mode",
-      "เรียนรู้การอ่านกราฟเบื้องต้น",
-      "เทคนิคการเทรดขั้นพื้นฐาน",
-      "การจัดการความเสี่ยง",
-      "คอมมูนิตี้ผู้เริ่มต้น",
-      "การสนับสนุนพื้นฐาน"
+      "พื้นฐานตลาดฟอเร็กซ์",
+      "การใช้แพลตฟอร์มเทรด",
+      "วิเคราะห์เบื้องต้น",
+      "กลยุทธ์ง่าย ๆ",
+      "Risk Management",
+      "Bonus: Signal Room"
     ]
   },
   {
-    id: "strategy",
-    name: "Strategy Mode",
-    subtitle: "เทรดมีแผน ทำกำไรสม่ำเสมอ",
-    price: 8900,
-    originalPrice: 35600,
-    period: "เดือน",
-    description: "คนที่อยากมีระบบเทรดของตัวเอง",
+    id: "scalping",
+    name: "คอร์สพาซิ่ง สำหรับคนทุนน้อย",
+    subtitle: "เข้าไว ปิดไว Timeframe สั้น ทำกำไรเร็ว",
+    price: 15990,
+    originalPrice: 21990,
+    period: "ครั้งเดียว",
+    description: "คนที่อยากเทรดไว ปิดไว",
     popular: true,
-    color: "from-blue-500 to-cyan-500",
+    color: "from-cyan-600 to-teal-600",
     icon: Crown,
     features: [
-      "คอร์ส Strategy Mode ครบชุด",
-      "สร้างกลยุทธ์เทรดส่วนตัว",
-      "การวิเคราะห์เชิงเทคนิค",
-      "เครื่องมือเทรดขั้นสูง",
-      "คอมมูนิตี้ VIP",
-      "การสนับสนุน 24/7",
-      "ระบบ Backtesting",
-      "Portfolio tracking"
+      "Scalping M1–M5",
+      "MSS เวอร์ชันเร็ว",
+      "OB/FVG Strategy",
+      "Tight Stop Loss",
+      "Partial Take Profit"
     ]
   },
   {
-    id: "fullsystem",
-    name: "Full System Access",
-    subtitle: "ระบบเทรดทำเงินจริง",
-    price: 30000,
-    originalPrice: 120000,
-    period: "เดือน",
-    description: "คนที่จริงจัง อยากได้สูตรสำเร็จพร้อมใช้",
+    id: "advanced",
+    name: "คอร์สแอดวานซ์ เทรดแบบเทพสายรอ",
+    subtitle: "Timeframe ใหญ่ SL เล็ก TP 500–1000 จุด",
+    price: 24990,
+    originalPrice: 31990,
+    period: "ครั้งเดียว",
+    description: "คนที่จริงจัง อยากเทรดสายยาว",
     popular: false,
-    color: "from-purple-500 to-violet-500",
+    color: "from-violet-600 to-purple-600",
     icon: Rocket,
     features: [
-      "ทุกอย่างใน Strategy Mode",
-      "ระบบเทรดสำเร็จรูป",
-      "AI-powered trading signals",
-      "การวิเคราะห์แบบสถาบัน",
-      "1-on-1 coaching รายสัปดาห์",
-      "ข้อมูลภายในจากผู้เชี่ยวชาญ",
-      "การเข้าถึง exclusive events",
-      "Custom trading strategies",
-      "Risk management tools ขั้นสูง"
+      "Swing Trading",
+      "MSS H1–H4",
+      "Demand/Supply ใหญ่",
+      "Fibonacci Retracement",
+      "Trailing Stop Strategy"
+    ]
+  },
+  {
+    id: "ema",
+    name: "คอร์สถอดสมอง เทรดสบายสำหรับสายขี้เกียจ",
+    subtitle: "ง่าย สะดวก ใช้ EMA Indicator เดียว",
+    price: 29990,
+    originalPrice: 37990,
+    period: "ครั้งเดียว",
+    description: "คนที่อยากเทรดแบบง่าย ๆ",
+    popular: false,
+    color: "from-amber-600 to-yellow-600",
+    icon: Brain,
+    features: [
+      "EMA 20/50/200",
+      "Trend-Following Strategy",
+      "Pullback Entry",
+      "Multi-TF EMA System",
+      "Template + Alert System"
     ]
   }
 ];
@@ -82,7 +94,7 @@ const Pricing = () => {
             <div className="relative flex items-center gap-3">
               <div className="w-3 h-3 bg-yellow-400 rounded-full animate-bounce"></div>
               <span className="text-white font-bold text-lg tracking-wide animate-pulse">
-                ⚡ SPECIAL OFFER - โปรโมชั่นพิเศษ ลดสูงสุด 75% ⚡
+                ⚡ SPECIAL OFFER - โปรโมชั่นพิเศษ ลดสูงสุด 35% ⚡
               </span>
               <div className="w-3 h-3 bg-yellow-400 rounded-full animate-bounce" style={{animationDelay: '0.5s'}}></div>
             </div>
@@ -100,7 +112,7 @@ const Pricing = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
           {plans.map((plan, index) => (
             <Card 
               key={plan.id}
@@ -136,7 +148,7 @@ const Pricing = () => {
                 <div className="mt-6">
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <span className="text-lg text-slate-400 line-through">฿{plan.originalPrice.toLocaleString()}</span>
-                    <Badge className="bg-red-600 text-white">ลด 75%</Badge>
+                    <Badge className="bg-red-600 text-white">ลด {Math.round(((plan.originalPrice - plan.price) / plan.originalPrice) * 100)}%</Badge>
                   </div>
                   <div className="flex items-baseline justify-center gap-1">
                     <span className="text-4xl font-bold text-white">฿{plan.price.toLocaleString()}</span>
@@ -157,14 +169,14 @@ const Pricing = () => {
                 </ul>
 
                 <Button 
-                  className={`w-full text-lg py-6 ${
+                  className={`w-full text-sm py-4 ${
                     plan.popular 
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-purple-500/25' 
+                      ? 'bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 shadow-lg shadow-cyan-500/25' 
                       : `bg-gradient-to-r ${plan.color} hover:opacity-90`
                   }`}
-                  onClick={() => window.location.href = '/payment-confirm'}
+                  onClick={() => window.location.href = '/payment'}
                 >
-                  {plan.popular ? '🚀' : '⚡'} เลือกแพ็ค {plan.name}
+                  {plan.popular ? '🚀' : '⚡'} เลือกคอร์สนี้
                 </Button>
               </CardContent>
             </Card>

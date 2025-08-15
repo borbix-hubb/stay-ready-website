@@ -1,39 +1,78 @@
-# Welcome to your Lovable project
+# Stay Ready Website - Crypto Trading Education Platform
 
-## Project info
+แพลตฟอร์มการเรียนรู้การเทรด Crypto และ Forex ที่มีคอร์สเรียนครบครัน รวมถึงระบบสมาชิก และเครื่องมือการเรียนรู้ต่างๆ
 
-**URL**: https://lovable.dev/projects/36b3821f-59a0-47cc-a564-95b9501e8880
+## วิธีย้ายโปรเจค (Project Migration)
 
-## How can I edit this code?
+หากต้องการย้ายโปรเจคไปยังตำแหน่งใหม่:
 
-There are several ways of editing your application.
+```bash
+# 1. เปิด Terminal และไปที่ Project 2025 folder
+cd "/Users/borbix/Desktop/Project 2025"
 
-**Use Lovable**
+# 2. สร้าง folder ใหม่ชื่อ stay-ready-website
+mkdir -p "stay-ready-website"
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/36b3821f-59a0-47cc-a564-95b9501e8880) and start prompting.
+# 3. ย้ายไฟล์ทั้งหมดจาก crypto-kanit-dark ไปยัง stay-ready-website
+cp -r "wealth app2/wealth condo/crypto-kanit-dark/"* "stay-ready-website/"
 
-Changes made via Lovable will be committed automatically to this repo.
+# 4. ย้าย hidden files (.gitignore, etc.) ด้วย
+cp -r "wealth app2/wealth condo/crypto-kanit-dark/".* "stay-ready-website/" 2>/dev/null || true
 
-**Use your preferred IDE**
+# 5. เข้าไปใน folder ใหม่
+cd "stay-ready-website"
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+# 6. ตรวจสอบว่าไฟล์ครบหรือไม่
+ls -la
+```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## วิธีเปิดโปรเจค (How to Run the Project)
 
-Follow these steps:
+### Prerequisites
+- Node.js (เวอร์ชัน 18 หรือสูงกว่า)
+- npm หรือ yarn
+- Git
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### การติดตั้งและรัน
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+```bash
+# 1. เข้าไปใน folder โปรเจค
+cd "/Users/borbix/Desktop/Project 2025/stay-ready-website"
 
-# Step 3: Install the necessary dependencies.
-npm i
+# 2. ติดตั้ง dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# 3. เริ่มรัน development server
 npm run dev
+
+# 4. เปิดเบราว์เซอร์ไปที่ http://localhost:5173
+```
+
+### การใช้งาน Claude Code
+
+```bash
+# เปิด Claude Code ใน folder โปรเจค
+cd "/Users/borbix/Desktop/Project 2025/stay-ready-website"
+claude-code
+```
+
+### คำสั่งที่มีประโยชน์
+
+```bash
+# รัน development server
+npm run dev
+
+# Build สำหรับ production
+npm run build
+
+# Preview production build
+npm run preview
+
+# ตรวจสอบ linting
+npm run lint
+
+# ตรวจสอบ TypeScript
+npm run typecheck
 ```
 
 **Edit a file directly in GitHub**

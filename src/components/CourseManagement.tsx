@@ -355,6 +355,25 @@ const CourseManagement = () => {
 
   const deleteCategory = async (categoryId: string) => {
     try {
+      // First check if there are courses using this category
+      const { data: courses, error: checkError } = await supabase
+        .from('courses')
+        .select('id')
+        .eq('category_id', categoryId);
+
+      if (checkError) throw checkError;
+
+      // If there are courses, update them to remove the category reference
+      if (courses && courses.length > 0) {
+        const { error: updateError } = await supabase
+          .from('courses')
+          .update({ category_id: null })
+          .eq('category_id', categoryId);
+
+        if (updateError) throw updateError;
+      }
+
+      // Now delete the category
       const { error } = await supabase
         .from('course_categories')
         .delete()
@@ -364,10 +383,13 @@ const CourseManagement = () => {
 
       toast({
         title: "ลบหมวดหมู่สำเร็จ",
-        description: "หมวดหมู่ถูกลบแล้ว",
+        description: courses && courses.length > 0 
+          ? `หมวดหมู่ถูกลบแล้ว และคอร์ส ${courses.length} คอร์สถูกอัปเดต`
+          : "หมวดหมู่ถูกลบแล้ว",
       });
 
       fetchCategories();
+      fetchCourses(); // Refresh courses list as well
     } catch (error: any) {
       toast({
         title: "เกิดข้อผิดพลาด",

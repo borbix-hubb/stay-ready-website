@@ -22,3 +22,32 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Cursor MCP configuration with sensitive keys
+.cursor/mcp.json
+
+# Supabase
+.supabase/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Build files
+build/
+out/
+
+# OS files
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
