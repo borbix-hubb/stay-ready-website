@@ -1,112 +1,120 @@
-# Stay Ready Website - Crypto Trading Education Platform
+# CryptoLearn Pro - แพลตฟอร์มเรียนรู้คริปโตแบบมืออาชีพ
+
+🚀 **Live Website:** https://borbix-hubb.github.io/stay-ready-website/
 
 แพลตฟอร์มการเรียนรู้การเทรด Crypto และ Forex ที่มีคอร์สเรียนครบครัน รวมถึงระบบสมาชิก และเครื่องมือการเรียนรู้ต่างๆ
 
-## วิธีย้ายโปรเจค (Project Migration)
+## 📋 คุณสมบัติหลัก
 
-หากต้องการย้ายโปรเจคไปยังตำแหน่งใหม่:
+- 📚 คอร์สเรียนคริปโตครบวงจร
+- 💹 การวิเคราะห์ทางเทคนิค
+- 💰 การบริหารจัดการเงิน (Money Management)
+- 📊 Dashboard สำหรับติดตามความคืบหน้า
+- 🎓 ระบบสมาชิกและการชำระเงิน
+- 📱 รองรับการใช้งานบนมือถือ
+- 🔒 ระบบ Authentication ด้วย Supabase
 
-```bash
-# 1. เปิด Terminal และไปที่ Project 2025 folder
-cd "/Users/borbix/Desktop/Project 2025"
+## 🚀 การติดตั้งและรันโปรเจค
 
-# 2. สร้าง folder ใหม่ชื่อ stay-ready-website
-mkdir -p "stay-ready-website"
-
-# 3. ย้ายไฟล์ทั้งหมดจาก crypto-kanit-dark ไปยัง stay-ready-website
-cp -r "wealth app2/wealth condo/crypto-kanit-dark/"* "stay-ready-website/"
-
-# 4. ย้าย hidden files (.gitignore, etc.) ด้วย
-cp -r "wealth app2/wealth condo/crypto-kanit-dark/".* "stay-ready-website/" 2>/dev/null || true
-
-# 5. เข้าไปใน folder ใหม่
-cd "stay-ready-website"
-
-# 6. ตรวจสอบว่าไฟล์ครบหรือไม่
-ls -la
-```
-
-## วิธีเปิดโปรเจค (How to Run the Project)
-
-### Prerequisites
-- Node.js (เวอร์ชัน 18 หรือสูงกว่า)
+### ข้อกำหนดเบื้องต้น
+- Node.js 18+ 
 - npm หรือ yarn
 - Git
 
-### การติดตั้งและรัน
+### ขั้นตอนการติดตั้ง
 
+1. **Clone repository**
 ```bash
-# 1. เข้าไปใน folder โปรเจค
-cd "/Users/borbix/Desktop/Project 2025/stay-ready-website"
+git clone https://github.com/borbix-hubb/stay-ready-website.git
+cd stay-ready-website
+```
 
-# 2. ติดตั้ง dependencies
+2. **ติดตั้ง dependencies**
+```bash
 npm install
-
-# 3. เริ่มรัน development server
-npm run dev
-
-# 4. เปิดเบราว์เซอร์ไปที่ http://localhost:5173
 ```
 
-### การใช้งาน Claude Code
-
+3. **รันในโหมด development**
 ```bash
-# เปิด Claude Code ใน folder โปรเจค
-cd "/Users/borbix/Desktop/Project 2025/stay-ready-website"
-claude-code
+npm run dev
 ```
+เว็บจะเปิดที่ http://localhost:3000
 
-### คำสั่งที่มีประโยชน์
+## 📦 คำสั่งที่ใช้บ่อย
 
 ```bash
-# รัน development server
+# Development server
 npm run dev
 
-# Build สำหรับ production
+# Build for production
 npm run build
 
 # Preview production build
 npm run preview
 
-# ตรวจสอบ linting
-npm run lint
+# Deploy to GitHub Pages
+npm run deploy
 
-# ตรวจสอบ TypeScript
-npm run typecheck
+# Run linter
+npm run lint
 ```
 
-**Edit a file directly in GitHub**
+## 🚀 การ Deploy
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Deploy ไปยัง GitHub Pages
 
-**Use GitHub Codespaces**
+1. แก้ไขโค้ดตามต้องการ
+2. รันคำสั่ง deploy:
+```bash
+npm run deploy
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+คำสั่งนี้จะ:
+- Build โปรเจคโดยอัตโนมัติ
+- Push ไปยัง gh-pages branch
+- อัพเดทเว็บไซต์ที่ GitHub Pages
 
-## What technologies are used for this project?
+เว็บจะอัพเดทภายใน 1-2 นาที
 
-This project is built with:
+## 🛠️ เทคโนโลยีที่ใช้
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- **Frontend:** React + TypeScript
+- **UI Framework:** Tailwind CSS + shadcn/ui
+- **Build Tool:** Vite
+- **Database:** Supabase
+- **Deployment:** GitHub Pages
+- **Package Manager:** npm
 
-## How can I deploy this project?
+## 📁 โครงสร้างโปรเจค
 
-Simply open [Lovable](https://lovable.dev/projects/36b3821f-59a0-47cc-a564-95b9501e8880) and click on Share -> Publish.
+```
+crypto-kanit-dark/
+├── src/
+│   ├── components/     # React components
+│   ├── pages/          # หน้าต่างๆ
+│   ├── contexts/       # React contexts
+│   ├── lib/           # Utilities และ helpers
+│   └── main.tsx       # Entry point
+├── public/            # Static files
+├── dist/              # Production build
+└── package.json       # Dependencies และ scripts
+```
 
-## Can I connect a custom domain to my Lovable project?
+## 📱 หน้าหลักของเว็บ
 
-Yes, you can!
+- **/** - หน้าแรก
+- **/courses** - รายการคอร์สทั้งหมด
+- **/dashboard** - แดชบอร์ดผู้ใช้
+- **/auth** - หน้าเข้าสู่ระบบ/สมัครสมาชิก
+- **/payment** - หน้าชำระเงิน
+- **/portfolio** - พอร์ตโฟลิโอ
+- **/pattern-chart** - กราฟรูปแบบการเทรด
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 📞 ติดต่อ
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- GitHub: [@borbix-hubb](https://github.com/borbix-hubb)
+- Website: https://borbix-hubb.github.io/stay-ready-website/
+
+---
+
+Built with ❤️ using React, Vite, and Tailwind CSS
