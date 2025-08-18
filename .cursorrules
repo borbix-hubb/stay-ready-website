@@ -1,0 +1,42 @@
+# Cursor Rules for Crypto Kanit Dark Project
+
+## Project Context
+This is a wealth management and cryptocurrency application with Supabase backend.
+
+## Code Style
+- Use TypeScript for all new code
+- Follow existing patterns in the codebase
+- Use Tailwind CSS for styling
+- Components should be in src/components
+- Pages should be in src/pages
+- Supabase types are auto-generated in src/integrations/supabase/types.ts
+
+## Database
+- Always handle foreign key constraints properly
+- Use SET NULL or CASCADE DELETE appropriately
+- Test database operations before deployment
+- Use RLS policies for security
+
+## Best Practices
+- Always use proper error handling with try-catch
+- Show user-friendly toast notifications for errors
+- Use loading states for async operations
+- Validate forms before submission
+- Handle edge cases (null values, empty arrays, etc.)
+
+## Security
+- Never expose sensitive keys in frontend code
+- Use environment variables for configuration
+- Implement proper authentication checks
+- Validate user inputs both client and server side
+
+## Testing
+- Test on both desktop and mobile devices
+- Ensure iPhone compatibility for file uploads
+- Test with various file formats and sizes
+- Check for proper error messages
+
+## Git Workflow
+- Write clear, descriptive commit messages
+- Test changes before committing
+- Keep commits focused on single features/fixes
