@@ -81,14 +81,7 @@ const App = () => {
         {/* Legacy routes - redirect to new auth page */}
         <Route path="/login" element={<Navigate to="/auth" replace />} />
         <Route path="/register" element={<Navigate to="/auth" replace />} />
-        <Route 
-          path="/payment" 
-          element={
-            <ProtectedRoute>
-              <Payment />
-            </ProtectedRoute>
-          } 
-        />
+        <Route path="/payment" element={<Payment />} />
         <Route 
           path="/payment-confirm" 
           element={

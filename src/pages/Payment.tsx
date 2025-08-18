@@ -5,6 +5,7 @@ import { CheckCircle, Star, Shield, Clock, Users, ArrowRight, Zap, Target, Trend
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
+import Header from "@/components/Header";
 
 const Payment = () => {
   const navigate = useNavigate();
@@ -196,7 +197,9 @@ const Payment = () => {
   ];
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <>
+      <Header />
+      <div className="min-h-screen relative overflow-hidden">
       {/* Space Background with Stars */}
       <div className="fixed inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-black">
         {/* Animated Stars */}
@@ -617,6 +620,7 @@ const Payment = () => {
         </section>
       </div>
     </div>
+    </>
   );
 };
 
