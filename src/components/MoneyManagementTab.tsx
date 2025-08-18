@@ -729,16 +729,16 @@ const MoneyManagementTab = () => {
                 {psychologyTips.map((section, index) => (
                   <div key={index} className="space-y-4">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-primary/20 rounded-lg">
-                        <Brain className="w-5 h-5 text-primary" />
+                      <div className="p-2 bg-green-500/20 rounded-lg">
+                        <Brain className="w-5 h-5 text-green-400" />
                       </div>
                       <h3 className="font-bold text-lg">{section.title}</h3>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {section.tips.map((tip, i) => (
-                        <div key={i} className="group flex items-start gap-3 bg-gradient-to-r from-muted/50 to-muted/30 p-4 rounded-lg border border-border/50 hover:border-primary/50 transition-all hover:shadow-md">
+                        <div key={i} className="group flex items-start gap-3 bg-gradient-to-r from-green-500/10 to-emerald-500/10 p-4 rounded-lg border border-green-500/30 hover:border-green-400/50 transition-all hover:shadow-md hover:shadow-green-500/20">
                           <div className="mt-0.5">
-                            <CheckCircle2 className="w-4 h-4 text-primary" />
+                            <CheckCircle2 className="w-4 h-4 text-green-400" />
                           </div>
                           <p className="text-sm leading-relaxed">{tip}</p>
                         </div>

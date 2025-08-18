@@ -180,11 +180,11 @@ const Courses = () => {
         <section className="py-20 bg-gradient-to-br from-primary/5 via-background to-accent/5">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12 animate-fade-in">
-              <h1 className="text-5xl md:text-6xl font-bold mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
                 คอร์สเรียน{" "}
                 <span className="gradient-text">ครบครัน</span>
               </h1>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
                 เรียนรู้จากผู้เชี่ยวชาญด้วยคอร์สที่ออกแบบมาเพื่อให้คุณเป็นมืออาชีพ
                 ไม่ว่าจะเป็นมือใหม่หรือเทรดเดอร์ที่มีประสบการณ์
               </p>
@@ -236,11 +236,11 @@ const Courses = () => {
             {filteredCourses.length === 0 ? (
               <div className="text-center py-20">
                 <div className="text-6xl mb-4">📚</div>
-                <h3 className="text-2xl font-bold mb-2">ไม่พบคอร์สที่ค้นหา</h3>
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2">ไม่พบคอร์สที่ค้นหา</h3>
                 <p className="text-muted-foreground">ลองเปลี่ยนคำค้นหาหรือตัวกรองใหม่</p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                 {filteredCourses.map((course, index) => (
                   <Card 
                     key={course.id} 

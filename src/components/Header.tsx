@@ -3,7 +3,8 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuL
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User, Menu, X } from "lucide-react";
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,11 +12,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
   
   const handleSignOut = async () => {
     await signOut();
@@ -29,6 +36,7 @@ const Header = () => {
           Stay Ready
         </Link>
         
+        {/* Desktop Navigation */}
         <NavigationMenu className="hidden md:block">
           <NavigationMenuList className="space-x-1 sm:space-x-2">
             <NavigationMenuItem>
@@ -94,6 +102,109 @@ const Header = () => {
             )}
           </NavigationMenuList>
         </NavigationMenu>
+
+        {/* Mobile Navigation */}
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" className="md:hidden">
+              <Menu className="h-5 w-5" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+            <nav className="flex flex-col gap-4 mt-8">
+              <Link 
+                to="/" 
+                onClick={() => setIsOpen(false)}
+                className={cn(
+                  "text-lg font-medium px-4 py-2 rounded-md transition-colors",
+                  location.pathname === "/" ? "bg-accent" : "hover:bg-accent/50"
+                )}
+              >
+                หน้าแรก
+              </Link>
+              
+              <Link 
+                to="/courses" 
+                onClick={() => setIsOpen(false)}
+                className={cn(
+                  "text-lg font-medium px-4 py-2 rounded-md transition-colors",
+                  location.pathname === "/courses" ? "bg-accent" : "hover:bg-accent/50"
+                )}
+              >
+                คอร์สเรียน
+              </Link>
+              
+              <Link 
+                to="/portfolio" 
+                onClick={() => setIsOpen(false)}
+                className={cn(
+                  "text-lg font-medium px-4 py-2 rounded-md transition-colors",
+                  location.pathname === "/portfolio" ? "bg-accent" : "hover:bg-accent/50"
+                )}
+              >
+                ผลงาน
+              </Link>
+              
+              <Link 
+                to="/contact" 
+                onClick={() => setIsOpen(false)}
+                className={cn(
+                  "text-lg font-medium px-4 py-2 rounded-md transition-colors",
+                  location.pathname === "/contact" ? "bg-accent" : "hover:bg-accent/50"
+                )}
+              >
+                ติดต่อเรา
+              </Link>
+              
+              {user && (
+                <Link 
+                  to="/dashboard" 
+                  onClick={() => setIsOpen(false)}
+                  className={cn(
+                    "text-lg font-medium px-4 py-2 rounded-md transition-colors",
+                    location.pathname === "/dashboard" ? "bg-accent" : "hover:bg-accent/50"
+                  )}
+                >
+                  แดชบอร์ด
+                </Link>
+              )}
+              
+              <div className="border-t border-border pt-4 mt-4">
+                {user ? (
+                  <div className="space-y-2">
+                    <div className="px-4 py-2 text-sm text-muted-foreground">
+                      สวัสดี, {user.email?.split('@')[0] || 'ผู้ใช้'}
+                    </div>
+                    <Button 
+                      onClick={() => {
+                        handleSignOut();
+                        setIsOpen(false);
+                      }}
+                      variant="ghost" 
+                      className="w-full justify-start px-4 text-red-600 hover:text-red-700 hover:bg-red-50"
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      ออกจากระบบ
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <Link to="/auth" onClick={() => setIsOpen(false)}>
+                      <Button variant="ghost" className="w-full justify-start px-4">
+                        เข้าสู่ระบบ
+                      </Button>
+                    </Link>
+                    <Link to="/auth" onClick={() => setIsOpen(false)}>
+                      <Button className="w-full justify-start px-4">
+                        สมัครสมาชิก
+                      </Button>
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </nav>
+          </SheetContent>
+        </Sheet>
         
         <div className="flex items-center space-x-2 sm:space-x-3">
           {user ? (
