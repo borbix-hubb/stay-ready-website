@@ -24,13 +24,13 @@ const Header = () => {
   
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link to="/" className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+      <div className="container mx-auto px-4 py-3 sm:py-4 flex items-center justify-between">
+        <Link to="/" className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
           Stay Ready
         </Link>
         
-        <NavigationMenu>
-          <NavigationMenuList className="space-x-2">
+        <NavigationMenu className="hidden md:block">
+          <NavigationMenuList className="space-x-1 sm:space-x-2">
             <NavigationMenuItem>
               <NavigationMenuLink
                 className={cn(
@@ -95,13 +95,13 @@ const Header = () => {
           </NavigationMenuList>
         </NavigationMenu>
         
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2 sm:space-x-3">
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center space-x-2">
+                <Button variant="ghost" className="flex items-center space-x-1 sm:space-x-2 text-sm sm:text-base">
                   <User className="w-4 h-4" />
-                  <span>สวัสดี, คุณ {user.email?.split('@')[0] || 'ผู้ใช้'}</span>
+                  <span className="hidden sm:inline">สวัสดี, คุณ {user.email?.split('@')[0] || 'ผู้ใช้'}</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -120,10 +120,10 @@ const Header = () => {
             </DropdownMenu>
           ) : (
             <>
-              <Button variant="ghost" asChild>
+              <Button variant="ghost" size="sm" className="text-sm" asChild>
                 <Link to="/auth">เข้าสู่ระบบ</Link>
               </Button>
-              <Button asChild>
+              <Button size="sm" className="text-sm" asChild>
                 <Link to="/auth">สมัครสมาชิก</Link>
               </Button>
             </>

@@ -85,10 +85,10 @@ const Hero = () => {
               <Button 
                 onClick={handleViewCourses}
                 size="lg" 
-                className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-black font-bold text-xl px-12 py-6 rounded-full shadow-2xl shadow-amber-500/30 transition-all duration-300 hover:scale-105 border-0"
+                className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-black font-bold text-base sm:text-lg lg:text-xl px-6 sm:px-8 lg:px-12 py-4 sm:py-5 lg:py-6 rounded-full shadow-2xl shadow-amber-500/30 transition-all duration-300 hover:scale-105 border-0"
               >
                 เริ่มเรียนเลย - ดูคอร์สทั้งหมด
-                <ArrowRight className="ml-3 w-6 h-6" />
+                <ArrowRight className="ml-2 sm:ml-3 w-5 h-5 sm:w-6 sm:h-6" />
               </Button>
               
               <div className="flex flex-wrap justify-center gap-6 text-sm">
