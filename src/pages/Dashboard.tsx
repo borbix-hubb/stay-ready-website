@@ -19,6 +19,7 @@ import PatternChart from "./PatternChart";
 import Courses from "./Courses";
 import Payment from "./Payment";
 import ForexBasicsTab from "@/components/ForexBasicsTab";
+import MoneyManagementTab from "@/components/MoneyManagementTab";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -375,10 +376,7 @@ const Dashboard = () => {
               </TabsContent>
 
               <TabsContent value="money-management">
-                <div className="text-center py-12">
-                  <h2 className="text-2xl font-bold text-foreground mb-4">Money Management</h2>
-                  <p className="text-muted-foreground">หน้า Money Management กำลังพัฒนา</p>
-                </div>
+                <MoneyManagementTab />
               </TabsContent>
 
               <TabsContent value="vip">

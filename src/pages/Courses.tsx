@@ -240,7 +240,7 @@ const Courses = () => {
                 <p className="text-muted-foreground">ลองเปลี่ยนคำค้นหาหรือตัวกรองใหม่</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                 {filteredCourses.map((course, index) => (
                   <Card 
                     key={course.id} 
@@ -248,7 +248,7 @@ const Courses = () => {
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     <CardHeader className="p-0">
-                      <div className="w-full h-40 bg-gradient-to-br from-primary/20 to-accent/20 rounded-t-lg flex items-center justify-center">
+                      <div className="w-full aspect-square bg-gradient-to-br from-primary/20 to-accent/20 rounded-t-lg flex items-center justify-center overflow-hidden relative">
                         {course.thumbnail_url ? (
                           <img 
                             src={course.thumbnail_url} 
@@ -268,7 +268,15 @@ const Courses = () => {
                             {course.price_type === 'free' ? 'ฟรี' : 'พรีเมี่ยม'}
                           </Badge>
                           {course.course_categories && (
-                            <Badge variant="outline">
+                            <Badge 
+                              variant="outline"
+                              className={`
+                                ${course.course_categories.name === 'พื้นฐาน' ? 'bg-green-500/20 text-green-400 border-green-500/50' : ''}
+                                ${course.course_categories.name === 'เทรดดิ้ง' ? 'bg-blue-500/20 text-blue-400 border-blue-500/50' : ''}
+                                ${course.course_categories.name === 'ขั้นสูง' ? 'bg-purple-500/20 text-purple-400 border-purple-500/50' : ''}
+                                ${!['พื้นฐาน', 'เทรดดิ้ง', 'ขั้นสูง'].includes(course.course_categories.name) ? 'bg-orange-500/20 text-orange-400 border-orange-500/50' : ''}
+                              `}
+                            >
                               {course.course_categories.name}
                             </Badge>
                           )}
@@ -276,7 +284,7 @@ const Courses = () => {
                         <CardTitle className="text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">
                           {course.title}
                         </CardTitle>
-                        <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
+                        <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 whitespace-pre-line">
                           {course.description || "คำอธิบายคอร์ส"}
                         </p>
                       </div>
@@ -297,7 +305,11 @@ const Courses = () => {
                       {course.tags && course.tags.length > 0 && (
                         <div className="flex flex-wrap gap-1">
                           {course.tags.slice(0, 2).map((tag, tagIndex) => (
-                            <Badge key={tagIndex} variant="outline" className="text-xs">
+                            <Badge 
+                              key={tagIndex} 
+                              variant="outline" 
+                              className="text-xs bg-gray-500/10 text-gray-400 border-gray-500/30"
+                            >
                               {tag}
                             </Badge>
                           ))}
@@ -346,13 +358,10 @@ const Courses = () => {
                         </Collapsible>
                       )}
 
-                      <div className="flex items-center justify-between pt-4 border-t border-primary/20">
-                        <div className="text-xl font-bold text-accent">
-                          {formatPrice(course.price_type, course.price_amount)}
-                        </div>
+                      <div className="flex items-center justify-center pt-4 border-t border-primary/20">
                         <Button 
                           className="crypto-button group" 
-                          size="sm"
+                          size="default"
                           onClick={() => {
                             window.location.href = `/course/${course.id}`;
                           }}

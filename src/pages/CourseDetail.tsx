@@ -223,7 +223,7 @@ const CourseDetail = () => {
                   <CardTitle className="text-3xl font-bold mb-3 text-foreground">
                     {course.title}
                   </CardTitle>
-                  <p className="text-muted-foreground leading-relaxed text-base">
+                  <p className="text-muted-foreground leading-relaxed text-base whitespace-pre-line">
                     {course.description || "คำอธิบายคอร์ส"}
                   </p>
                 </CardHeader>

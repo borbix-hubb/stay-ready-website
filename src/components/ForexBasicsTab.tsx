@@ -2807,7 +2807,7 @@ const ForexBasicsTab = () => {
                                       <ul className="text-slate-300 text-xs space-y-1">
                                         <li>• ใช้ Partial TP (ปิดทีละส่วน)</li>
                                         <li>• เลื่อน SL เป็น Breakeven</li>
-                                        <li>• TP ควร > SL อย่างน้อย 1.5 เท่า</li>
+                                        <li>• TP ควรมากกว่า SL อย่างน้อย 1.5 เท่า</li>
                                       </ul>
                                     </div>
                                   </div>
