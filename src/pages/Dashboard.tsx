@@ -20,6 +20,7 @@ import Courses from "./Courses";
 import Payment from "./Payment";
 import ForexBasicsTab from "@/components/ForexBasicsTab";
 import MoneyManagementTab from "@/components/MoneyManagementTab";
+import Header from "@/components/Header";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -143,52 +144,27 @@ const Dashboard = () => {
   );
 
   return (
-    <SidebarProvider>
-      <ParticleBackground />
-      <div className="min-h-screen flex w-full relative">
-        <AppSidebar 
-          userRole={userRole} 
-          membershipStatus={membershipStatus}
-          activeTab={currentTab}
-          onTabChange={handleTabChange}
-        />
-        
-        <main className="flex-1 flex flex-col relative">
-          {/* Futuristic header */}
-          <header className="h-20 flex items-center border-b border-cyan-500/20 bg-slate-900/50 backdrop-blur-xl relative overflow-hidden">
-            {/* Scanline */}
-            <div className="absolute inset-0 bg-gradient-to-b from-cyan-400/10 to-transparent" />
-            
-            <div className="flex items-center justify-between w-full px-6 relative z-10">
-              <div className="flex items-center gap-4">
-                <SidebarTrigger className="text-cyan-400 hover:text-cyan-300 transition-colors" />
-                <div 
-                  onClick={() => handleTabChange('overview')}
-                  className="cursor-pointer group"
-                >
-                  <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:to-purple-300 transition-all">
-                    สวัสดี, {user?.email?.split('@')[0] || 'ผู้ใช้'}
-                  </h1>
-                  <p className="text-xs text-cyan-400/60 group-hover:text-cyan-400/80 transition-colors">
-                    คลิกเพื่อกลับหน้าแรก Dashboard
-                  </p>
-                </div>
-              </div>
-              
-              {/* Clock */}
-              <div className="flex items-center gap-4">
-                <div className="text-right">
-                  <p className="text-xs text-cyan-400/60">เวลาปัจจุบัน</p>
-                  <p className="text-lg font-mono text-cyan-400">
-                    {currentTime.toLocaleTimeString('th-TH', { hour12: false })}
-                  </p>
-                </div>
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              </div>
+    <>
+      {/* Header at top level */}
+      <Header />
+      
+      <SidebarProvider>
+        <ParticleBackground />
+        <div className="min-h-screen flex w-full relative pt-16">
+          <AppSidebar 
+            userRole={userRole} 
+            membershipStatus={membershipStatus}
+            activeTab={currentTab}
+            onTabChange={handleTabChange}
+          />
+          
+          <main className="flex-1 flex flex-col relative">
+            {/* Sidebar trigger */}
+            <div className="flex items-center px-4 py-2 border-b border-cyan-500/20 bg-slate-900/50 backdrop-blur-xl">
+              <SidebarTrigger className="text-cyan-400 hover:text-cyan-300 transition-colors" />
             </div>
-          </header>
 
-          <div className="flex-1 p-6 relative">
+            <div className="flex-1 p-6 relative">
             <Tabs value={currentTab} onValueChange={handleTabChange} className="w-full">
               {/* ซ่อน TabsList เพราะใช้ sidebar แทน */}
               <div className="hidden">
@@ -410,10 +386,11 @@ const Dashboard = () => {
                 </div>
               </TabsContent>
             </Tabs>
-          </div>
-        </main>
-      </div>
-    </SidebarProvider>
+            </div>
+          </main>
+        </div>
+      </SidebarProvider>
+    </>
   );
 };
 
