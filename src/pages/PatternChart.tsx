@@ -9,7 +9,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Upload, Trash2, Eye, TrendingUp, TrendingDown, BarChart3 } from "lucide-react";
-import Header from "@/components/Header";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 
@@ -198,13 +197,10 @@ const PatternChart = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <div className="container mx-auto px-4 py-20">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold mb-4">กรุณาเข้าสู่ระบบ</h1>
-            <p className="text-muted-foreground">เข้าสู่ระบบเพื่อจัดการแพทเทิร์นชาร์ตของคุณ</p>
-          </div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold mb-4">กรุณาเข้าสู่ระบบ</h1>
+          <p className="text-muted-foreground">เข้าสู่ระบบเพื่อจัดการแพทเทิร์นชาร์ตของคุณ</p>
         </div>
       </div>
     );
@@ -212,9 +208,7 @@ const PatternChart = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-      
-      <div className="container mx-auto px-4 py-20">
+      <div className="container mx-auto px-4 py-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
