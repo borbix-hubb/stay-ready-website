@@ -166,19 +166,19 @@ const Dashboard = () => {
                   <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
                     Stay Ready Dashboard
                   </h1>
-                  <p className="text-xs text-cyan-400/60 font-mono">SYSTEM.CONTROL.PANEL.v2.0</p>
+                  <p className="text-xs text-cyan-400/60">แพลตฟอร์มการเรียนรู้ออนไลน์</p>
                 </div>
               </div>
               
-              {/* Futuristic clock */}
+              {/* Clock */}
               <div className="flex items-center gap-4">
                 <div className="text-right">
-                  <p className="text-xs text-cyan-400/60 font-mono">SYSTEM.TIME</p>
+                  <p className="text-xs text-cyan-400/60">เวลาปัจจุบัน</p>
                   <p className="text-lg font-mono text-cyan-400">
-                    {currentTime.toLocaleTimeString('en-US', { hour12: false })}
+                    {currentTime.toLocaleTimeString('th-TH', { hour12: false })}
                   </p>
                 </div>
-                <div className="w-2 h-2 bg-green-400 rounded-full" />
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
               </div>
             </div>
           </header>
@@ -197,16 +197,14 @@ const Dashboard = () => {
               <div className="relative p-6 bg-gradient-to-r from-slate-900/90 via-slate-800/90 to-slate-900/90 rounded-xl border border-cyan-500/30 backdrop-blur-xl overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/5 to-pink-500/5" />
                 <div className="relative z-10">
-                  <h2 className="text-2xl font-bold text-cyan-400 mb-2">
-                    WELCOME TO THE FUTURE
+                  <h2 className="text-3xl font-bold text-cyan-400 mb-2">
+                    สวัสดี, {user?.email?.split('@')[0] || 'ผู้ใช้'}!
                   </h2>
-                  <p className="text-slate-400 font-mono text-sm">
-                    <span>
-                      INITIALIZING NEURAL INTERFACE... 
-                    </span>
-                    <span className="text-green-400 ml-2">
-                      [CONNECTED]
-                    </span>
+                  <p className="text-slate-400 text-lg">
+                    ยินดีต้อนรับสู่ Stay Ready Dashboard
+                  </p>
+                  <p className="text-slate-500 text-sm mt-2">
+                    เริ่มต้นการเรียนรู้และพัฒนาทักษะของคุณวันนี้
                   </p>
                 </div>
               </div>
@@ -214,27 +212,27 @@ const Dashboard = () => {
               {/* Stats Cards with futuristic design */}
               <div className="grid md:grid-cols-3 gap-6">
                 <FuturisticCard
-                  title="TOTAL.COURSES"
+                  title="คอร์สทั้งหมด"
                   value="0"
-                  subtitle="COURSES.ENROLLED"
+                  subtitle="คอร์สที่ลงทะเบียน"
                   icon={Database}
                   color="bg-gradient-to-br from-blue-600/20 to-cyan-600/20"
                   delay={0.1}
                 />
                 
                 <FuturisticCard
-                  title="ACTIVE.LEARNING"
+                  title="กำลังเรียน"
                   value="0"
-                  subtitle="IN.PROGRESS"
+                  subtitle="คอร์สที่กำลังดำเนินการ"
                   icon={Activity}
                   color="bg-gradient-to-br from-purple-600/20 to-pink-600/20"
                   delay={0.2}
                 />
                 
                 <FuturisticCard
-                  title="COMPLETED"
+                  title="เรียนจบแล้ว"
                   value="0"
-                  subtitle="MISSIONS.COMPLETE"
+                  subtitle="คอร์สที่สำเร็จ"
                   icon={Shield}
                   color="bg-gradient-to-br from-green-600/20 to-emerald-600/20"
                   delay={0.3}
