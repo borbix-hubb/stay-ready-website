@@ -39,6 +39,29 @@ const features = [
   }
 ];
 
+const outcomes = [
+  {
+    title: "อ่านกราฟได้ด้วยตัวเอง",
+    description: "ไม่ต้องง้อใครวิเคราะห์"
+  },
+  {
+    title: "ตีกราฟเป็น เข้าใจโครงสร้างตลาด",
+    description: "มองออกว่าแนวโน้มกำลังจะไปทางไหน"
+  },
+  {
+    title: "รู้จุดเข้า–จุดออกชัดเจน",
+    description: "ลดการเทรดมั่ว ๆ ที่ทำให้ล้างพอร์ต"
+  },
+  {
+    title: "เริ่มต้นได้แม้มีทุนน้อย",
+    description: "สร้างกำไรแบบค่อยเป็นค่อยไป ยั่งยืน ไม่ใช่รวยเร็วแล้วหมดตัว"
+  },
+  {
+    title: "สร้างระบบการเทรดของตัวเอง",
+    description: "กลายเป็นเทรดเดอร์ที่พึ่งพาตัวเองได้จริง"
+  }
+];
+
 const Features = () => {
   return (
     <section className="py-32 relative">
@@ -101,76 +124,43 @@ const Features = () => {
           ))}
         </div>
 
-        {/* Success Stats */}
-        <div className="bg-gradient-to-r from-slate-800/60 to-slate-900/60 backdrop-blur-sm border border-slate-700/50 rounded-3xl p-12">
+        {/* What You'll Learn Section */}
+        <div className="mt-24">
           <div className="text-center mb-12">
-            <h3 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">
-                ผลลัพธ์ที่พิสูจน์ได้
+            <h3 className="text-4xl md:text-5xl font-bold mb-4">
+              <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+                สิ่งที่คุณจะได้เรียนรู้
               </span>
             </h3>
-            <p className="text-xl text-slate-300">จากนักเรียนที่เรียนจบคอร์สแล้ว</p>
+            <p className="text-xl text-gray-300">
+              เปลี่ยนจากมือใหม่เป็นเทรดเดอร์ที่พึ่งพาตัวเองได้
+            </p>
           </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center group">
-              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent mb-3 group-hover:scale-110 transition-all duration-300">
-                92%
+          
+          <div className="space-y-6 max-w-4xl mx-auto">
+            {outcomes.map((outcome, index) => (
+              <div
+                key={index}
+                className="group flex items-start space-x-4 p-6 bg-slate-800/50 rounded-xl border border-slate-700 hover:border-green-500/50 transition-all duration-300"
+              >
+                <div className="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-white mb-1">
+                    {outcome.title}
+                  </h3>
+                  <p className="text-gray-400">
+                    {outcome.description}
+                  </p>
+                </div>
               </div>
-              <div className="text-slate-400">นักเรียนทำกำไรได้ในเดือนแรก</div>
-            </div>
-            
-            <div className="text-center group">
-              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-3 group-hover:scale-110 transition-all duration-300">
-                15-30%
-              </div>
-              <div className="text-slate-400">ผลตอบแทนเฉลี่ยต่อเดือน</div>
-            </div>
-            
-            <div className="text-center group">
-              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent mb-3 group-hover:scale-110 transition-all duration-300">
-                5+
-              </div>
-              <div className="text-slate-400">ปีประสบการณ์ในตลาด</div>
-            </div>
-            
-            <div className="text-center group">
-              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent mb-3 group-hover:scale-110 transition-all duration-300">
-                10K+
-              </div>
-              <div className="text-slate-400">นักเรียนทั่วโลก</div>
-            </div>
+            ))}
           </div>
         </div>
 
-        {/* Additional Benefits */}
-        <div className="mt-20 text-center">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-slate-800/30 backdrop-blur-sm border border-emerald-500/30 rounded-xl p-6">
-              <div className="w-12 h-12 bg-gradient-to-r from-emerald-600 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Shield className="w-6 h-6 text-white" />
-              </div>
-              <h4 className="text-lg font-bold text-white mb-2">รับประกันคืนเงิน</h4>
-              <p className="text-slate-400 text-sm">7 วันแรก หากไม่พอใจ</p>
-            </div>
-            
-            <div className="bg-slate-800/30 backdrop-blur-sm border border-blue-500/30 rounded-xl p-6">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Trophy className="w-6 h-6 text-white" />
-              </div>
-              <h4 className="text-lg font-bold text-white mb-2">เรียนได้ตลอดชีพ</h4>
-              <p className="text-slate-400 text-sm">อัปเดตเนื้อหาฟรีตลอดไป</p>
-            </div>
-            
-            <div className="bg-slate-800/30 backdrop-blur-sm border border-violet-500/30 rounded-xl p-6">
-              <div className="w-12 h-12 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-6 h-6 text-white" />
-              </div>
-              <h4 className="text-lg font-bold text-white mb-2">ซัพพอร์ตตลอด 24/7</h4>
-              <p className="text-slate-400 text-sm">ทีมงานพร้อมช่วยเหลือ</p>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
