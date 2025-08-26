@@ -20,7 +20,6 @@ import Courses from "./Courses";
 import Payment from "./Payment";
 import ForexBasicsTab from "@/components/ForexBasicsTab";
 import MoneyManagementTab from "@/components/MoneyManagementTab";
-import Header from "@/components/Header";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -144,13 +143,9 @@ const Dashboard = () => {
   );
 
   return (
-    <>
-      {/* Header at top level */}
-      <Header />
-      
-      <SidebarProvider>
-        <ParticleBackground />
-        <div className="min-h-screen flex w-full relative pt-20">
+    <SidebarProvider>
+      <ParticleBackground />
+      <div className="min-h-screen flex w-full relative">
           <AppSidebar 
             userRole={userRole} 
             membershipStatus={membershipStatus}
@@ -382,7 +377,7 @@ const Dashboard = () => {
           </main>
         </div>
       </SidebarProvider>
-    </>
+    </div>
   );
 };
 
