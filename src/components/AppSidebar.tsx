@@ -137,7 +137,7 @@ export function AppSidebar({ userRole, membershipStatus, activeTab, onTabChange 
 
         {/* หน้าหลัก */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-slate-400 px-4">หน้าหลัก</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-slate-300 px-4 py-2 text-sm font-semibold tracking-wide uppercase border-b border-slate-800 mb-2">หน้าหลัก</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               {mainItems.map((item) => (
@@ -164,13 +164,8 @@ export function AppSidebar({ userRole, membershipStatus, activeTab, onTabChange 
         {/* คอร์สเรียน - แสดงตามระดับสมาชิก */}
         {(isPremium || isAdmin || true) && (
           <SidebarGroup>
-            <SidebarGroupLabel className="text-slate-400 px-4">
-              {membershipStatus === 'basic' ? 'Basic Course' : 
-               membershipStatus === 'scalping' ? 'Scalping Course' :
-               membershipStatus === 'advanced' ? 'Advanced Course' :
-               membershipStatus === 'ema' ? 'EMA Course' :
-               membershipStatus === 'bundle' ? 'All-in-One Package' :
-               'คอร์สเรียน'}
+            <SidebarGroupLabel className="text-slate-300 px-4 py-2 text-sm font-semibold tracking-wide uppercase border-b border-slate-800 mb-2">
+              คอร์สเรียน
             </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu className="space-y-1">
@@ -199,7 +194,7 @@ export function AppSidebar({ userRole, membershipStatus, activeTab, onTabChange 
         {/* สำหรับ Admin */}
         {isAdmin && (
           <SidebarGroup>
-            <SidebarGroupLabel className="text-slate-400 px-4">ระบบจัดการ</SidebarGroupLabel>
+            <SidebarGroupLabel className="text-slate-300 px-4 py-2 text-sm font-semibold tracking-wide uppercase border-b border-slate-800 mb-2">ระบบจัดการ</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu className="space-y-1">
                 {adminItems.map((item) => (
@@ -226,7 +221,7 @@ export function AppSidebar({ userRole, membershipStatus, activeTab, onTabChange 
 
         {/* เรียนสด & คอมมูนิตี้ */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-slate-400 px-4">ชุมชน</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-slate-300 px-4 py-2 text-sm font-semibold tracking-wide uppercase border-b border-slate-800 mb-2">ชุมชน</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               <SidebarMenuItem>
@@ -257,7 +252,7 @@ export function AppSidebar({ userRole, membershipStatus, activeTab, onTabChange 
 
         {/* BONUS */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-slate-400 px-4">BONUS</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-slate-300 px-4 py-2 text-sm font-semibold tracking-wide uppercase border-b border-slate-800 mb-2">BONUS</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               {bonusItems.map((item) => (
@@ -283,7 +278,7 @@ export function AppSidebar({ userRole, membershipStatus, activeTab, onTabChange 
 
         {/* การจัดการบัญชี */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-slate-400 px-4">การจัดการบัญชี</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-slate-300 px-4 py-2 text-sm font-semibold tracking-wide uppercase border-b border-slate-800 mb-2">การจัดการบัญชี</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               {accountItems.map((item) => (
