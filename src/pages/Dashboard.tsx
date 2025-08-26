@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp, BookOpen, Award, Menu, Cpu, Activity, Zap, Shield, Globe, Database, Sparkles, ChevronRight } from "lucide-react";
+import { TrendingUp, BookOpen, Award, Menu, Cpu, Activity, Zap, Shield, Globe, Database, Sparkles, ChevronRight, User, CheckCircle, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import UserManagement from "@/components/UserManagement";
@@ -163,48 +163,263 @@ const Dashboard = () => {
                 </TabsList>
               </div>
 
-            <TabsContent value="overview" className="space-y-8">
-              {/* Welcome message - exactly like in screenshot */}
-              <div className="mb-8">
-                <h1 className="text-4xl font-bold text-cyan-400 mb-2">
-                  สวัสดี, {user?.email?.split('@')[0] || 'ผู้ใช้'}!
-                </h1>
-                <p className="text-slate-400 text-lg">
-                  ยินดีต้อนรับสู่ Stay Ready Dashboard
-                </p>
-                <p className="text-slate-500 text-sm mt-1">
-                  เริ่มต้นการเรียนรู้และพัฒนาทักษะของคุณวันนี้
-                </p>
+            <TabsContent value="overview" className="space-y-6">
+              {/* Welcome Bar */}
+              <div className="bg-gradient-to-r from-slate-900/90 via-slate-800/90 to-slate-900/90 rounded-xl border border-cyan-500/30 backdrop-blur-xl p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h1 className="text-3xl font-bold text-cyan-400 mb-1">
+                      สวัสดี คุณ {user?.email?.split('@')[0] || 'ผู้ใช้'}
+                    </h1>
+                    <p className="text-slate-400">ยินดีต้อนรับสู่ Stay Ready Dashboard</p>
+                  </div>
+                  <Button 
+                    onClick={() => handleTabChange('profile')}
+                    variant="outline" 
+                    className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10"
+                  >
+                    <User className="w-4 h-4 mr-2" />
+                    แก้ไขข้อมูล
+                  </Button>
+                </div>
               </div>
 
-              {/* Stats Cards with futuristic design */}
-              <div className="grid md:grid-cols-3 gap-6">
-                <FuturisticCard
-                  title="คอร์สทั้งหมด"
-                  value="0"
-                  subtitle="คอร์สที่ลงทะเบียน"
-                  icon={Database}
-                  color="bg-gradient-to-br from-blue-600/20 to-cyan-600/20"
-                  delay={0.1}
-                />
-                
-                <FuturisticCard
-                  title="กำลังเรียน"
-                  value="0"
-                  subtitle="คอร์สที่กำลังดำเนินการ"
-                  icon={Activity}
-                  color="bg-gradient-to-br from-purple-600/20 to-pink-600/20"
-                  delay={0.2}
-                />
-                
-                <FuturisticCard
-                  title="เรียนจบแล้ว"
-                  value="0"
-                  subtitle="คอร์สที่สำเร็จ"
-                  icon={Shield}
-                  color="bg-gradient-to-br from-green-600/20 to-emerald-600/20"
-                  delay={0.3}
-                />
+              {/* Progress Summary */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-slate-900/50 rounded-xl border border-slate-700 p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-white">ความคืบหน้าทั้งหมด</h3>
+                    <TrendingUp className="w-5 h-5 text-green-400" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-400">เสร็จแล้ว</span>
+                      <span className="text-green-400">65%</span>
+                    </div>
+                    <div className="w-full bg-slate-700 rounded-full h-2">
+                      <div className="bg-gradient-to-r from-green-400 to-green-500 h-2 rounded-full" style={{ width: '65%' }}></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-slate-900/50 rounded-xl border border-slate-700 p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-white">คอร์สที่เรียน</h3>
+                    <BookOpen className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-blue-400 mb-1">3</div>
+                    <div className="text-slate-400 text-sm">จาก 5 คอร์ส</div>
+                  </div>
+                </div>
+
+                <div className="bg-slate-900/50 rounded-xl border border-slate-700 p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-white">เกียรติบัตร</h3>
+                    <Award className="w-5 h-5 text-yellow-400" />
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-yellow-400 mb-1">2</div>
+                    <div className="text-slate-400 text-sm">ใบประกาศนียบัตร</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* My Courses */}
+              <div>
+                <h2 className="text-2xl font-bold text-white mb-4">คอร์สของฉัน</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {/* Course Card 1 */}
+                  <div className="bg-slate-900/50 rounded-xl border border-slate-700 overflow-hidden group hover:border-cyan-500/50 transition-all">
+                    <div className="h-48 bg-gradient-to-br from-blue-600/20 to-cyan-600/20 p-4 flex items-center justify-center">
+                      <div className="text-center">
+                        <Database className="w-12 h-12 text-blue-400 mx-auto mb-2" />
+                        <h3 className="font-bold text-white">พื้นฐาน Forex</h3>
+                      </div>
+                    </div>
+                    <div className="p-4">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-slate-400 text-sm">ความคืบหน้า</span>
+                        <span className="text-cyan-400 text-sm">80%</span>
+                      </div>
+                      <div className="w-full bg-slate-700 rounded-full h-2 mb-4">
+                        <div className="bg-gradient-to-r from-cyan-400 to-cyan-500 h-2 rounded-full" style={{ width: '80%' }}></div>
+                      </div>
+                      <Button className="w-full bg-cyan-600 hover:bg-cyan-700">
+                        เข้าเรียนต่อ
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Course Card 2 */}
+                  <div className="bg-slate-900/50 rounded-xl border border-slate-700 overflow-hidden group hover:border-purple-500/50 transition-all">
+                    <div className="h-48 bg-gradient-to-br from-purple-600/20 to-pink-600/20 p-4 flex items-center justify-center">
+                      <div className="text-center">
+                        <Activity className="w-12 h-12 text-purple-400 mx-auto mb-2" />
+                        <h3 className="font-bold text-white">Chart Pattern</h3>
+                      </div>
+                    </div>
+                    <div className="p-4">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-slate-400 text-sm">ความคืบหน้า</span>
+                        <span className="text-purple-400 text-sm">45%</span>
+                      </div>
+                      <div className="w-full bg-slate-700 rounded-full h-2 mb-4">
+                        <div className="bg-gradient-to-r from-purple-400 to-purple-500 h-2 rounded-full" style={{ width: '45%' }}></div>
+                      </div>
+                      <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                        เข้าเรียนต่อ
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Course Card 3 */}
+                  <div className="bg-slate-900/50 rounded-xl border border-slate-700 overflow-hidden group hover:border-green-500/50 transition-all">
+                    <div className="h-48 bg-gradient-to-br from-green-600/20 to-emerald-600/20 p-4 flex items-center justify-center">
+                      <div className="text-center">
+                        <Shield className="w-12 h-12 text-green-400 mx-auto mb-2" />
+                        <h3 className="font-bold text-white">Money Management</h3>
+                      </div>
+                    </div>
+                    <div className="p-4">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-slate-400 text-sm">ความคืบหน้า</span>
+                        <span className="text-green-400 text-sm">100%</span>
+                      </div>
+                      <div className="w-full bg-slate-700 rounded-full h-2 mb-4">
+                        <div className="bg-gradient-to-r from-green-400 to-green-500 h-2 rounded-full w-full"></div>
+                      </div>
+                      <Button className="w-full bg-green-600 hover:bg-green-700" disabled>
+                        เรียนจบแล้ว ✓
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Next Lesson / To-do */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="bg-slate-900/50 rounded-xl border border-slate-700 p-6">
+                  <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                    <BookOpen className="w-5 h-5 mr-2 text-cyan-400" />
+                    บทเรียนถัดไป
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center p-3 bg-slate-800/50 rounded-lg border border-slate-600">
+                      <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center mr-3">
+                        <span className="text-white text-sm font-bold">4</span>
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-white">Support & Resistance</h4>
+                        <p className="text-slate-400 text-sm">Chart Pattern - บทที่ 4</p>
+                      </div>
+                      <Button size="sm" className="bg-purple-600 hover:bg-purple-700">
+                        เรียนต่อ
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-slate-900/50 rounded-xl border border-slate-700 p-6">
+                  <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                    <CheckCircle className="w-5 h-5 mr-2 text-yellow-400" />
+                    รายการที่ต้องทำ
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center p-3 bg-slate-800/50 rounded-lg border border-slate-600">
+                      <div className="w-8 h-8 bg-yellow-600 rounded-full flex items-center justify-center mr-3">
+                        <span className="text-white text-sm">Q</span>
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-white">Quiz: Forex Basics</h4>
+                        <p className="text-slate-400 text-sm">10 คำถาม - เหลือเวลา 3 วัน</p>
+                      </div>
+                      <Button size="sm" className="bg-yellow-600 hover:bg-yellow-700">
+                        ทำ Quiz
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Achievements */}
+              <div className="bg-slate-900/50 rounded-xl border border-slate-700 p-6">
+                <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                  <Award className="w-5 h-5 mr-2 text-yellow-400" />
+                  ความสำเร็จ
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="flex items-center p-4 bg-gradient-to-r from-yellow-600/20 to-orange-600/20 rounded-lg border border-yellow-500/30">
+                    <div className="w-12 h-12 bg-yellow-600 rounded-full flex items-center justify-center mr-4">
+                      <Award className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-white">First Step</h4>
+                      <p className="text-yellow-400 text-sm">จบคอร์สแรก</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center p-4 bg-gradient-to-r from-blue-600/20 to-cyan-600/20 rounded-lg border border-blue-500/30">
+                    <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4">
+                      <Shield className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-white">Quick Learner</h4>
+                      <p className="text-blue-400 text-sm">เรียนจบใน 7 วัน</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center p-4 bg-slate-800/50 rounded-lg border border-slate-600 opacity-50">
+                    <div className="w-12 h-12 bg-slate-600 rounded-full flex items-center justify-center mr-4">
+                      <TrendingUp className="w-6 h-6 text-slate-400" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-slate-400">Expert Trader</h4>
+                      <p className="text-slate-500 text-sm">จบทุกคอร์ส</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Announcements */}
+              <div className="bg-slate-900/50 rounded-xl border border-slate-700 p-6">
+                <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                  <Sparkles className="w-5 h-5 mr-2 text-cyan-400" />
+                  ข่าวสารและกิจกรรม
+                </h3>
+                <div className="space-y-4">
+                  <div className="flex items-start p-4 bg-gradient-to-r from-cyan-600/10 to-blue-600/10 rounded-lg border border-cyan-500/30">
+                    <div className="w-10 h-10 bg-cyan-600 rounded-full flex items-center justify-center mr-4 mt-1">
+                      <Globe className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-semibold text-white">Live Trading Session</h4>
+                        <span className="text-cyan-400 text-xs">2 ชม. ที่แล้ว</span>
+                      </div>
+                      <p className="text-slate-300 text-sm mb-3">เข้าร่วม Live Session ทุกวันพุธ เวลา 20:00 น. เรียนรู้การวิเคราะห์ตลาดแบบ Real-time</p>
+                      <Button size="sm" className="bg-cyan-600 hover:bg-cyan-700">
+                        เข้าร่วม
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start p-4 bg-gradient-to-r from-purple-600/10 to-pink-600/10 rounded-lg border border-purple-500/30">
+                    <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center mr-4 mt-1">
+                      <Users className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-semibold text-white">Community Challenge</h4>
+                        <span className="text-purple-400 text-xs">1 วัน ที่แล้ว</span>
+                      </div>
+                      <p className="text-slate-300 text-sm mb-3">ท้าทายความรู้ในกลุ่ม Discord รางวัล 1,000 บาท สำหรับผู้ชนะ</p>
+                      <Button size="sm" className="bg-purple-600 hover:bg-purple-700">
+                        ดูรายละเอียด
+                      </Button>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Neural Network visualization */}
