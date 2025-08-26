@@ -150,7 +150,7 @@ const Dashboard = () => {
       
       <SidebarProvider>
         <ParticleBackground />
-        <div className="min-h-screen flex w-full relative pt-16">
+        <div className="min-h-screen flex w-full relative pt-20">
           <AppSidebar 
             userRole={userRole} 
             membershipStatus={membershipStatus}
@@ -159,11 +159,6 @@ const Dashboard = () => {
           />
           
           <main className="flex-1 flex flex-col relative">
-            {/* Sidebar trigger */}
-            <div className="flex items-center px-4 py-2 border-b border-cyan-500/20 bg-slate-900/50 backdrop-blur-xl">
-              <SidebarTrigger className="text-cyan-400 hover:text-cyan-300 transition-colors" />
-            </div>
-
             <div className="flex-1 p-6 relative">
             <Tabs value={currentTab} onValueChange={handleTabChange} className="w-full">
               {/* ซ่อน TabsList เพราะใช้ sidebar แทน */}
@@ -174,20 +169,17 @@ const Dashboard = () => {
               </div>
 
             <TabsContent value="overview" className="space-y-8">
-              {/* Welcome message */}
-              <div className="relative p-6 bg-gradient-to-r from-slate-900/90 via-slate-800/90 to-slate-900/90 rounded-xl border border-cyan-500/30 backdrop-blur-xl overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/5 to-pink-500/5" />
-                <div className="relative z-10">
-                  <h2 className="text-3xl font-bold text-cyan-400 mb-2">
-                    สวัสดี, {user?.email?.split('@')[0] || 'ผู้ใช้'}!
-                  </h2>
-                  <p className="text-slate-400 text-lg">
-                    ยินดีต้อนรับสู่ Stay Ready Dashboard
-                  </p>
-                  <p className="text-slate-500 text-sm mt-2">
-                    เริ่มต้นการเรียนรู้และพัฒนาทักษะของคุณวันนี้
-                  </p>
-                </div>
+              {/* Welcome message - exactly like in screenshot */}
+              <div className="mb-8">
+                <h1 className="text-4xl font-bold text-cyan-400 mb-2">
+                  สวัสดี, {user?.email?.split('@')[0] || 'ผู้ใช้'}!
+                </h1>
+                <p className="text-slate-400 text-lg">
+                  ยินดีต้อนรับสู่ Stay Ready Dashboard
+                </p>
+                <p className="text-slate-500 text-sm mt-1">
+                  เริ่มต้นการเรียนรู้และพัฒนาทักษะของคุณวันนี้
+                </p>
               </div>
 
               {/* Stats Cards with futuristic design */}
