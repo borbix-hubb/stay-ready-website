@@ -25,31 +25,31 @@ const Hero = () => {
               </span>
             </div>
 
-            {/* Main Heading */}
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight">
+            {/* Main Heading - Your Slogan */}
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
               <span className="block mb-4">
                 <span className="bg-gradient-to-r from-white via-cyan-100 to-amber-100 bg-clip-text text-transparent">
-                  ปลดล็อก
+                  ทุนน้อยไม่ใช่ปัญหา...
                 </span>
               </span>
               <span className="block mb-4">
                 <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-red-400 bg-clip-text text-transparent">
-                  ความลับ
+                  ปัญหาคือคุณยังไม่รู้
                 </span>
               </span>
               <span className="block">
                 <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  การเทรดฟอเร็กซ์
+                  จะเข้าออกตรงไหน
                 </span>
               </span>
             </h1>
 
             {/* Subheading */}
             <p className="text-xl md:text-3xl text-slate-300 mb-12 max-w-4xl mx-auto leading-relaxed font-light">
-              เรียนรู้เทคนิคการเทรดแบบมืออาชีพ สร้างกำไรสม่ำเสมอ 
+              เรียนรู้เทคนิคการเทรดแบบมืออาชีพ หาจุดเข้าออกที่แม่นยำ
               <br />
               <span className="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent font-semibold">
-                ด้วยกลยุทธ์ที่พิสูจน์แล้วจากผู้เชี่ยวชาญ
+                เปลี่ยนทุนน้อยให้เติบโตอย่างยั่งยืน
               </span>
             </p>
 
@@ -94,7 +94,7 @@ const Hero = () => {
               <div className="flex flex-wrap justify-center gap-6 text-sm">
                 <div className="flex items-center gap-2 text-cyan-400">
                   <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-                  <span>ผู้เรียนมากกว่า 10,000+ คน</span>
+                  <span>เริ่มเรียนได้ทันที ไม่ต้องมีพื้นฐาน</span>
                 </div>
                 <div className="flex items-center gap-2 text-green-400">
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
