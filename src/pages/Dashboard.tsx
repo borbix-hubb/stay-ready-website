@@ -162,11 +162,16 @@ const Dashboard = () => {
             <div className="flex items-center justify-between w-full px-6 relative z-10">
               <div className="flex items-center gap-4">
                 <SidebarTrigger className="text-cyan-400 hover:text-cyan-300 transition-colors" />
-                <div>
-                  <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-                    Stay Ready Dashboard
+                <div 
+                  onClick={() => handleTabChange('overview')}
+                  className="cursor-pointer group"
+                >
+                  <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:to-purple-300 transition-all">
+                    สวัสดี, {user?.email?.split('@')[0] || 'ผู้ใช้'}
                   </h1>
-                  <p className="text-xs text-cyan-400/60">แพลตฟอร์มการเรียนรู้ออนไลน์</p>
+                  <p className="text-xs text-cyan-400/60 group-hover:text-cyan-400/80 transition-colors">
+                    คลิกเพื่อกลับหน้าแรก Dashboard
+                  </p>
                 </div>
               </div>
               
