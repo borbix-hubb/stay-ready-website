@@ -112,23 +112,29 @@ export function AppSidebar({ userRole, membershipStatus, activeTab, onTabChange 
       collapsible="icon"
     >
       <SidebarContent className="bg-slate-950">
-        {/* Logo */}
+        {/* Logo - Clickable to Homepage */}
         <div className="p-4 border-b border-slate-800">
           {!isCollapsed ? (
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center border border-blue-400/20">
+            <div 
+              className="flex items-center gap-3 cursor-pointer group transition-all duration-200 hover:bg-slate-800/50 rounded-lg p-2"
+              onClick={() => window.location.href = '/'}
+            >
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center border border-blue-400/20 group-hover:scale-105 transition-transform">
                 <span className="text-white font-bold text-lg">S</span>
               </div>
               <div>
-                <h1 className="text-lg font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                <h1 className="text-lg font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent group-hover:from-blue-300 group-hover:to-purple-300 transition-all">
                   Stay Ready
                 </h1>
-                <p className="text-xs text-slate-500">Trading System</p>
+                <p className="text-xs text-slate-500 group-hover:text-slate-400 transition-colors">Trading System</p>
               </div>
             </div>
           ) : (
-            <div className="flex justify-center">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center border border-blue-400/20">
+            <div 
+              className="flex justify-center cursor-pointer group transition-all duration-200 hover:bg-slate-800/50 rounded-lg p-2"
+              onClick={() => window.location.href = '/'}
+            >
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center border border-blue-400/20 group-hover:scale-105 transition-transform">
                 <span className="text-white font-bold text-lg">S</span>
               </div>
             </div>
